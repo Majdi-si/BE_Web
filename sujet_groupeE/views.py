@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import hashlib
 app = Flask(__name__)
 app.template_folder = "template"
@@ -41,16 +41,20 @@ def testimonial():
 def login():
     return render_template("login.html")
 
-@app.route("/ajouter", methods=["POST"])
-def ajouter():
+@app.route("/ajout", methods=["GET"])
+def ajout():
     return "Formulaire POST reçu"
     
 #reception donnees du compte
 @app.route("/compte")
-def ajouter():
+def compte():
     return render_template("compte.html")
 
-@app.route("/ajouter2", methods=["POST"])
+@app.route("/ajouter", methods=["POST"])
 def ajouter():
+    #return request.form['prenom']
     return "Formulaire POST reçu"
+
+# mdp = hashlib.sha256(mdp.encode())
+# mdpC = mdp.hexdigest() #mdpC=mot de pass chiffré
 
