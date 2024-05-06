@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+            creation du compte utilisateur
+        </title>
+    </head>
+    <body>
+        <form action="ajouter" method="POST">
+            <label for="email">adresse mail</label>
+            <input type="text" name="email" id="email" placeholder="Votre adresse mail" required/></br>
+            <label for="nom">nom</label>
+            <input type="text" name="nom" id="nom" placeholder="Votre nom" required/>
+            <label for="prenom">prenom</label>
+            <input type="text" name="prenom" id="prenom" placeholder="Votre prénom" required/></br>
+            <label for="motPasse">motdePasse</label>
+            <input type="text" name="motdePasse" id="mdp" placeholder="Votre mot de passe" required/></br>
+            <label for="age">age</label>
+            <input type="number" name="age" id="age" placeholder="Votre âge" required/></br>
+            <label for="genre">Votre sexe:</label>
+            <input list="genre_list" id="genre" name="genre">
+            <datalist id="genre_list">
+                <option value="Femme">Femme</option>
+                <option value="Homme">Homme</option>
+            </datalist> 
+            <button type="submit">Créer mon compte</button>
+        </form>
+    </body>
+
+</html>
