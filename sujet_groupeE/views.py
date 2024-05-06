@@ -36,4 +36,13 @@ def shop():
 def testimonial():
     return render_template("testimonial.html")
     
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+#reception donnees du compte
+@app.route("/compte")
+def ajouter():
+    return "Formulaire POST reçu"
+    
 
