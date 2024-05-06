@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect
 import hashlib
 app = Flask(__name__)
 app.template_folder = "template"
@@ -52,9 +52,28 @@ def compte():
 
 @app.route("/ajouter", methods=["POST"])
 def ajouter():
-    #return request.form['prenom']
-    return "Formulaire POST reçu"
+    return request.form['prenom']
+    #return "Formulaire POST reçu"
 
-# mdp = hashlib.sha256(mdp.encode())
-# mdpC = mdp.hexdigest() #mdpC=mot de pass chiffré
+#mdp = hashlib.sha256(mdp.encode())
+#mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
+# ajout d'un membre
+@app.route("/addMembre", methods=['POST'])
+def addMembre():
+ # réception des données du formulaire
+    nom = request.form['nom']
+    prenom = request.form['prenom']
+    mail = request.form['mail']
+    login = request.form['login']
+    motPasse = request.form['mdp']
+    statut = request.form['statut']
+    avatar = request.form['avatar']
+    lastId = bdd.add_userData(nom, prenom, mail, 
+    login, motPasse, statut, avatar)
+    print(lastId) # dernier id créé par le serveur de BDD
+    if "errorDB" not in session: 
+        session["infoVert"]="Nouveau membre inséré"
+    else:
+        session["infoRouge"]="Problème ajout utilisateur"
+    return redirect("/sgbd")
