@@ -43,8 +43,25 @@ def login():
 
 @app.route("/ajout", methods=["GET"])
 def ajout():
-    return "Formulaire POST reçu"
+    nom_connexion = request.args['nom']
+    prenom_connexion = request.args['prenom']
+    mail_connexion = request.args['mail']
+    login_connexion = request.args['login']
+    mdp_connexion = request.args['mdp']
+    statut_connexion = request.args['monSelect']
+    # avatar_connexion = request.args['avatar']
+    return "Les données reçues sont : " + nom_connexion + " " + prenom_connexion + " " + mail_connexion + " " + login_connexion + " " + mdp_connexion + " " + statut_connexion
     
+
+
+
+
+
+
+
+
+
+
 #reception donnees du compte
 @app.route("/compte")
 def compte():
