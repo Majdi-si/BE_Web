@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import hashlib
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
@@ -40,9 +41,16 @@ def testimonial():
 def login():
     return render_template("login.html")
 
-#reception donnees du compte
-@app.route("/compte")
+@app.route("/ajouter", methods=["POST"])
 def ajouter():
     return "Formulaire POST reçu"
     
+#reception donnees du compte
+@app.route("/compte")
+def ajouter():
+    return render_template("compte.html")
+
+@app.route("/ajouter2", methods=["POST"])
+def ajouter():
+    return "Formulaire POST reçu"
 
