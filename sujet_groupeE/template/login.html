@@ -35,9 +35,21 @@
         </div>
         <!-- Single Page Header End -->
 
+        <!-- Affichage des messages flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == "error" %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         <!-- Checkout Page Start -->
-<form action="ajout" method="POST" enctype="multipart/form-data">
+<form action="login" method="POST" enctype="multipart/form-data">
         <div class="container-fluid py-5">
             <div class="container py-5">
                 <h1 class="mb-4">Se connecter</h1>
@@ -78,7 +90,7 @@
                             </script> -->
                     
                             <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                                <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Créer un compte</button>
+                                <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Se connecter</button>
                             </div>
                     </div>
                 </form>

@@ -53,14 +53,16 @@ def update_userData(champ,newValue,idUser):
 
 def verifAuthData(login, mdp):
     cnx = bddGen.connexion()
-    if cnx is None: return None
-    sql = "SELECT * FROM utilisateur WHERE login=%s and motPasse=%s"
-    param=(login, mdp)
-    msg = {
-        "success":"authOK",
-        "error" : "Failed get Auth data"
-    }
-    # requête par fetchone
-    user = bddGen.selectOneData(cnx,sql,param,msg) 
-    cnx.close()
+    if cnx is None: 
+        return None
+    else :
+        sql = "SELECT * FROM utilisateur WHERE login=%s and motPasse=%s"
+        param=(login, mdp)
+        msg = {
+            "success":"authOK",
+            "error" : "Failed get Auth data"
+        }
+        # requête par fetchone
+        user = bddGen.selectOneData(cnx,sql,param,msg)
+        cnx.close()
     return user

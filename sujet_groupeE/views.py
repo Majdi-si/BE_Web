@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, flash
 import hashlib
 
 
@@ -79,15 +79,17 @@ def connect():
     print(user)
     try:
         # Authentification réussie
-        session["idUser"] = user["idUser"]
+        session["idUser"] = user["idUtilisateur"]
         session["nom"] = user["nom"]
         session["prenom"] = user["prenom"]
         session["mail"] = user["mail"]
         session["statut"] = user["statut"]
-        session["avatar"] = user["avatar"]
+        # session["avatar"] = user["avatar"]
+        flash("Authentification réussie", "success")
         session["infoVert"]="Authentification réussie"
         return redirect("/")
     except TypeError as err:
         # Authentification refusée
-        session["infoRouge"]="Authentification refusée"
+        session["infoRouge"]="Authentification refusée : Login ou Mot de passe incorrect"
+        flash("Authentification refusée : Login ou Mot de passe incorrect", "error")
     return redirect("/login")
