@@ -1,7 +1,7 @@
 import mysql.connector
-from flask import session
+from flask import session, color
 from ..config import DB_SERVER, COLOR
-
+import ..sugar_tracker
 
 ###################################################################################
 
@@ -36,30 +36,43 @@ def get_membresData():
         session['errorDB']="Failed get membres data:{}".format(err)
     return(listeMembres)
 
-def add_userData(nom,prenom,mail,login,motPasse,statut,avatar):
-    cnx=bdd.connexion()
+def add_userData(nom,prenom,mail,login,motPasse,statut):
+    cnx=bddGen.connexion()
     if cnx is None:
         return None
-    sql="INSERT INTO sugar_tracker(nom,prenom,mail,login,motPasse,statut,avatar)VALUES(%s,%s,%s,%s,%s,%s,%s)"
-    param=(nom,prenom,mail,login,motPasse,statut,avatar)
+    sql="INSERT INTO sugar_tracker(nom, prenom, mail, login, motPasse, statut) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+    param=(nom,prenom,mail,login,motPasse,statut)
     msg={
         "success":"addMembreOK",
         "error":"Failed add membres data"
     }
-    lastId=bdd.addData(cnx,sql,param,msg)
+    lastId=bddGen.addData(cnx,sql,param,msg)
     cnx.close()
     #dernier id créé=id du nouvel utilisateur
     return lastId
 
 def update_userData(champ,newValue,idUser):
-    cnx=bdd.connexion()
+    cnx=.connexion()
     if cnx is None :
         return None
     sql="UPDATE identification SET "+champ+"=%s WHERE idUser=%s;"
     param=(newValue,idUser)
     msg={"success":"updateMembreOK",
          "error":"Failed update membres data"}
-    bdd.updateData(cnx,sql,param,msg)
+    sugar_tracker.updateData(cnx,sql,param,msg)
     cnx.close()
     return 1
 
+def verifAuthData(login, mdp):
+    cnx = sugar_tracker.connexion()
+    if cnx is None: return None
+    sql = "SELECT * FROM identification WHERE login=%s and motPasse=%s"
+    param=(login, mdp)
+    msg = {
+        "success":"authOK",
+        "error" : "Failed get Auth data"
+    }
+    # requête par fetchone
+    user = bddGen.selectOneData(cnx,sql,param,msg) 
+    cnx.close()
+    return user

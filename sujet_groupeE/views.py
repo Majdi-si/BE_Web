@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
+from sujet_groupeE.model import bdd
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
@@ -50,7 +51,7 @@ def ajout():
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
     # avatar_connexion = request.files['avatar']
-    # lastId = bdd.add_userData(nom, prenom, mail, login, motPasse, statut, avatar)
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion)
     # print(lastId) # dernier id créé par le serveur de BDD
     # if "errorDB" not in session: 
     #     session["infoVert"]="Nouveau membre inséré"
@@ -62,9 +63,7 @@ def ajout():
 #mdp = hashlib.sha256(mdp.encode())
 #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
-@app.route("/addMembre", methods=['POST'])
-def addMembre():
-    nom = request.
+
 
 
 
