@@ -41,15 +41,22 @@ def testimonial():
 def login():
     return render_template("login.html")
 
-@app.route("/ajout", methods=["GET"])
+@app.route("/ajout", methods=["POST"])
 def ajout():
-    nom_connexion = request.args['nom']
-    prenom_connexion = request.args['prenom']
-    mail_connexion = request.args['mail']
-    login_connexion = request.args['login']
-    mdp_connexion = request.args['mdp']
-    statut_connexion = request.args['monSelect']
-    # avatar_connexion = request.args['avatar']
+    nom_connexion = request.form['nom']
+    prenom_connexion = request.form['prenom']
+    mail_connexion = request.form['mail']
+    login_connexion = request.form['login']
+    mdp_connexion = request.form['mdp']
+    statut_connexion = request.form['monSelect']
+    # avatar_connexion = request.files['avatar']
+    # lastId = bdd.add_userData(nom, prenom, mail, login, motPasse, statut, avatar)
+    # print(lastId) # dernier id créé par le serveur de BDD
+    # if "errorDB" not in session: 
+    #     session["infoVert"]="Nouveau membre inséré"
+    # else:
+    #     session["infoRouge"]="Problème ajout utilisateur"
+    # return redirect("/sgbd")
     return "Les données reçues sont : " + nom_connexion + " " + prenom_connexion + " " + mail_connexion + " " + login_connexion + " " + mdp_connexion + " " + statut_connexion
     
 
@@ -62,35 +69,27 @@ def ajout():
 
 
 
-#reception donnees du compte
-@app.route("/compte")
-def compte():
-    return render_template("compte.html")
+# #reception donnees du compte
+# @app.route("/compte")
+# def compte():
+#     return render_template("compte.html")
 
-@app.route("/ajouter", methods=["POST"])
-def ajouter():
-    return request.form['prenom']
-    #return "Formulaire POST reçu"
+# @app.route("/ajouter", methods=["POST"])
+# def ajouter():
+#     return request.form['prenom']
+#     #return "Formulaire POST reçu"
 
-#mdp = hashlib.sha256(mdp.encode())
-#mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
+# #mdp = hashlib.sha256(mdp.encode())
+# #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
-# ajout d'un membre
-@app.route("/addMembre", methods=['POST'])
-def addMembre():
- # réception des données du formulaire
-    nom = request.form['nom']
-    prenom = request.form['prenom']
-    mail = request.form['mail']
-    login = request.form['login']
-    motPasse = request.form['mdp']
-    statut = request.form['statut']
-    avatar = request.form['avatar']
-    lastId = bdd.add_userData(nom, prenom, mail, 
-    login, motPasse, statut, avatar)
-    print(lastId) # dernier id créé par le serveur de BDD
-    if "errorDB" not in session: 
-        session["infoVert"]="Nouveau membre inséré"
-    else:
-        session["infoRouge"]="Problème ajout utilisateur"
-    return redirect("/sgbd")
+# # ajout d'un membre
+# @app.route("/addMembre", methods=['POST'])
+# def addMembre():
+#  # réception des données du formulaire
+#     nom = request.form['nom']
+#     prenom = request.form['prenom']
+#     mail = request.form['mail']
+#     login = request.form['login']
+#     motPasse = request.form['mdp']
+#     statut = request.form['statut']
+#     avatar = request.form['avatar']
