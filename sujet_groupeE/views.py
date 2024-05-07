@@ -59,6 +59,8 @@ def ajout():
     # return redirect("/sgbd")
     return "Les données reçues sont : " + nom_connexion + " " + prenom_connexion + " " + mail_connexion + " " + login_connexion + " " + mdp_connexion + " " + statut_connexion
     
+mdp = hashlib.sha256(mdp.encode())
+mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
 
 
@@ -69,27 +71,3 @@ def ajout():
 
 
 
-# #reception donnees du compte
-# @app.route("/compte")
-# def compte():
-#     return render_template("compte.html")
-
-# @app.route("/ajouter", methods=["POST"])
-# def ajouter():
-#     return request.form['prenom']
-#     #return "Formulaire POST reçu"
-
-# #mdp = hashlib.sha256(mdp.encode())
-# #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
-
-# # ajout d'un membre
-# @app.route("/addMembre", methods=['POST'])
-# def addMembre():
-#  # réception des données du formulaire
-#     nom = request.form['nom']
-#     prenom = request.form['prenom']
-#     mail = request.form['mail']
-#     login = request.form['login']
-#     motPasse = request.form['mdp']
-#     statut = request.form['statut']
-#     avatar = request.form['avatar']
