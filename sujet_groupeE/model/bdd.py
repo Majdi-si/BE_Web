@@ -24,12 +24,12 @@ def get_membresData():
         session['errorDB']="Failed get membres data:{}".format(err)
     return(listeMembres)
 
-def add_userData(nom,prenom,mail,login,motPasse,statut):
+def add_userData(nom,prenom,mail,login,motPasse,statut, taux):
     cnx=bddGen.connexion()
     if cnx is None:
         return None
-    sql="INSERT INTO sugar_tracker(nom, prenom, mail, login, motPasse, statut) VALUES(%s,%s,%s,%s,%s,%s,%s)"
-    param=(nom,prenom,mail,login,motPasse,statut)
+    sql="INSERT INTO utilisateur(nom, prenom, mail, login, motPasse, statut, taux) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+    param=(nom,prenom,mail,login,motPasse,statut,taux)
     msg={
         "success":"addMembreOK",
         "error":"Failed add membres data"

@@ -1,15 +1,9 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
-<<<<<<< HEAD
-from model import bdd
-=======
-# je dois importer C:\Users\majdi\OneDrive\Bureau\ENAC\S6\Application web\BE Web\sujet_groupeE\model\bdd.py
-<<<<<<< HEAD
-from sujet_groupeE.model import bdd
-=======
+
+
 import sujet_groupeE.model.bdd as bdd
->>>>>>> 72b31e3358a5048adb621ca481d96c6a400e125b
->>>>>>> 75e4fcf22e32cfd5e41e9bcfe11580e6adbd5b40
+
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
@@ -60,7 +54,7 @@ def ajout():
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
     # avatar_connexion = request.files['avatar']
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion)
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, 100)
     # print(lastId) # dernier id créé par le serveur de BDD
     # if "errorDB" not in session: 
     #     session["infoVert"]="Nouveau membre inséré"
@@ -73,7 +67,6 @@ def ajout():
 #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
 
-<<<<<<< HEAD
 #reception donnees du compte
 @app.route("/compte")
 def compte():
@@ -126,12 +119,3 @@ def connect():
         # Authentification refusée
         session["infoRouge"]="Authentification refusée"
     return redirect("/login")
-=======
-
-
-
-
-
-
-
->>>>>>> 855f27d267f0c2e46dd87fb43fa8df4d53114de2
