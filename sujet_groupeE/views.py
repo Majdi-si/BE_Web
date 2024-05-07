@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
 # je dois importer C:\Users\majdi\OneDrive\Bureau\ENAC\S6\Application web\BE Web\sujet_groupeE\model\bdd.py
-import sujet_groupeE.model.bdd as bdd
+from sujet_groupeE.model import bdd
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"

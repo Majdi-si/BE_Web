@@ -3,7 +3,7 @@
 import mysql.connector 
 from flask import session 
 # from .. import config
-import bddGen 
+import sujet_groupeE.model.bddGen as bddGen
 
 ###################################################################################
 
@@ -54,7 +54,7 @@ def update_userData(champ,newValue,idUser):
 def verifAuthData(login, mdp):
     cnx = bddGen.connexion()
     if cnx is None: return None
-    sql = "SELECT * FROM identification WHERE login=%s and motPasse=%s"
+    sql = "SELECT * FROM utilisateur WHERE login=%s and motPasse=%s"
     param=(login, mdp)
     msg = {
         "success":"authOK",

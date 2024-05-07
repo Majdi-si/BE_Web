@@ -3,7 +3,7 @@ sys.path.insert(0, 'c:/Users/majdi/OneDrive/Bureau/ENAC/S6/Application web/BE We
 
 import mysql.connector
 from flask import session
-import sujet_groupeE.config as config
+from sujet_groupeE.config import DB_SERVER, COLOR
 
 
 ###################################################################################
