@@ -4,6 +4,7 @@ import mysql.connector
 from flask import session 
 # from .. import config
 import sujet_groupeE.model.bddGen as bddGen
+import hashlib
 
 ###################################################################################
 
@@ -32,6 +33,7 @@ def get_membresData(login=None):
         cnx.close()
     return user
 def add_userData(nom, prenom, mail, login, motPasse, statut, admin):
+    mdp = hashlib.sha256(motPasse.encode()).hexdigest()
     cnx = bddGen.connexion()
     if cnx is None:
         return None
@@ -42,7 +44,7 @@ def add_userData(nom, prenom, mail, login, motPasse, statut, admin):
     new_id = max_id + 1 if max_id is not None else 1
 
     sql = "INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, admin) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
-    param = (new_id, login, nom, prenom, mail, motPasse, statut, admin)  
+    param = (new_id, login, nom, prenom, mail, mdp, statut, admin)  
     msg = {
         "success": "addMembreOK",
         "error": "Failed add membres data"
@@ -65,6 +67,7 @@ def update_userData(champ,newValue,idUser):
     return 1
 
 def verifAuthData(login, mdp):
+    mdp = hashlib.sha256(mdp.encode()).hexdigest()
     cnx = bddGen.connexion()
     if cnx is None: 
         return None
