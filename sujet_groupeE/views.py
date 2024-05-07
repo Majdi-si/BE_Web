@@ -59,10 +59,12 @@ def ajout():
     # return redirect("/sgbd")
     return "Les données reçues sont : " + nom_connexion + " " + prenom_connexion + " " + mail_connexion + " " + login_connexion + " " + mdp_connexion + " " + statut_connexion
     
-mdp = hashlib.sha256(mdp.encode())
-mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
+#mdp = hashlib.sha256(mdp.encode())
+#mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
-
+@app.route("/addMembre", methods=['POST'])
+def addMembre():
+    nom = request.
 
 
 
