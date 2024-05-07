@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
+from model import bdd
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
@@ -55,13 +56,6 @@ def ajout():
 
 
 
-
-
-
-
-
-
-
 #reception donnees du compte
 @app.route("/compte")
 def compte():
@@ -86,11 +80,31 @@ def addMembre():
     motPasse = request.form['mdp']
     statut = request.form['statut']
     avatar = request.form['avatar']
-    lastId = bdd.add_userData(nom, prenom, mail, 
-    login, motPasse, statut, avatar)
+    lastId = bdd.add_userData(nom, prenom, mail, login, motPasse, statut, avatar)
     print(lastId) # dernier id créé par le serveur de BDD
     if "errorDB" not in session: 
         session["infoVert"]="Nouveau membre inséré"
     else:
         session["infoRouge"]="Problème ajout utilisateur"
     return redirect("/sgbd")
+
+@app.route("/login", methods=["POST"])
+def connect():
+    login = request.form['login']
+    mdp = request.form['mdp']
+    user = bdd.verifAuthData(login, mdp)
+    print(user)
+    try:
+        # Authentification réussie
+        session["idUser"] = user["idUser"]
+        session["nom"] = user["nom"]
+        session["prenom"] = user["prenom"]
+        session["mail"] = user["mail"]
+        session["statut"] = user["statut"]
+        session["avatar"] = user["avatar"]
+        session["infoVert"]="Authentification réussie"
+        return redirect("/")
+    except TypeError as err:
+        # Authentification refusée
+        session["infoRouge"]="Authentification refusée"
+    return redirect("/login")
