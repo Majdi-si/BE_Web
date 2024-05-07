@@ -1,6 +1,9 @@
 import mysql.connector
 from flask import session
-from ..config import DB_SERVER, COLOR
+import sys
+sys.path.append("sujet_groupeE")  # Ajouter le dossier parent au chemin de recherche des modules
+from config import *
+
 
 
 ###################################################################################

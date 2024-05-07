@@ -1,27 +1,13 @@
-import mysql.connector
-from flask import session, color
-from ..config import DB_SERVER, COLOR
-import ..sugar_tracker
+import mysql.connector 
+from flask import session 
+# from .. import config
+import bddGen
 
 ###################################################################################
 
-#connexion au serveur de la base de données
-def connexion():
-    try:
-        cnx=mysql.connector.connect(**DB_SERVER)
-        #affichage dans le terminal
-        print(color['green']+'connexion BDD OK'+COLOR['end'])
-        return cnx
-    except mysql.connector.Error as err : #le problème
-        session['errorDB']=format(err)
-
-        #affichage dans le terminal
-        print(COLOR['red']+session['errorDB']+color['end'])
-        return None
-
 #retourne les données de la table sugar_tracker
 def get_membresData():
-    cnx=connexion()
+    cnx=bddGen.connexion()
     if cnx is None:
         return None
     try:
@@ -52,19 +38,19 @@ def add_userData(nom,prenom,mail,login,motPasse,statut):
     return lastId
 
 def update_userData(champ,newValue,idUser):
-    cnx=.connexion()
+    cnx=bddGen.connexion()
     if cnx is None :
         return None
     sql="UPDATE identification SET "+champ+"=%s WHERE idUser=%s;"
     param=(newValue,idUser)
     msg={"success":"updateMembreOK",
          "error":"Failed update membres data"}
-    sugar_tracker.updateData(cnx,sql,param,msg)
+    bddGen.updateData(cnx,sql,param,msg)
     cnx.close()
     return 1
 
 def verifAuthData(login, mdp):
-    cnx = sugar_tracker.connexion()
+    cnx = bddGen.connexion()
     if cnx is None: return None
     sql = "SELECT * FROM identification WHERE login=%s and motPasse=%s"
     param=(login, mdp)

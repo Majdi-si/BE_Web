@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
-from sujet_groupeE.model import bdd
+# from sujet_groupeE.model import bdd
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
