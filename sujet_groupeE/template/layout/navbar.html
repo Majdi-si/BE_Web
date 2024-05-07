@@ -54,20 +54,34 @@
                     </div>
                     <a href="/contact" class="nav-item nav-link">Contact</a>
                 </div>
-                <div class="dropdown">
-                    <button class="dropbtn" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                    <div class="dropdown-content">
-                        <a href="/login">Se connecter</a>
-                        <a href="/new_account">Création d'un compte</a>
+                
+                <button class="dropbtn spaced-element" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="fas fa-search text-primary"></i>
+                </button>
+                <a href="#" class="position-relative me-4 my-auto spaced-element">
+                    <i class="fa fa-shopping-bag fa-2x"></i>
+                    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                </a>
+                {% if session["idUtilisateur"] %}
+                    <div class="dropdown spaced-element">
+                        <a href="/compte" class="my-auto">
+                            <i class="fas fa-user fa-2x"></i>
+                            <div class="dropdown-content">
+                                <a href="/logout">Se déconnecter</a>
+                            </div>
+                        </a>
                     </div>
-                    <a href="#" class="position-relative me-4 my-auto">
-                        <i class="fa fa-shopping-bag fa-2x"></i>
-                        <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-                    </a>
-                    <a href="/login" class="my-auto">
-                        <i class="fas fa-user fa-2x" ></i>
-
-
+                {% else %}
+                    <div class="dropdown spaced-element">
+                        <a href="/login" class="my-auto">
+                            <i class="fas fa-user fa-2x"></i>
+                            <div class="dropdown-content">
+                                <a href="/login">Se connecter</a>
+                                <a href="/new_account">Création d'un compte</a>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
 
                     </a>
                 </div>

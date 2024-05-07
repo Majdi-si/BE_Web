@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, session, redirect, flash
+from flask import Flask, render_template, request, session, redirect, flash, url_for
 import hashlib
+from sujet_groupeE.controller import function as f
 
 
 import sujet_groupeE.model.bdd as bdd
@@ -10,7 +11,8 @@ app.static_folder = "static"
 app.config.from_object('sujet_groupeE.config')
 @app.route("/")
 def index():
-    return render_template("index.html")
+    params = f.messageInfo() # récupération des messages d'info
+    return render_template("index.html", **params)
 
 #page home
 @app.route("/cart")
@@ -47,28 +49,43 @@ def new_account():
 
 @app.route("/ajout", methods=["POST"])
 def ajout():
+    admin = 0
     nom_connexion = request.form['nom']
     prenom_connexion = request.form['prenom']
     mail_connexion = request.form['mail']
     login_connexion = request.form['login']
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
+    print(statut_connexion)
+    if statut_connexion == "admin":
+        admin = 1
+    else:
+        admin = 0
     # avatar_connexion = request.files['avatar']
-    lastId = bdd.add_userData(nom_connexion, login_connexion, prenom_connexion, mail_connexion, mdp_connexion, statut_connexion)
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin)
+    if lastId == 0:  # Si l'insertion a échoué
+        lastId = bdd.get_membresData(login_connexion)  # Récupère l'ID de l'utilisateur à partir du login
     # print(lastId) # dernier id créé par le serveur de BDD
     # if "errorDB" not in session: 
     #     session["infoVert"]="Nouveau membre inséré"
     # else:
     #     session["infoRouge"]="Problème ajout utilisateur"
-    # return redirect("/sgbd")
-    return "Les données reçues sont : " + nom_connexion + " " + prenom_connexion + " " + mail_connexion + " " + login_connexion + " " + mdp_connexion + " " + statut_connexion
+
+    # Stocke les informations de l'utilisateur dans la session
+    session['idUtilisateur'] = lastId
+    print ("session['idUtilisateur'] = ", session['idUtilisateur'])
+    session['login'] = login_connexion
+    session['admin'] = admin
+
+    return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
 #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    params = f.messageInfo() # récupération des messages d'info
+    return render_template("login.html", **params)
 
 
 @app.route("/login", methods=["POST"])
@@ -79,7 +96,7 @@ def connect():
     print(user)
     try:
         # Authentification réussie
-        session["idUser"] = user["idUtilisateur"]
+        session["idUtilisateur"] = user["idUtilisateur"]
         session["nom"] = user["nom"]
         session["prenom"] = user["prenom"]
         session["mail"] = user["mail"]
@@ -92,4 +109,15 @@ def connect():
         # Authentification refusée
         session["infoRouge"]="Authentification refusée : Login ou Mot de passe incorrect"
         flash("Authentification refusée : Login ou Mot de passe incorrect", "error")
-    return redirect("/login")
+        return redirect("/login")
+
+@app.route('/logout')
+def logout():
+    # Supprime 'login' de la session
+    session.pop('idUtilisateur', None)
+    # Redirige l'utilisateur vers la page de connexion
+    return redirect(url_for('login'))
+
+@app.route("/compte")
+def compte():
+    return render_template("compte.html")

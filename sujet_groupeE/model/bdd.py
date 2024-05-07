@@ -8,35 +8,48 @@ import sujet_groupeE.model.bddGen as bddGen
 ###################################################################################
 
 #retourne les données de la table sugar_tracker
-def get_membresData():
+def get_membresData(login=None):
     cnx=bddGen.connexion()
     if cnx is None:
         return None
     try:
         cursor=cnx.cursor(dictionary=True)
-        sql="SELECT * FROM sugar_tracker"
-        cursor.execute(sql)
-        listeMembres=cursor.fetchall()
-        close_bd(cursor,cnx)
+        if login is not None:
+            sql="SELECT * FROM utilisateur WHERE login = %s"
+            param = (login,)
+            cursor.execute(sql, param)
+            user = cursor.fetchall()  # Utilisez fetchall() pour récupérer tous les résultats
+        else:
+            sql="SELECT * FROM sugar_tracker"
+            cursor.execute(sql)
+            user = cursor.fetchall()
         session['successDB']="OK get_membresData"
     except mysql.connector.Error as err:
-        listeMembres=None
+        user=None
         session['errorDB']="Failed get membres data:{}".format(err)
-    return(listeMembres)
-
-def add_userData(nom,prenom,mail,login,motPasse,statut):
-    cnx=bddGen.connexion()
+    finally:
+        cursor.close()
+        cnx.close()
+    return user
+def add_userData(nom, prenom, mail, login, motPasse, statut, admin):
+    cnx = bddGen.connexion()
     if cnx is None:
         return None
-    sql="INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, admin) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
-    param=(2,login,nom,prenom,mail,motPasse,statut,1)
-    msg={
-        "success":"addMembreOK",
-        "error":"Failed add membres data"
+
+    cursor = cnx.cursor()
+    cursor.execute("SELECT MAX(idUtilisateur) FROM utilisateur")
+    max_id = cursor.fetchone()[0]
+    new_id = max_id + 1 if max_id is not None else 1
+
+    sql = "INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, admin) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+    param = (new_id, login, nom, prenom, mail, motPasse, statut, admin)  
+    msg = {
+        "success": "addMembreOK",
+        "error": "Failed add membres data"
     }
-    lastId=bddGen.addData(cnx,sql,param,msg)
+    lastId = bddGen.addData(cnx, sql, param, msg)
     cnx.close()
-    #dernier id créé=id du nouvel utilisateur
+    # dernier id créé = id du nouvel utilisateur
     return lastId
 
 def update_userData(champ,newValue,idUser):

@@ -1,5 +1,9 @@
+.spaced-element {
+    margin-right: 20px;
+}
 
 /*** Spinner Start ***/
+
 #spinner {
     opacity: 0;
     visibility: hidden;

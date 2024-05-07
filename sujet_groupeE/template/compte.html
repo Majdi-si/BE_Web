@@ -1,41 +1,86 @@
 <!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <title>
-            creation du compte utilisateur
-        </title>
-    </head>
-    <body>
-        <form action="ajouter" method="POST">
-            <label for="email">adresse mail</label>
-            <input type="text" name="email" id="email" placeholder="Votre adresse mail" required/></br>
-            <label for="nom">nom</label>
-            <input type="text" name="nom" id="nom" placeholder="Votre nom" required/>
-            <label for="prenom">prenom</label>
-            <input type="text" name="prenom" id="prenom" placeholder="Votre prénom" required/></br>
-            <label for="motPasse">motdePasse</label>
-            <input type="text" name="motdePasse" id="mdp" placeholder="Votre mot de passe" required/></br>
-            <label for="age">age</label>
-            <input type="number" name="age" id="age" placeholder="Votre âge" required/></br>
-            <label for="genre">Votre sexe:</label>
-            <input list="genre_list" id="genre" name="genre">
-            <datalist id="genre_list">
-                <option value="Femme">Femme</option>
-                <option value="Homme">Homme</option>
-            </datalist> 
-            <button type="submit">Créer mon compte</button>
-        </form>
-    </body>
+<html lang="en">
+
+<head>
+    {% set titre="Compte" %}
+    {% include("layout/head.html") %}
+</head>
+
+<body>
+
+    <!-- Navbar start -->
+    {%include("layout/navbar.html")%}
+    <!-- Navbar End -->
+
+
+    <!-- Single Page Header start -->
+    {% include("layout/breadcrumb.html") %}
+    <!-- Single Page Header End -->
+
+
+    <!-- Compte Page Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <h1 class="mb-4">Informations du compte</h1>
+            <form action="#">
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-6 col-xl-7">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">Prénom<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">Nom<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Nom de l'entreprise<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Adresse <sup>*</sup></label>
+                            <input type="text" class="form-control" placeholder="Numéro de maison, nom de rue">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Ville<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Pays<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Code postal<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Téléphone<sup>*</sup></label>
+                            <input type="tel" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Adresse e-mail<sup>*</sup></label>
+                            <input type="email" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Compte Page End -->
+
+
+    <!-- Footer Start -->
+    {%include("layout/footer.html")%}
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    {% include("layout/script.html") %}
+</body>
 
 </html>
-
-
-<!-- <form action="/nomRoute" method="POST">
-    <label for="ancienmdp">Ancien mot de passe</label>
-    <input type="password" name="ancienmdp" id="ancienmdp" placeholder="Ancien mot de passe" />
-    <label for="nouveaumdp">Nouveau mot de passe</label>
-    <input type="password" name="nouveaumdp" id="nouveaumdp" placeholder="Nouveau mot de passe" />
-    <label for="confirmernouveaumdp">Confirmer votre mot de passe</label>
-    <input type="password" name="confirmernouveaumdp" id="confirmernouveaumdp" placeholder="Confirmer nouveau mot de passe" />
-</form> -->
