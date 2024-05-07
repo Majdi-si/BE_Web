@@ -56,13 +56,17 @@ def ajout():
     login_connexion = request.form['login']
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
-    print(statut_connexion)
     if statut_connexion == "admin":
         admin = 1
     else:
         admin = 0
-    # avatar_connexion = request.files['avatar']
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin)
+    avatar_connexion = None
+    if 'avatar' in request.form:
+        avatar_connexion = request.form['avatar']
+    else:
+        # Gérer le cas où 'avatar' n'est pas présent
+        print("Le fichier 'avatar' n'est pas présent dans la requête.")
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion)
     if lastId == 0:  # Si l'insertion a échoué
         lastId = bdd.get_membresData(login_connexion)  # Récupère l'ID de l'utilisateur à partir du login
     # print(lastId) # dernier id créé par le serveur de BDD
@@ -73,9 +77,12 @@ def ajout():
 
     # Stocke les informations de l'utilisateur dans la session
     session['idUtilisateur'] = lastId
-    print ("session['idUtilisateur'] = ", session['idUtilisateur'])
     session['login'] = login_connexion
     session['admin'] = admin
+    session['nom'] = nom_connexion
+    session['prenom'] = prenom_connexion
+    session['mail'] = mail_connexion
+    session['avatar'] = avatar_connexion
     return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
@@ -100,6 +107,7 @@ def connect():
         session["mail"] = user["mail"]
         session["statut"] = user["statut"]
         session["admin"] = user["admin"]
+        session["avatar"] = user["avatar"]
         # session["avatar"] = user["avatar"]
         flash("Authentification réussie", "success")
         session["infoVert"]="Authentification réussie"
