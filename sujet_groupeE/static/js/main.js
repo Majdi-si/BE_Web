@@ -149,3 +149,15 @@
 
 })(jQuery);
 
+<script>
+    document.querySelector('input[name="avatar"]').addEventListener('change', function(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var image = document.getElementById('preview-image');
+            image.src = reader.result;
+            image.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+</script>
+
