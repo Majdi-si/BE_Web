@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 07 mai 2024 à 15:58
+-- Généré le : mar. 07 mai 2024 à 16:10
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -90,21 +90,14 @@ INSERT INTO `repas` (`idProduit`, `idUtilisateur`, `plats`) VALUES
 
 CREATE TABLE `utilisateur` (
   `idUtilisateur` int(11) NOT NULL,
-  `identifiant` varchar(30) DEFAULT NULL,
-  `role` tinyint(1) DEFAULT NULL,
+  `login` varchar(30) DEFAULT NULL,
   `nom` varchar(30) DEFAULT NULL,
   `prenom` varchar(30) DEFAULT NULL,
   `mail` varchar(50) DEFAULT NULL,
   `motPasse` varchar(30) DEFAULT NULL,
-  `statut` varchar(20) DEFAULT NULL
+  `statut` varchar(20) DEFAULT NULL,
+  `admin` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Déchargement des données de la table `utilisateur`
---
-
-INSERT INTO `utilisateur` (`idUtilisateur`, `identifiant`, `role`, `nom`, `prenom`, `mail`, `motPasse`, `statut`) VALUES
-(1, 'admin', 1, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Index pour les tables déchargées
@@ -145,15 +138,13 @@ ALTER TABLE `utilisateur`
 -- Contraintes pour la table `produit`
 --
 ALTER TABLE `produit`
-  ADD CONSTRAINT `produit_ibfk_1` FOREIGN KEY (`idCategorie`) REFERENCES `categorie` (`idCategorie`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `produit_ibfk_2` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `produit_ibfk_1` FOREIGN KEY (`idCategorie`) REFERENCES `categorie` (`idCategorie`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `repas`
 --
 ALTER TABLE `repas`
-  ADD CONSTRAINT `repas_ibfk_1` FOREIGN KEY (`idProduit`) REFERENCES `produit` (`idProduit`),
-  ADD CONSTRAINT `repas_ibfk_2` FOREIGN KEY (`idUtilisateur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `repas_ibfk_1` FOREIGN KEY (`idProduit`) REFERENCES `produit` (`idProduit`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

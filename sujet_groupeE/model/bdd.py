@@ -24,12 +24,12 @@ def get_membresData():
         session['errorDB']="Failed get membres data:{}".format(err)
     return(listeMembres)
 
-def add_userData(nom,prenom,mail,login,motPasse,statut, taux):
+def add_userData(nom,prenom,mail,login,motPasse,statut):
     cnx=bddGen.connexion()
     if cnx is None:
         return None
-    sql="INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, admin) VALUES(%s,%s,%s,%s,%s,%s,%s)"
-    param=(1,login,nom,prenom,mail,motPasse,statut,admin)
+    sql="INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, admin) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+    param=(2,login,nom,prenom,mail,motPasse,statut,1)
     msg={
         "success":"addMembreOK",
         "error":"Failed add membres data"

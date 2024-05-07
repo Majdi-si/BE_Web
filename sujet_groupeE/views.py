@@ -54,7 +54,7 @@ def ajout():
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
     # avatar_connexion = request.files['avatar']
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, 100)
+    lastId = bdd.add_userData(nom_connexion, login_connexion, prenom_connexion, mail_connexion, mdp_connexion, statut_connexion)
     # print(lastId) # dernier id créé par le serveur de BDD
     # if "errorDB" not in session: 
     #     session["infoVert"]="Nouveau membre inséré"
