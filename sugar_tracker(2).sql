@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 07 mai 2024 à 14:58
+-- Généré le : mar. 07 mai 2024 à 15:58
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `sugar_tracker`
 --
-CREATE DATABASE IF NOT EXISTS `sugar_tracker` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `sugar_tracker`;
 
 -- --------------------------------------------------------
 
@@ -92,20 +90,21 @@ INSERT INTO `repas` (`idProduit`, `idUtilisateur`, `plats`) VALUES
 
 CREATE TABLE `utilisateur` (
   `idUtilisateur` int(11) NOT NULL,
-  `login` varchar(30) DEFAULT NULL,
-  `mdp` varchar(30) DEFAULT NULL,
-  `admin` tinyint(1) DEFAULT NULL,
-  `age` varchar(3) DEFAULT NULL,
-  `sexe` varchar(10) DEFAULT NULL,
-  `taux` varchar(10) DEFAULT NULL
+  `identifiant` varchar(30) DEFAULT NULL,
+  `role` tinyint(1) DEFAULT NULL,
+  `nom` varchar(30) DEFAULT NULL,
+  `prenom` varchar(30) DEFAULT NULL,
+  `mail` varchar(50) DEFAULT NULL,
+  `motPasse` varchar(30) DEFAULT NULL,
+  `statut` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Déchargement des données de la table `utilisateur`
 --
 
-INSERT INTO `utilisateur` (`idUtilisateur`, `login`, `mdp`, `admin`, `age`, `sexe`, `taux`) VALUES
-(1, 'admin', 'admin', 1, '21', 'feminin', '100');
+INSERT INTO `utilisateur` (`idUtilisateur`, `identifiant`, `role`, `nom`, `prenom`, `mail`, `motPasse`, `statut`) VALUES
+(1, 'admin', 1, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Index pour les tables déchargées

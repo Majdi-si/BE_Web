@@ -28,8 +28,8 @@ def add_userData(nom,prenom,mail,login,motPasse,statut, taux):
     cnx=bddGen.connexion()
     if cnx is None:
         return None
-    sql="INSERT INTO utilisateur(nom, prenom, mail, login, motPasse, statut, taux) VALUES(%s,%s,%s,%s,%s,%s,%s)"
-    param=(nom,prenom,mail,login,motPasse,statut,taux)
+    sql="INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, admin) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+    param=(1,login,nom,prenom,mail,motPasse,statut,admin)
     msg={
         "success":"addMembreOK",
         "error":"Failed add membres data"
