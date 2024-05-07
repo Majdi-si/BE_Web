@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% set titre="Administrateur" %}
+    {% include("layout/head.html") %}
+</head>
+
+<body>
+
+    <!-- Navbar start -->
+    {%include("layout/navbar.html")%}
+    <!-- Navbar End -->
+
+
+    <!-- Single Page Header start -->
+    {% include("layout/breadcrumb.html") %}
+    <!-- Single Page Header End -->
+
+
+    <!-- Compte Page Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <h1 class="mb-4">Administrateur</h1>
+            <form action="#">
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-6 col-xl-7">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">Prénom<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">Nom<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Nom de l'entreprise<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Adresse <sup>*</sup></label>
+                            <input type="text" class="form-control" placeholder="Numéro de maison, nom de rue">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Ville<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Pays<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Code postal<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Téléphone<sup>*</sup></label>
+                            <input type="tel" class="form-control">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Adresse e-mail<sup>*</sup></label>
+                            <input type="email" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Compte Page End -->
+
+
+    <!-- Footer Start -->
+    {%include("layout/footer.html")%}
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    {% include("layout/script.html") %}
+</body>
+
+</html>

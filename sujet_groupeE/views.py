@@ -76,7 +76,6 @@ def ajout():
     print ("session['idUtilisateur'] = ", session['idUtilisateur'])
     session['login'] = login_connexion
     session['admin'] = admin
-
     return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
@@ -93,7 +92,6 @@ def connect():
     login = request.form['login']
     mdp = request.form['mdp']
     user = bdd.verifAuthData(login, mdp)
-    print(user)
     try:
         # Authentification réussie
         session["idUtilisateur"] = user["idUtilisateur"]
@@ -101,6 +99,7 @@ def connect():
         session["prenom"] = user["prenom"]
         session["mail"] = user["mail"]
         session["statut"] = user["statut"]
+        session["admin"] = user["admin"]
         # session["avatar"] = user["avatar"]
         flash("Authentification réussie", "success")
         session["infoVert"]="Authentification réussie"
@@ -114,10 +113,14 @@ def connect():
 @app.route('/logout')
 def logout():
     # Supprime 'login' de la session
-    session.pop('idUtilisateur', None)
+    session.clear() 
     # Redirige l'utilisateur vers la page de connexion
     return redirect(url_for('login'))
 
 @app.route("/compte")
 def compte():
     return render_template("compte.html")
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
