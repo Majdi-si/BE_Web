@@ -1,7 +1,15 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
+<<<<<<< HEAD
+from model import bdd
+=======
 # je dois importer C:\Users\majdi\OneDrive\Bureau\ENAC\S6\Application web\BE Web\sujet_groupeE\model\bdd.py
+<<<<<<< HEAD
 from sujet_groupeE.model import bdd
+=======
+import sujet_groupeE.model.bdd as bdd
+>>>>>>> 72b31e3358a5048adb621ca481d96c6a400e125b
+>>>>>>> 75e4fcf22e32cfd5e41e9bcfe11580e6adbd5b40
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
@@ -65,6 +73,60 @@ def ajout():
 #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
 
+<<<<<<< HEAD
+#reception donnees du compte
+@app.route("/compte")
+def compte():
+    return render_template("compte.html")
+
+@app.route("/ajouter", methods=["POST"])
+def ajouter():
+    return request.form['prenom']
+    #return "Formulaire POST reçu"
+
+#mdp = hashlib.sha256(mdp.encode())
+#mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
+
+# ajout d'un membre
+@app.route("/addMembre", methods=['POST'])
+def addMembre():
+ # réception des données du formulaire
+    nom = request.form['nom']
+    prenom = request.form['prenom']
+    mail = request.form['mail']
+    login = request.form['login']
+    motPasse = request.form['mdp']
+    statut = request.form['statut']
+    avatar = request.form['avatar']
+    lastId = bdd.add_userData(nom, prenom, mail, login, motPasse, statut, avatar)
+    print(lastId) # dernier id créé par le serveur de BDD
+    if "errorDB" not in session: 
+        session["infoVert"]="Nouveau membre inséré"
+    else:
+        session["infoRouge"]="Problème ajout utilisateur"
+    return redirect("/sgbd")
+
+@app.route("/login", methods=["POST"])
+def connect():
+    login = request.form['login']
+    mdp = request.form['mdp']
+    user = bdd.verifAuthData(login, mdp)
+    print(user)
+    try:
+        # Authentification réussie
+        session["idUser"] = user["idUser"]
+        session["nom"] = user["nom"]
+        session["prenom"] = user["prenom"]
+        session["mail"] = user["mail"]
+        session["statut"] = user["statut"]
+        session["avatar"] = user["avatar"]
+        session["infoVert"]="Authentification réussie"
+        return redirect("/")
+    except TypeError as err:
+        # Authentification refusée
+        session["infoRouge"]="Authentification refusée"
+    return redirect("/login")
+=======
 
 
 
@@ -72,3 +134,4 @@ def ajout():
 
 
 
+>>>>>>> 855f27d267f0c2e46dd87fb43fa8df4d53114de2
