@@ -1,6 +1,11 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
+<<<<<<< HEAD
 from model import bdd
+=======
+# je dois importer C:\Users\majdi\OneDrive\Bureau\ENAC\S6\Application web\BE Web\sujet_groupeE\model\bdd.py
+import sujet_groupeE.model.bdd as bdd
+>>>>>>> 72b31e3358a5048adb621ca481d96c6a400e125b
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
@@ -51,7 +56,7 @@ def ajout():
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
     # avatar_connexion = request.files['avatar']
-    # lastId = bdd.add_userData(nom, prenom, mail, login, motPasse, statut, avatar)
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion)
     # print(lastId) # dernier id créé par le serveur de BDD
     # if "errorDB" not in session: 
     #     session["infoVert"]="Nouveau membre inséré"
@@ -60,9 +65,8 @@ def ajout():
     # return redirect("/sgbd")
     return "Les données reçues sont : " + nom_connexion + " " + prenom_connexion + " " + mail_connexion + " " + login_connexion + " " + mdp_connexion + " " + statut_connexion
     
-mdp = hashlib.sha256(mdp.encode())
-mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
-
+#mdp = hashlib.sha256(mdp.encode())
+#mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
 
 <<<<<<< HEAD
