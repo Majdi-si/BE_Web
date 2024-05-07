@@ -41,9 +41,9 @@ def shop():
 def testimonial():
     return render_template("testimonial.html")
     
-@app.route("/login")
-def login():
-    return render_template("login.html")
+@app.route("/new_account")
+def new_account():
+    return render_template("new_account.html")
 
 @app.route("/ajout", methods=["POST"])
 def ajout():
@@ -66,38 +66,10 @@ def ajout():
 #mdp = hashlib.sha256(mdp.encode())
 #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
-#reception donnees du compte
-@app.route("/compte")
-def compte():
-    return render_template("compte.html")
-
-@app.route("/ajouter", methods=["POST"])
-def ajouter():
-    return request.form['prenom']
-    #return "Formulaire POST reçu"
-
-#mdp = hashlib.sha256(mdp.encode())
-#mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
-
-# ajout d'un membre
-@app.route("/addMembre", methods=['POST'])
-def addMembre():
- # réception des données du formulaire
-    nom = request.form['nom']
-    prenom = request.form['prenom']
-    mail = request.form['mail']
-    login = request.form['login']
-    motPasse = request.form['mdp']
-    statut = request.form['statut']
-    avatar = request.form['avatar']
-    lastId = bdd.add_userData(nom, prenom, mail, login, motPasse, statut, avatar)
-    print(lastId) # dernier id créé par le serveur de BDD
-    if "errorDB" not in session: 
-        session["infoVert"]="Nouveau membre inséré"
-    else:
-        session["infoRouge"]="Problème ajout utilisateur"
-    return redirect("/sgbd")
 
 @app.route("/login", methods=["POST"])
 def connect():

@@ -27,10 +27,10 @@
         <!-- Single Page Header start -->
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Création du compte</h1>
+            <h1 class="text-center text-white display-6">Se connecter</h1>
             <ol class="breadcrumb justify-content-center mb-0">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item active text-white">Création du compte</li>
+                <li class="breadcrumb-item active text-white">Se connecter</li>
             </ol>
         </div>
         <!-- Single Page Header End -->
@@ -40,28 +40,14 @@
 <form action="ajout" method="POST" enctype="multipart/form-data">
         <div class="container-fluid py-5">
             <div class="container py-5">
-                <h1 class="mb-4">Création du compte</h1>
+                <h1 class="mb-4">Se connecter</h1>
                 <form action="#">
                     <div class="row g-5">
                         <div class="col-md-12 col-lg-6 col-xl-7">
                             <div class="row">
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Nom<sup>*</sup></label>
-                                        <input type="text" class="form-control" name = "nom">
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Prénom<sup>*</sup></label>
-                                        <input type="text" class="form-control" name = "prenom">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Adresse e-mail<sup>*</sup></label>
-                                <input type="email" class="form-control" name = "mail">
-                            </div>
+                                
+                                
+
                             <div class="form-item">
                                 <label class="form-label my-3">Login<sup>*</sup></label>
                                 <input type="text" class="form-control" name = "login" required/>
@@ -69,58 +55,6 @@
                             <div class="form-item">
                                 <label class="form-label my-3">Mot de passe<sup>*</sup></label>
                                 <input type="password" class="form-control" name = "mdp" required/>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Votre Statut    <sup>*</sup></label>
-                                <select name="monSelect" id="monSelect" required>
-                                <option selected disabled>
-
-                                </option>
-                                <option value="gestionnaire">gestionnaire</option>
-                                <option value="admin">administrateur</option>
-                                </select> 
-                            </div>  
-                            <hr>
-                            <div class="form-item">
-                                <label class="form-label my-3">Avatar<sup>*</sup></label>
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar1" name="avatar" value="avatar1" required>
-                                        <label for="avatar1"><img src="static/img/avatar1.png" alt="Avatar 1" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar2" name="avatar" value="avatar2" required>
-                                        <label for="avatar2"><img src="static/img/avatar2.png" alt="Avatar 2" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar3" name="avatar" value="avatar3" required>
-                                        <label for="avatar3"><img src="static/img/avatar3.png" alt="Avatar 3" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar4" name="avatar" value="avatar4" required>
-                                        <label for="avatar4"><img src="static/img/avatar4.png" alt="Avatar 4" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar5" name="avatar" value="avatar5" required>
-                                        <label for="avatar5"><img src="static/img/avatar5.png" alt="Avatar 5" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar6" name="avatar" value="avatar6" required>
-                                        <label for="avatar6"><img src="static/img/avatar6.png" alt="Avatar 6" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar7" name="avatar" value="avatar7" required>
-                                        <label for="avatar7"><img src="static/img/avatar7.png" alt="Avatar 7" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar8" name="avatar" value="avatar8" required>
-                                        <label for="avatar8"><img src="static/img/avatar8.png" alt="Avatar 8" style="width: 50px;"></label>
-                                    </div>
-                                    <div class="avatar-container">
-                                        <input type="radio" id="avatar9" name="avatar" value="avatar9" required>
-                                        <label for="avatar9"><img src="static/img/avatar9.png" alt="Avatar 9" style="width: 50px;"></label>
-                                    </div>
-                                </div>
                             </div>
                             <!-- <div class="form-item"></div>
                                 <label class="form-label my-3">Importer un avatar<sup>*</sup></label>
