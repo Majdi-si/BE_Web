@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect
 import hashlib
-# from sujet_groupeE.model import bdd
+# je dois importer C:\Users\majdi\OneDrive\Bureau\ENAC\S6\Application web\BE Web\sujet_groupeE\model\bdd.py
+import sujet_groupeE.model.bdd as bdd
 app = Flask(__name__)
 app.template_folder = "template"
 app.static_folder = "static"
@@ -62,7 +63,6 @@ def ajout():
     
 #mdp = hashlib.sha256(mdp.encode())
 #mdpC = mdp.hexdigest() #mdpC=mot de passe chiffré
-
 
 
 

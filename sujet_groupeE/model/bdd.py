@@ -1,7 +1,9 @@
+# import sys
+# sys.path.insert(0, 'c:/Users/majdi/OneDrive/Bureau/ENAC/S6/Application web/BE Web/sujet_groupeE')
 import mysql.connector 
 from flask import session 
 # from .. import config
-import bddGen
+import bddGen 
 
 ###################################################################################
 

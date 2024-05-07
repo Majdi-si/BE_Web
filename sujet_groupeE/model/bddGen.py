@@ -1,9 +1,9 @@
+import sys
+sys.path.insert(0, 'c:/Users/majdi/OneDrive/Bureau/ENAC/S6/Application web/BE Web/')
+
 import mysql.connector
 from flask import session
-import sys
-sys.path.append("sujet_groupeE")  # Ajouter le dossier parent au chemin de recherche des modules
-from config import *
-
+import sujet_groupeE.config as config
 
 
 ###################################################################################
