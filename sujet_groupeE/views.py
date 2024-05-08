@@ -83,6 +83,7 @@ def ajout():
     session['prenom'] = prenom_connexion
     session['mail'] = mail_connexion
     session['avatar'] = avatar_connexion
+    session['statut'] = statut_connexion
     return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
@@ -108,6 +109,7 @@ def connect():
         session["statut"] = user["statut"]
         session["admin"] = user["admin"]
         session["avatar"] = user["avatar"]
+        session["login"] = user["login"]
         # session["avatar"] = user["avatar"]
         flash("Authentification réussie", "success")
         session["infoVert"]="Authentification réussie"

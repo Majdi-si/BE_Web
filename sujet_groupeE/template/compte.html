@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    {% set titre="Compte" %}
+    {% set titre="Mon Compte" %}
     {% include("layout/head.html") %}
 </head>
 
@@ -19,53 +19,66 @@
 
 
     <!-- Compte Page Start -->
-    <div class="container-fluid py-5">
+    <script>
+        function enableEditing(id) {
+            var input = document.getElementById(id);
+            input.readOnly = !input.readOnly;
+        }
+    </script>
+    
+    <div class="container-fluid py-5 d-flex flex-column justify-content-center align-items-center">
         <div class="container py-5">
-            <h1 class="mb-4">Informations du compte</h1>
+            <h1 class="mb-7">Informations du compte</h1>
             <form action="#">
-                <div class="row g-5">
-                    <div class="col-md-12 col-lg-6 col-xl-7">
+                <div class="row g-9">
+                    <div class="col-md-20 col-lg-6 col-xl-10">
                         <div class="row">
-                            <div class="col-md-12 col-lg-6">
+                            <div class="col-md-20 col-lg-6">
                                 <div class="form-item w-100">
-                                    <label class="form-label my-3">Prénom<sup>*</sup></label>
-                                    <input type="text" class="form-control">
+                                    <label class="form-label my-3">Prénom</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="prenom" value="{{ session['prenom'] }}" readonly>
+                                        <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('prenom')"><i class="bi bi-pencil-fill"></i></button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-6">
                                 <div class="form-item w-100">
-                                    <label class="form-label my-3">Nom<sup>*</sup></label>
-                                    <input type="text" class="form-control">
+                                    <label class="form-label my-3">Nom</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="nom" value="{{ session['nom'] }}" readonly>
+                                        <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('nom')"><i class="bi bi-pencil-fill"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-item">
-                            <label class="form-label my-3">Nom de l'entreprise<sup>*</sup></label>
-                            <input type="text" class="form-control">
+                            <label class="form-label my-3">Login</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="login" value="{{ session['login'] }}" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('login')"><i class="bi bi-pencil-fill"></i></button>
+                            </div>
                         </div>
                         <div class="form-item">
-                            <label class="form-label my-3">Adresse <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="Numéro de maison, nom de rue">
+                            <label class="form-label my-3">Adresse e-mail</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="mail" value="{{ session['mail'] }}" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mail')"><i class="bi bi-pencil-fill"></i></button>
+                            </div>
                         </div>
                         <div class="form-item">
-                            <label class="form-label my-3">Ville<sup>*</sup></label>
-                            <input type="text" class="form-control">
+                            <label class="form-label my-3">Statut</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="statut" value="{{ session['statut'] }}" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('statut')"><i class="bi bi-pencil-fill"></i></button>
+                            </div>
                         </div>
                         <div class="form-item">
-                            <label class="form-label my-3">Pays<sup>*</sup></label>
-                            <input type="text" class="form-control">
+                            <label class="form-label my-3">Avatar : </label>
+                            <img src="static/img/{{ session['avatar'] }}.png" alt="avatar" class="img-fluid mt-3" style="max-width: 150px;">
                         </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Code postal<sup>*</sup></label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Téléphone<sup>*</sup></label>
-                            <input type="tel" class="form-control">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Adresse e-mail<sup>*</sup></label>
-                            <input type="email" class="form-control">
+                        <div class="form-item d-flex justify-content-center align-items-center">
+                            <button type="button" class="btn btn-primary mt-5">Enrengistrer</button>
                         </div>
                     </div>
                 </div>
