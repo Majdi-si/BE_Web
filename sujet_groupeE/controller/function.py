@@ -18,3 +18,4 @@ def messageInfo(params = None):
         params["errorDB"] = session['errorDB']
         session.pop("errorDB", None) 
     return params
+
