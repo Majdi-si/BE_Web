@@ -13,7 +13,7 @@ DB_SERVER = {
 "password": "ienac",
 "host": "localhost",
 "port": 3306, #8889 si MAC
-"database": "sugar_tracker", #nom de la BDD
+"database": "sugar_tracker3", #nom de la BDD
 "raise_on_warnings": True
 }
 
