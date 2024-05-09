@@ -58,7 +58,7 @@ def update_userData(champ,newValue,idUser):
     cnx=bddGen.connexion()
     if cnx is None :
         return None
-    sql="UPDATE identification SET "+champ+"=%s WHERE idUser=%s;"
+    sql="UPDATE utilisateur SET "+champ+"=%s WHERE idUtilisateur=%s;"
     param=(newValue,idUser)
     msg={"success":"updateMembreOK",
          "error":"Failed update membres data"}

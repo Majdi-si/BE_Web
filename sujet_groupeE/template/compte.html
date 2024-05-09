@@ -25,66 +25,68 @@
             input.readOnly = !input.readOnly;
         }
     </script>
-    
-    <div class="container-fluid py-5 d-flex flex-column justify-content-center align-items-center">
-        <div class="container py-5">
-            <h1 class="mb-7">Informations du compte</h1>
-            <form action="#">
-                <div class="row g-9">
-                    <div class="col-md-20 col-lg-6 col-xl-10">
-                        <div class="row">
-                            <div class="col-md-20 col-lg-6">
-                                <div class="form-item w-100">
-                                    <label class="form-label my-3">Prénom</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="prenom" value="{{ session['prenom'] }}" readonly>
-                                        <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('prenom')"><i class="bi bi-pencil-fill"></i></button>
+ 
+    <form action="update-info" method="POST" enctype="multipart/form-data">
+        <div class="container-fluid py-5 d-flex flex-column justify-content-center align-items-center">
+            <div class="container py-5">
+                <h1 class="mb-7">Informations du compte</h1>
+                <form action="#">
+                    <div class="row g-9">
+                        <div class="col-md-20 col-lg-6 col-xl-10">
+                            <div class="row">
+                                <div class="col-md-20 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Prénom</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="prenom" name = "prenom" value="{{ session['prenom'] }}" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('prenom')"><i class="bi bi-pencil-fill"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Nom</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="nom" name = "nom" value="{{ session['nom'] }}" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('nom')"><i class="bi bi-pencil-fill"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-lg-6">
-                                <div class="form-item w-100">
-                                    <label class="form-label my-3">Nom</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="nom" value="{{ session['nom'] }}" readonly>
-                                        <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('nom')"><i class="bi bi-pencil-fill"></i></button>
-                                    </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">Login</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="login" name = "login" value="{{ session['login'] }}" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('login')"><i class="bi bi-pencil-fill"></i></button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Login</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="login" value="{{ session['login'] }}" readonly>
-                                <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('login')"><i class="bi bi-pencil-fill"></i></button>
+                            <div class="form-item">
+                                <label class="form-label my-3">Adresse e-mail</label>
+                                <div class="input-group">
+                                    <input type="email" class="form-control" id="mail" name = "mail" value="{{ session['mail'] }}" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mail')"><i class="bi bi-pencil-fill"></i></button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Adresse e-mail</label>
-                            <div class="input-group">
-                                <input type="email" class="form-control" id="mail" value="{{ session['mail'] }}" readonly>
-                                <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mail')"><i class="bi bi-pencil-fill"></i></button>
+                            <div class="form-item">
+                                <label class="form-label my-3">Statut</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="statut" name = "statut" value="{{ session['statut'] }}" readonly>
+                                    <!-- <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('statut')"><i class="bi bi-pencil-fill"></i></button> -->
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Statut</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="statut" value="{{ session['statut'] }}" readonly>
-                                <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('statut')"><i class="bi bi-pencil-fill"></i></button>
+                            <div class="form-item">
+                                <label class="form-label my-3">Avatar : </label>
+                                <img src="static/img/{{ session['avatar'] }}.png" alt="avatar" class="img-fluid mt-3" style="max-width: 150px;">
                             </div>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Avatar : </label>
-                            <img src="static/img/{{ session['avatar'] }}.png" alt="avatar" class="img-fluid mt-3" style="max-width: 150px;">
-                        </div>
-                        <div class="form-item d-flex justify-content-center align-items-center">
-                            <button type="button" class="btn btn-primary mt-5">Enrengistrer</button>
+                            <div class="form-item d-flex justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary mt-5">Enrengistrer</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    </form>
     <!-- Compte Page End -->
 
 

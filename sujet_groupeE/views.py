@@ -134,3 +134,32 @@ def compte():
 @app.route("/admin")
 def admin():
     return render_template("admin.html")
+
+@app.route('/update-info', methods=['POST'])
+def update_info():
+    # Récupérer les nouvelles informations du formulaire
+    prenom = request.form.get('prenom')
+    print(prenom)
+    nom = request.form.get('nom')
+    login = request.form.get('login')
+    mail = request.form.get('mail')
+    statut = request.form.get('statut')
+
+    # Valider les nouvelles informations ici...
+
+    # Mettre à jour les informations de l'utilisateur dans la base de données
+    bdd.update_userData('prenom', prenom, session['idUtilisateur'])
+    bdd.update_userData('nom', nom, session['idUtilisateur'])
+    bdd.update_userData('login', login, session['idUtilisateur'])
+    bdd.update_userData('mail', mail, session['idUtilisateur'])
+    bdd.update_userData('statut', statut, session['idUtilisateur'])
+
+    # Mettre à jour les informations de la session
+    session['prenom'] = prenom
+    session['nom'] = nom
+    session['login'] = login
+    session['mail'] = mail
+    session['statut'] = statut
+
+    # Rediriger l'utilisateur vers la page du compte ou afficher un message de succès
+    return redirect(url_for('compte'))
