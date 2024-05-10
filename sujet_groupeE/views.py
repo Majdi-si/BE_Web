@@ -3,7 +3,7 @@ import hashlib
 from sujet_groupeE.controller import function as f
 
 
-import sujet_groupeE.model.bdd as bdd
+#import sujet_groupeE.model.bdd as bdd
 
 app = Flask(__name__)
 app.template_folder = "template"
@@ -27,9 +27,9 @@ def error():
 def chackout():
     return render_template("chackout.html")
 
-@app.route("/contact")
+@app.route("/webmaster")
 def contact():
-    return render_template("contact.html")
+    return render_template("webmaster.html")
 
 @app.route("/shop-detail")
 def shop_detail():
@@ -91,8 +91,8 @@ def ajout():
 
 @app.route("/login")
 def login():
-    params = f.messageInfo() # récupération des messages d'info
-    return render_template("login.html", **params)
+    #params = f.messageInfo() # récupération des messages d'info
+    return render_template("login.html")
 
 
 @app.route("/login", methods=["POST"])
