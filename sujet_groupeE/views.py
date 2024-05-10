@@ -3,7 +3,7 @@ import hashlib
 from sujet_groupeE.controller import function as f
 
 
-import sujet_groupeE.model.bdd as bdd
+#import sujet_groupeE.model.bdd as bdd
 
 app = Flask(__name__)
 app.template_folder = "template"
@@ -147,7 +147,7 @@ def update_info():
 
     # Valider les nouvelles informations ici...
 
-    Mettre à jour les informations de l'utilisateur dans la base de données
+    #Mettre à jour les informations de l'utilisateur dans la base de données
     bdd.update_userData('prenom', prenom, session['idUtilisateur'])
     bdd.update_userData('nom', nom, session['idUtilisateur'])
     bdd.update_userData('login', login, session['idUtilisateur'])
