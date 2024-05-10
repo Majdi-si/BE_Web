@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, flash, url_for
 import hashlib
 from sujet_groupeE.controller import function as f
-
-
-#import sujet_groupeE.model.bdd as bdd
+import sujet_groupeE.model.bdd as bdd
 
 app = Flask(__name__)
 app.template_folder = "template"
