@@ -22,15 +22,19 @@
          <!-- Affichage des messages flash -->
          {% with messages = get_flashed_messages(with_categories=true) %}
          {% if messages %}
-             {% for category, message in messages %}
-                 {% if category == "error" %}
-                     <div class="alert alert-danger">
-                         {{ message }}
-                     </div>
-                 {% endif %}
-             {% endfor %}
+           {% for category, message in messages %}
+             {% if category == "error" %}
+               <div class="alert alert-danger">
+                 {{ message }}
+               </div>
+             {% elif category == "success" %}
+               <div class="alert alert-success">
+                 {{ message }}
+               </div>
+             {% endif %}
+           {% endfor %}
          {% endif %}
-     {% endwith %}
+       {% endwith %}
 
 
     <!-- Compte Page Start -->
