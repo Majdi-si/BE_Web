@@ -82,6 +82,7 @@ def ajout():
     session['mail'] = mail_connexion
     session['avatar'] = avatar_connexion
     session['statut'] = statut_connexion
+    session['mdp'] = mdp_connexion
     return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
@@ -108,6 +109,7 @@ def connect():
         session["admin"] = user["admin"]
         session["avatar"] = user["avatar"]
         session["login"] = user["login"]
+        session["mdp"] = mdp
         # session["avatar"] = user["avatar"]
         flash("Authentification réussie", "success")
         session["infoVert"]="Authentification réussie"
@@ -137,27 +139,44 @@ def admin():
 def update_info():
     # Récupérer les nouvelles informations du formulaire
     prenom = request.form.get('prenom')
-    print(prenom)
     nom = request.form.get('nom')
     login = request.form.get('login')
     mail = request.form.get('mail')
     statut = request.form.get('statut')
+    newPassword = request.form.get('newPassword')
+    confirmPassword = request.form.get('confirmPassword')
+    oldPassword = request.form.get('oldPassword')
 
-    # Valider les nouvelles informations ici...
+    # Vérifier si l'utilisateur a entré un nouveau mot de passe
+    if newPassword:
+        try:
+            # Vérifier si l'ancien mot de passe est correct et si le nouveau mot de passe et le mot de passe confirmé sont les mêmes
+            if bdd.verifAuthData2(session['idUtilisateur'], oldPassword, newPassword, confirmPassword):
+                # Mettre à jour le mot de passe de l'utilisateur dans la base de données
+                bdd.update_userData('motPasse', newPassword, session['idUtilisateur'])
+                session['mdp'] = newPassword
+                flash('Votre mot de passe a été mis à jour avec succès.', 'success')
+            else:
+                flash('L\'ancien mot de passe n\'est pas correct ou le nouveau mot de passe et le mot de passe confirmé ne correspondent pas.', 'error')
+        except Exception as e:
+            flash('Une erreur est survenue lors de la vérification du mot de passe.', 'error')
 
-    #Mettre à jour les informations de l'utilisateur dans la base de données
-    bdd.update_userData('prenom', prenom, session['idUtilisateur'])
-    bdd.update_userData('nom', nom, session['idUtilisateur'])
-    bdd.update_userData('login', login, session['idUtilisateur'])
-    bdd.update_userData('mail', mail, session['idUtilisateur'])
-    bdd.update_userData('statut', statut, session['idUtilisateur'])
+    try:
+        # Mettre à jour les autres informations de l'utilisateur dans la base de données
+        bdd.update_userData('prenom', prenom, session['idUtilisateur'])
+        bdd.update_userData('nom', nom, session['idUtilisateur'])
+        bdd.update_userData('login', login, session['idUtilisateur'])
+        bdd.update_userData('mail', mail, session['idUtilisateur'])
+        bdd.update_userData('statut', statut, session['idUtilisateur'])
 
-    # Mettre à jour les informations de la session
-    session['prenom'] = prenom
-    session['nom'] = nom
-    session['login'] = login
-    session['mail'] = mail
-    session['statut'] = statut
+        # Mettre à jour les informations de la session
+        session['prenom'] = prenom
+        session['nom'] = nom
+        session['login'] = login
+        session['mail'] = mail
+        session['statut'] = statut
+    except Exception as e:
+        flash('Une erreur est survenue lors de la mise à jour de vos informations.', 'error')
 
-    # Rediriger l'utilisateur vers la page du compte ou afficher un message de succès
+    # Rediriger l'utilisateur vers la page du compte
     return redirect(url_for('compte'))

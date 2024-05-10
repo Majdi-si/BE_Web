@@ -8,6 +8,8 @@
 
 <body>
 
+
+
     <!-- Navbar start -->
     {%include("layout/navbar.html")%}
     <!-- Navbar End -->
@@ -17,12 +19,30 @@
     {% include("layout/breadcrumb.html") %}
     <!-- Single Page Header End -->
 
+         <!-- Affichage des messages flash -->
+         {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+             {% for category, message in messages %}
+                 {% if category == "error" %}
+                     <div class="alert alert-danger">
+                         {{ message }}
+                     </div>
+                 {% endif %}
+             {% endfor %}
+         {% endif %}
+     {% endwith %}
+
 
     <!-- Compte Page Start -->
     <script>
         function enableEditing(id) {
-            var input = document.getElementById(id);
-            input.readOnly = !input.readOnly;
+            if (id === 'mdp') {
+                document.getElementById('changePassword').style.display = 'block';
+            } 
+            else {
+                var input = document.getElementById(id);
+                input.readOnly = !input.readOnly;
+            }
         }
     </script>
  
@@ -73,6 +93,22 @@
                                     <input type="text" class="form-control" id="statut" name = "statut" value="{{ session['statut'] }}" readonly>
                                     <!-- <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('statut')"><i class="bi bi-pencil-fill"></i></button> -->
                                 </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">Mot de passe</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="mdp" name="mdp" value="{{ session['mdp'] }}" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mdp')"><i class="bi bi-pencil-fill"></i></button>
+                                </div>
+                                <div id="changePassword" style="display: none;">
+                                    <label class="form-label my-3">Nouveau mot de passe</label>
+                                    <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                    <label class="form-label my-3">Confirmer le nouveau mot de passe</label>
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                    <label class="form-label my-3">Ancien mot de passe</label>
+                                    <input type="password" class="form-control" id="oldPassword" name="oldPassword">
+                                </div>
+                            </div>
+                            </div>
                             </div>
                             <div class="form-item">
                                 <label class="form-label my-3">Avatar : </label>

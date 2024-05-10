@@ -54,15 +54,23 @@ def add_userData(nom, prenom, mail, login, motPasse, statut, admin, avatar):
     # dernier id créé = id du nouvel utilisateur
     return lastId
 
-def update_userData(champ,newValue,idUser):
-    cnx=bddGen.connexion()
-    if cnx is None :
+import hashlib
+
+def update_userData(champ, newValue, idUser):
+    cnx = bddGen.connexion()
+    if cnx is None:
         return None
-    sql="UPDATE utilisateur SET "+champ+"=%s WHERE idUtilisateur=%s;"
-    param=(newValue,idUser)
-    msg={"success":"updateMembreOK",
-         "error":"Failed update membres data"}
-    bddGen.updateData(cnx,sql,param,msg)
+
+    # Si le champ à mettre à jour est le mot de passe, chiffrer la nouvelle valeur
+    if champ == 'motPasse':
+        newValue = hashlib.sha256(newValue.encode()).hexdigest()
+    sql = "UPDATE utilisateur SET " + champ + "=%s WHERE idUtilisateur=%s;"
+    param = (newValue, idUser)
+    msg = {
+        "success": "updateMembreOK",
+        "error": "Failed update membres data"
+    }
+    bddGen.updateData(cnx, sql, param, msg)
     cnx.close()
     return 1
 
@@ -82,3 +90,33 @@ def verifAuthData(login, mdp):
         user = bddGen.selectOneData(cnx,sql,param,msg)
         cnx.close()
     return user
+
+def verifAuthData2(idUtilisateur, oldPassword, newPassword, confirmPassword):
+    # Hasher l'ancien mot de passe
+    hashed_oldPassword = hashlib.sha256(oldPassword.encode()).hexdigest()
+
+    cnx = bddGen.connexion()
+    if cnx is None: 
+        return False
+    else :
+        # Vérifier si l'ancien mot de passe est correct
+        sql = "SELECT * FROM utilisateur WHERE idUtilisateur=%s and motPasse=%s"
+        param=(idUtilisateur, hashed_oldPassword)
+        msg = {
+            "success":"authOK",
+            "error" : "Failed get Auth data"
+        }
+        user = bddGen.selectOneData(cnx,sql,param,msg)
+        cnx.close()
+
+        # Si l'ancien mot de passe est incorrect, renvoyer False
+        if user is None:
+            return False
+
+        # Vérifier si le nouveau mot de passe et le mot de passe confirmé sont les mêmes
+        if newPassword != confirmPassword:
+            print("Les mots de passe ne correspondent pas")
+            return False
+
+    # Si toutes les vérifications sont réussies, renvoyer True
+    return True
