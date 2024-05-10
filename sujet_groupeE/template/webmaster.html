@@ -24,13 +24,19 @@
 
 
         <!-- Single Page Header start -->
-        {% include("layout/breadcrumb.html") %}
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6">Contact</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active text-white">Webmaster</li>
+            </ol>
+        </div>
         <!-- Single Page Header End -->
 
 
         <!-- Contact Start -->
         <div class="container-fluid contact py-5">
-            <div class="container py-5">
+            <div class="container-lg py-5"> <!-- Modification de la classe container en container-lg -->
                 <div class="p-5 bg-light rounded">
                     <div class="row g-4">
                         <div class="col-12">
@@ -51,115 +57,147 @@
                                 <style>
                                     /* Style pour le menu et la zone d'affichage */
                                     #menu {
-                                        float: left;
-                                        width: 200px;
-                                        height: 100%;
+                                        display: flex;
+                                        justify-content: space-between; 
                                         background-color: #f2f2f2;
+                                        padding: 20px 0; /* sert à espacer les éléments du menu */
+                                        width: 100%; /* Le menu prendra 100% de la largeur du conteneur */
                                     }
-                                    
+                                
                                     #content {
-                                        margin-left: 220px; /* pour éviter de chevaucher le menu */
+                                        clear: both; /* Add this to ensure the content is displayed below the menu */
                                         padding: 20px;
+                                        display: flex;
+                                        justify-content: center; /* Center the content horizontally */
+                                        align-items: flex-end; /* Align the content to the bottom */
+                                        text-align: center;
+                                        border: 1px solid #ccc;
+                                        width: 100%; /* Le contenu prendra 100% de la largeur du conteneur */
                                     }
-                                    
+                                
                                     /* Style pour les éléments du menu */
                                     .menu-item {
                                         cursor: pointer;
-                                        padding: 10px;
+                                        width: 100%; /* La largeur de chaque élément du menu sera 100% */
+                                        height: 80px; /* Make this value larger than the width to make the menu items taller */
                                         border-bottom: 1px solid #ccc;
+                                        text-align: center;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        margin-right: 20px; /* Ajout de l'espace entre chaque élément du menu */
+                                        flex-grow: 1; /* Pour que tous les éléments du menu aient la même taille */
                                     }
-                                    
+                                
                                     .menu-item:hover {
                                         background-color: #ddd;
                                     }
-
-
-                                     /* Style pour l'image à droite du nom */
+                                
+                                    /* Style pour l'image à droite du nom */
                                     .menu-item img {
-                                    float: right;
-                                    margin-left: 10px;
-                                    width: 20px; /* Taille de l'image */
-                                    height: 20px; /* Taille de l'image */
+                                        margin-right: 10px; /* Add margin to separate image and text */
+                                        width: 40px; /* Adjust this value as needed */
+                                        height: auto; /* Keep aspect ratio */
                                     }
-                                    
-                                    
-                                    /* Style pour la zone d'affichage */
+                                
+                                    /* Style for the display area */
                                     #display {
                                         border: 1px solid #ccc;
                                         padding: 20px;
+                                        text-align: center; /* Center the text */
                                     }
                                 </style>
-                                </head>
-                                <body>
                                 
+                            <div class="container"> <!-- Ajout de la classe container -->
                                 <div id="menu">
                                     <!-- Menu des noms -->
-                                    <div class="menu-item" onclick="showInfo('Majdi Si-Salah')"><img src="Avatar1.png" alt="Majdi Si-Salah">Majdi Si-Salah</div>
-                                    <div class="menu-item" onclick="showInfo('Julie Lombardi')"><img src="Avatar2.png" alt="Julie Lombardi">Julie Lombardi</div>
-                                    <div class="menu-item" onclick="showInfo('Margot Deveil-Villelga')"><img src="Avatar3.png" alt="Margot Deveil-Villelga">Margot Deveil-Villelga</div>
-                                    <div class="menu-item" onclick="showInfo('Léa Terrin')"><img src="Avatar4.png" alt="Léa Terrin">Léa Terrin</div>
-                                </div>
-                                
-                                <div id="content">
-                                    <!-- Zone d'affichage des informations -->
-                                    <div id="display">
-                                        Sélectionnez un nom pour afficher les informations.
+                                    <div class="d-flex p-4 rounded mb-4 bg-white menu-item" onclick="showInfo('Majdi Si-Salah')">
+                                        <img src="static/img/photo_majdi.jpg" alt="Majdi Si-Salah">Majdi Si-Salah
+                                    </div>
+                                    <div class="d-flex p-4 rounded mb-4 bg-white menu-item" onclick="showInfo('Julie Lombardi')">
+                                        <img src="static/img/photo_julie.jpg" alt="Julie Lombardi">Julie Lombardi
+                                    </div>
+                                    <div class="d-flex p-4 rounded mb-4 bg-white menu-item" onclick="showInfo('Margot Deveil-Villelga')">
+                                        <img src="static/img/avatar1.png" alt="Margot Deveil-Villelga">Margot Deveil-Villelga
+                                    </div>
+                                    <div class="d-flex p-4 rounded mb-4 bg-white menu-item" onclick="showInfo('Léa Terrin')">
+                                        <img src="static/img/avatar2.png" alt="Léa Terrin">Léa Terrin
                                     </div>
                                 </div>
-                                
-                                <script>
-                                    // Fonction pour afficher les informations correspondantes
-                                    function showInfo(name) {
-                                        var display = document.getElementById('display');
-                                        // Vous pouvez personnaliser les informations à afficher ici en fonction du nom sélectionné
-                                        switch (name) {
-                                            case 'Majdi Si-Salah':
-                                                display.innerHTML = "Informations pour John";
-                                                break;
-                                            case 'Julie Lombardi':
-                                                display.innerHTML = "Informations pour Jane";
-                                                break;
-                                            case 'Margot Deveil-Villelga':
-                                                display.innerHTML = "Informations pour Doe";
-                                                break;
-                                            case 'Léa Terrin':
-                                                display.innerHTML = '<p>Formation :</p><p>Lycée aux Lazariste (2021-2023) : classe préparatoire PCSI-PC</p><p>Lycée Alphonse Daudet (2019-2021) : Diplômée du BAC</p>';
-                                                break;
-                                            default:
-                                                display.innerHTML = "Sélectionnez un nom pour afficher les informations.";
-                                        }
+                            
+                            <div id="content">
+                                <!-- Zone d'affichage des informations -->
+                                <div id="display">
+                                    Sélectionnez un nom pour afficher les informations.
+                                </div>
+                            </div>
+                        </div>
+                            <script>
+                                // Fonction pour afficher les informations correspondantes
+                                function showInfo(name) {
+                                    var display = document.getElementById('display');
+                                    // Vous pouvez personnaliser les informations à afficher ici en fonction du nom sélectionné
+                                    switch (name) {
+                                        case 'Majdi Si-Salah':
+                                            display.innerHTML = "Informations pour John";
+                                            break;
+                                        case 'Julie Lombardi':
+                                            display.innerHTML = "Informations pour Jane";
+                                            break;
+                                        case 'Margot Deveil-Villelga':
+                                            display.innerHTML = "Informations pour Doe";
+                                            break;
+                                        case 'Léa Terrin':
+                                            display.innerHTML = '<p>Formation :</p><p>Lycée aux Lazariste (2021-2023) : classe préparatoire PCSI-PC</p><p>Lycée Alphonse Daudet (2019-2021) : Diplômée du BAC</p>';
+                                            break;
+                                        default:
+                                            display.innerHTML = "Sélectionnez un nom pour afficher les informations.";
                                     }
+                                }
                                 </script>
                             </form>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="d-flex p-4 rounded mb-4 bg-white">
-                                <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
-                                <div>
-                                    <h4>Address</h4>
-                                    <p class="mb-2">7 Av. Edouard Belin, Toulouse</p>
-                                </div>
-                            </div>
-                            
-                            <div class="d-flex p-4 rounded mb-4 bg-white">
-                                <i class="fas fa-envelope fa-2x text-primary me-4"></i>
-                                <div>
-                                    <h4>Mail Us</h4>
-                                    <p class="mb-2">sugartracker@gmail.com</p>
-                                </div>
-                            </div>
-                            <div class="d-flex p-4 rounded bg-white">
-                                <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
-                                <div>
-                                    <h4>Telephone</h4>
-                                    <p class="mb-2">(+012) 3456 7890</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="d-flex p-4 rounded mb-4 bg-white">
+                        <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p class="mb-2">7 Av. Edouard Belin, Toulouse</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex p-4 rounded mb-4 bg-white">
+                        <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>Mail Us</h4>
+                            <p class="mb-2">sugartracker@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex p-4 rounded bg-white">
+                        <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>Telephone</h4>
+                            <p class="mb-2">(+012) 3456 7890</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+        
         <!-- Contact End -->
 
 
