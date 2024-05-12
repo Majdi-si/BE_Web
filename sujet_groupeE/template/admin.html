@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 
 <head>
     {% set titre="Administrateur" %}
@@ -14,66 +15,49 @@
 
 
     <!-- Single Page Header start -->
-    {% include("layout/breadcrumb.html") %}
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">Administrateur</h1>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active text-white">Administrateur</li>
+        </ol>
+    </div>
     <!-- Single Page Header End -->
 
 
-    <!-- Compte Page Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <h1 class="mb-4">Administrateur</h1>
-            <form action="#">
-                <div class="row g-5">
-                    <div class="col-md-12 col-lg-6 col-xl-7">
-                        <div class="row">
-                            <div class="col-md-12 col-lg-6">
-                                <div class="form-item w-100">
-                                    <label class="form-label my-3">Prénom<sup>*</sup></label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-lg-6">
-                                <div class="form-item w-100">
-                                    <label class="form-label my-3">Nom<sup>*</sup></label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Nom de l'entreprise<sup>*</sup></label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Adresse <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="Numéro de maison, nom de rue">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Ville<sup>*</sup></label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Pays<sup>*</sup></label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Code postal<sup>*</sup></label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Téléphone<sup>*</sup></label>
-                            <input type="tel" class="form-control">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Adresse e-mail<sup>*</sup></label>
-                            <input type="email" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <!-- Début affichage du tableau des membres -->
+    
+    <div style="justify-content: center; display: flex; margin-top: 50px;">
+        <table class="table table-striped sortable">
+            <tr>
+                <th class="sorttable_nosort">Avatar</th>
+                <th>Login</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Mail</th>
+                <th>Statut</th>
+                <th class="sorttable_nosort">Supprimer</th>
+            </tr>
+            {% for membre in membres %}
+            <tr>
+                <td><img src="static/img/{{ membre.avatar }}.png" alt="Avatar" style="width: 35px;"></td>
+                <td>{{ membre.login }}</td>
+                <td>{{ membre.nom }}</td>
+                <td>{{ membre.prenom }}</td>
+                <td>{{ membre.mail }}</td>
+                <td>{{ membre.statut }}</td>
+                <td>
+                    <form action="delete_member" method="post">
+                        <input type="hidden" name="id_membre" value="{{ membre.idUtilisateur }}">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-    <!-- Compte Page End -->
 
+    <!-- Fin affichage du tableau des membres -->
 
     <!-- Footer Start -->
     {%include("layout/footer.html")%}

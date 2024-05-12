@@ -66,7 +66,7 @@ def ajout():
         print("Le fichier 'avatar' n'est pas présent dans la requête.")
     lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion)
     if lastId == 0:  # Si l'insertion a échoué
-        lastId = bdd.get_membresData(login_connexion)  # Récupère l'ID de l'utilisateur à partir du login
+        lastId = bdd.get_membresData()  # Récupère l'ID de l'utilisateur à partir du login
     # print(lastId) # dernier id créé par le serveur de BDD
     # if "errorDB" not in session: 
     #     session["infoVert"]="Nouveau membre inséré"
@@ -131,9 +131,23 @@ def logout():
 def compte():
     return render_template("compte.html")
 
+
 @app.route("/admin")
 def admin():
-    return render_template("admin.html")
+    membres = bdd.get_membresData()
+    return render_template("admin.html", membres=membres)
+
+@app.route("/delete_member", methods=['POST'])
+def delete_membre():
+    id_membre = request.form.get('id_membre')
+    print("member id to delete: ", id_membre)
+    bdd.delete_userData(id_membre)
+    if "errorDB" not in session:
+        session["infoVert"] = "Membre supprimé"
+    else:
+        session["infoRouge"] = "Problème suppression utilisateur"
+    return redirect(url_for('admin'))
+
 
 @app.route('/update-info', methods=['POST'])
 def update_info():

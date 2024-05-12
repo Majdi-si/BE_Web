@@ -9,29 +9,49 @@ import hashlib
 ###################################################################################
 
 #retourne les données de la table sugar_tracker
-def get_membresData(login=None):
-    cnx=bddGen.connexion()
-    if cnx is None:
+# def get_membresData(login=None):
+#     cnx=bddGen.connexion()
+#     if cnx is None:
+#         return None
+#     try:
+#         cursor=cnx.cursor(dictionary=True)
+#         if login is not None:
+#             sql="SELECT * FROM utilisateur WHERE login = %s"
+#             param = (login,)
+#             cursor.execute(sql, param)
+#             user = cursor.fetchall()  # Utilisez fetchall() pour récupérer tous les résultats
+#         else:
+#             sql="SELECT * FROM sugar_tracker"
+#             cursor.execute(sql)
+#             user = cursor.fetchall()
+#         session['successDB']="OK get_membresData"
+#     except mysql.connector.Error as err:
+#         user=None
+#         session['errorDB']="Failed get membres data:{}".format(err)
+#     finally:
+#         cursor.close()
+#         cnx.close()
+#     return user
+
+def get_membresData():
+    cnx = bddGen.connexion() 
+    if cnx is None: 
         return None
     try:
-        cursor=cnx.cursor(dictionary=True)
-        if login is not None:
-            sql="SELECT * FROM utilisateur WHERE login = %s"
-            param = (login,)
-            cursor.execute(sql, param)
-            user = cursor.fetchall()  # Utilisez fetchall() pour récupérer tous les résultats
-        else:
-            sql="SELECT * FROM sugar_tracker"
-            cursor.execute(sql)
-            user = cursor.fetchall()
-        session['successDB']="OK get_membresData"
-    except mysql.connector.Error as err:
-        user=None
-        session['errorDB']="Failed get membres data:{}".format(err)
-    finally:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM utilisateur"
+        cursor.execute(sql)
+        listeMembres = cursor.fetchall()
         cursor.close()
         cnx.close()
-    return user
+
+        #session['successDB'] = "OK get_membresData"
+    except mysql.connector.Error as err:
+        listeMembres = None
+        session['errorDB'] = "Failed get membres data : {}".format(err)
+    return listeMembres
+
+
 def add_userData(nom, prenom, mail, login, motPasse, statut, admin, avatar):
     mdp = hashlib.sha256(motPasse.encode()).hexdigest()
     cnx = bddGen.connexion()
@@ -120,3 +140,18 @@ def verifAuthData2(idUtilisateur, oldPassword, newPassword, confirmPassword):
 
     # Si toutes les vérifications sont réussies, renvoyer True
     return True
+
+def delete_userData(idUser):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    else:
+        sql = "DELETE FROM utilisateur WHERE idUtilisateur=%s"
+        param = (idUser,)
+        msg = {
+            "success": "deleteMembreOK",
+            "error": "Failed delete membres data"
+        }
+        bddGen.deleteData(cnx, sql, param, msg)
+        cnx.close()
+    return 1
