@@ -162,17 +162,27 @@ def saveDataFromFile(data):
     cnx = bddGen.connexion()
     if cnx is None: return None
     # insertion des nouvelles données avec executemany
-    sql ="INSERT INTO identification (nom, prenom, mail,login, 
-    motPasse, statut, avatar) VALUES (%s,%s,%s,%s,%s,%s,%s);"
-param = []
-for d in data:
-newData = (d['nom'],d['prenom'],d['mail'],d['login'],
- d['motPasse'],d['statut'],d['avatar'])
-param.append(newData)
-msg = {
-"success":"OK saveDataFromFile",
-"error" : "Failed saveDataFromFile data"
-} 
-lastId = bddGen.addManyData(cnx, sql, param, msg)
-cnx.close()
-return lastId
+    sql ="INSERT INTO identification (nom, prenom, mail,login, motPasse, statut, avatar) VALUES (%s,%s,%s,%s,%s,%s,%s);"
+    param = []
+    for d in data:
+        newData = (d['nom'],d['prenom'],d['mail'],d['login'],d['motPasse'],d['statut'],d['avatar'])
+        param.append(newData)
+    msg = {
+        "success":"OK saveDataFromFile",
+        "error" : "Failed saveDataFromFile data"
+    } 
+    lastId = bddGen.addManyData(cnx, sql, param, msg)
+    cnx.close()
+    return lastId
+
+#supprime les données d'une table
+def truncateTable(nomTable):
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "TRUNCATE TABLE %s;"
+    param = [nomTable]
+    msg = {
+        "succes":"truncateTableOK",
+        "error" :"Failed truncate data"
+    }
+    return bddGen.deleteData(cnx, sql, param, msg)

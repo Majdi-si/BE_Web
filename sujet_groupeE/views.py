@@ -233,3 +233,8 @@ def fichiersUpload():
         else:
             session["infoRouge"]="Problème enregistrement des données"
             return redirect("/fichiers")
+
+@app.route("/update_status")
+def compte():
+    return render_template("admin.html")
+
