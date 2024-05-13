@@ -29,13 +29,13 @@ def chackout():
 def contact():
     return render_template("webmaster.html")
 
-@app.route("/shop-detail")
+@app.route("/recettes")
 def shop_detail():
-    return render_template("shop-detail.html")
+    return render_template("recettes.html")
 
-@app.route("/shop")
+@app.route("/produits")
 def shop():
-    return render_template("shop.html")
+    return render_template("produits.html")
 
 @app.route("/testimonial")
 def testimonial():
@@ -54,6 +54,17 @@ def ajout():
     login_connexion = request.form['login']
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
+
+    ## Gestion du fichier avatar
+    # avatar_connexion = None
+    # avatar_extension = None
+    # if 'avatar' in request.files:
+    #     avatar_file = request.files['avatar']
+    #     if avatar_file.filename != '':
+    #         avatar_extension = os.path.splitext(avatar_file.filename)[1][1:]  # get file extension
+    #         avatar_connexion = secure_filename(avatar_file.filename)
+    #         avatar_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatar_connexion))
+
     if statut_connexion == "admin":
         admin = 1
     else:
@@ -64,7 +75,7 @@ def ajout():
     else:
         # Gérer le cas où 'avatar' n'est pas présent
         print("Le fichier 'avatar' n'est pas présent dans la requête.")
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion)
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion) #ajouter avatar_extension
     if lastId == 0:  # Si l'insertion a échoué
         lastId = bdd.get_membresData()  # Récupère l'ID de l'utilisateur à partir du login
     # print(lastId) # dernier id créé par le serveur de BDD
