@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, session, redirect, flash, url
 import hashlib
 from sujet_groupeE.controller import function as f
 import sujet_groupeE.model.bdd as bdd
+from werkzeug.utils import secure_filename
+import pandas, os
 
 app = Flask(__name__)
 app.template_folder = "template"
@@ -205,3 +207,29 @@ def update_info():
 
     # Rediriger l'utilisateur vers la page du compte
     return redirect(url_for('compte'))
+
+UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))+'/file/'
+
+@app.route("/fichierUpload", methods=['POST'])
+def fichiersUpload():
+    if "testFile" in request.files:
+        file=request.files['testFile']
+
+        #enregistrement du fichier dans le répertoire files
+        filename = secure_filename(file.filename)
+        print(os.path.join(UPLOAD_FOLDER, filename))
+        file.save(os.path.join(UPLOAD_FOLDER, filename))
+
+        #Conversion du fichier xls en dictionnaire
+        xls = pandas.read_excel(UPLOAD_FOLDER+file.name)
+        data = xls.to_dict('records')
+        print([file.filename, data])
+
+        #Enregistrement des données en BDD
+        bdd.saveDataFromFile(data)
+        if "errorDB" not in session:
+            session["infoVert"] = "Données sauvegardées en BDD"
+            return redirect("/sgbd")
+        else:
+            session["infoRouge"]="Problème enregistrement des données"
+            return redirect("/fichiers")

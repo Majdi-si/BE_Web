@@ -155,3 +155,24 @@ def delete_userData(idUser):
         bddGen.deleteData(cnx, sql, param, msg)
         cnx.close()
     return 1
+
+#enregistrement des données provenant du fichier excel
+def saveDataFromFile(data):
+    truncateTable("identification")
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    # insertion des nouvelles données avec executemany
+    sql ="INSERT INTO identification (nom, prenom, mail,login, 
+    motPasse, statut, avatar) VALUES (%s,%s,%s,%s,%s,%s,%s);"
+param = []
+for d in data:
+newData = (d['nom'],d['prenom'],d['mail'],d['login'],
+ d['motPasse'],d['statut'],d['avatar'])
+param.append(newData)
+msg = {
+"success":"OK saveDataFromFile",
+"error" : "Failed saveDataFromFile data"
+} 
+lastId = bddGen.addManyData(cnx, sql, param, msg)
+cnx.close()
+return lastId

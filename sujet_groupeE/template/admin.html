@@ -41,13 +41,20 @@
                 <td>{{ membre.prenom }}</td>
                 <td>{{ membre.mail }}</td>
                 <td>
-                    <form action="update_status" method="post">
+                    <form class="form-label my-3" action="update_status" method="post">
                         <input type="hidden" name="id_membre" value="1">
                         <select name="nouveau_statut">
-                            <option value="Gestionnaire">Gestionnaire</option>
-                            <option value="Administrateur" selected>Administrateur</option>
+                            {% if membre.statut=='gestionnaire' %}
+                                <option value="Gestionnaire" selected>Gestionnaire</option>
+                                <option value="Administrateur">Administrateur</option>
+                                
+                            {% endif %}
+                            {% if membre.statut=='admin' %}
+                                <option value="Gestionnaire">Gestionnaire</option>
+                                <option value="Administrateur" selected>Administrateur</option>
+                            {% endif %}
                         </select>
-                        <button type="submit">Modifier</button>
+                        <button type="submit" class = "btn btn-primary">Modifier</button>
                     </form>
                 </td>
                 <td>
