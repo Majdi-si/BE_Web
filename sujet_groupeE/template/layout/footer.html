@@ -46,23 +46,21 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="d-flex flex-column text-start footer-item">
-                    <h4 class="text-light mb-3">Account</h4>
-                    <a class="btn-link" href="">My Account</a>
-                    <a class="btn-link" href="">Shop details</a>
-                    <a class="btn-link" href="">Shopping Cart</a>
-                    <a class="btn-link" href="">Wishlist</a>
-                    <a class="btn-link" href="">Order History</a>
-                    <a class="btn-link" href="">International Orders</a>
+                    <h4 class="text-light mb-3">Compte</h4>
+                    <a class="btn-link" href="/compte">Mon compte</a>
+                    {% if session["idUtilisateur"] %}
+                        {% if session["admin"] == 1 %}
+                        <a href="/admin" class="btn-link">Admin</a>
+                    {% endif %}
+                {% endif %}
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-light mb-3">Contact</h4>
-                    <p>Address: 1429 Netus Rd, NY 48247</p>
-                    <p>Email: Example@gmail.com</p>
+                    <p>7 Av. Edouard Belin, Toulouse</p>
+                    <p>Email: sugartracker@gmail.com</p>
                     <p>Phone: +0123 4567 8910</p>
-                    <p>Payment Accepted</p>
-                    <img src="static/img/payment.png" class="img-fluid" alt="">
                 </div>
             </div>
         </div>

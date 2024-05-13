@@ -58,23 +58,41 @@
                 
                 <div class="row g-5 align-items-center">
                     <div class="col-md-12 col-lg-7">
-                        <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
-                        <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
+                        <h4 class="mb-3 text-secondary">Site de recensement des produits et de leur teneur en sucre</h4>
+                        <h1 class="mb-5 display-3 text-primary">Sugar Tracker</h1>
                         <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
+                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Rechercher un produit">
+                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Rechercher</button>
                         </div>
                     </div>
+                    
                     <div class="col-md-12 col-lg-5">
                         <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                             <div class="carousel-inner" role="listbox">
+                                <style>
+                                    .carousel-img {
+                                        width: 100%;
+                                        height: 300px; /* or any other fixed height */
+                                        object-fit: cover;
+                                        border-radius: 15px;
+                                    }
+                                </style>
+                                
                                 <div class="carousel-item active rounded">
-                                    <img src="static/img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
+                                    <img src="static/img/image_gouter.jpg" class="carousel-img" alt="First slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Goûter/dessert</a>
                                 </div>
                                 <div class="carousel-item rounded">
-                                    <img src="static/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
+                                    <img src="static/img/produits_laitiers.jpg" class="carousel-img" alt="Second slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Produits laitiers</a>
+                                </div>
+                                <div class="carousel-item rounded">
+                                    <img src="static/img/sauces.jpg" class="carousel-img" alt="Third slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Sauces</a>
+                                </div>
+                                <div class="carousel-item rounded">
+                                    <img src="static/img/boissons.jpeg" class="carousel-img" alt="Fourth slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Boissons</a>
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
@@ -94,7 +112,7 @@
 
 
         <!-- Featurs Section Start -->
-        <div class="container-fluid featurs py-5">
+        <!-- <div class="container-fluid featurs py-5">
             <div class="container py-5">
                 <div class="row g-4">
                     <div class="col-md-6 col-lg-3">
@@ -143,7 +161,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Featurs Section End -->
 
 
@@ -153,33 +171,33 @@
                 <div class="tab-class text-center">
                     <div class="row g-4">
                         <div class="col-lg-4 text-start">
-                            <h1>Our Organic Products</h1>
+                            <h1>Les derniers ajouts</h1>
                         </div>
                         <div class="col-lg-8 text-end">
                             <ul class="nav nav-pills d-inline-flex text-center mb-5">
                                 <li class="nav-item">
                                     <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
-                                        <span class="text-dark" style="width: 130px;">All Products</span>
+                                        <span class="text-dark" style="width: 130px;">Tout</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                                        <span class="text-dark" style="width: 130px;">Vegetables</span>
+                                        <span class="text-dark" style="width: 130px;">Goûter/Dessert</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                                        <span class="text-dark" style="width: 130px;">Fruits</span>
+                                        <span class="text-dark" style="width: 130px;">Produits laitiers</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                                        <span class="text-dark" style="width: 130px;">Bread</span>
+                                        <span class="text-dark" style="width: 130px;">Sauces</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                                        <span class="text-dark" style="width: 130px;">Meat</span>
+                                        <span class="text-dark" style="width: 130px;">Boissons</span>
                                     </a>
                                 </li>
                             </ul>
