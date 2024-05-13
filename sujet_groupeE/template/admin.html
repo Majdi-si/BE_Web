@@ -30,7 +30,7 @@
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Mail</th>
-                <th>Statut</th>
+                <th class="sorttable_nosort">Statut </th>
                 <th class="sorttable_nosort">Supprimer</th>
             </tr>
             {% for membre in membres %}
@@ -42,7 +42,7 @@
                 <td>{{ membre.mail }}</td>
                 <td>
                     <form class="form-label my-3" action="update_status" method="post">
-                        <input type="hidden" name="id_membre" value="1">
+                        <input type="hidden" name="id_membre" value="{{membre.idUtilisateur}}">
                         <select name="nouveau_statut">
                             {% if membre.statut=='gestionnaire' %}
                                 <option value="Gestionnaire" selected>Gestionnaire</option>

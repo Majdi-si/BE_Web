@@ -234,7 +234,13 @@ def fichiersUpload():
             session["infoRouge"]="Problème enregistrement des données"
             return redirect("/fichiers")
 
-@app.route("/update_status")
-def compte():
-    return render_template("admin.html")
-
+@app.route("/update_status", methods=['post'])
+def update_status():
+    idUtilisateur = request.form.get('id_membre') 
+    statut = request.form.get('nouveau_statut')
+    if statut == "Administrateur":
+        statut = "admin"
+    else:
+        statut = "gestionnaire"
+    bdd.update_userData('statut', statut, idUtilisateur)
+    return redirect(url_for('admin'))
