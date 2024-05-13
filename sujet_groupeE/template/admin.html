@@ -40,7 +40,16 @@
                 <td>{{ membre.nom }}</td>
                 <td>{{ membre.prenom }}</td>
                 <td>{{ membre.mail }}</td>
-                <td>{{ membre.statut }}</td>
+                <td>
+                    <form action="update_status" method="post">
+                        <input type="hidden" name="id_membre" value="1">
+                        <select name="nouveau_statut">
+                            <option value="Gestionnaire">Gestionnaire</option>
+                            <option value="Administrateur" selected>Administrateur</option>
+                        </select>
+                        <button type="submit">Modifier</button>
+                    </form>
+                </td>
                 <td>
                     <form action="delete_member" method="post">
                         <input type="hidden" name="id_membre" value="{{ membre.idUtilisateur }}">
