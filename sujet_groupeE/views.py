@@ -39,6 +39,10 @@ def shop_detail():
 def shop():
     return render_template("produits.html")
 
+@app.route("/produits2")
+def produits2():
+    return render_template("produits2.html")
+
 @app.route("/testimonial")
 def testimonial():
     return render_template("testimonial.html")
@@ -247,3 +251,8 @@ def update_status():
     bdd.update_userData('statut', statut, idUtilisateur)
     bdd.update_userData('admin', admin, idUtilisateur)
     return redirect(url_for('admin'))
+
+@app.route("/votre_page_de_resultats", methods=['GET'])
+def votre_page_de_resultats():
+    mot = request.form.get('keywordSearchInput')
+    return render_template("recherche.html")
