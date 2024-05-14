@@ -240,7 +240,10 @@ def update_status():
     statut = request.form.get('nouveau_statut')
     if statut == "Administrateur":
         statut = "admin"
+        admin = 1
     else:
         statut = "gestionnaire"
+        admin = 0
     bdd.update_userData('statut', statut, idUtilisateur)
+    bdd.update_userData('admin', admin, idUtilisateur)
     return redirect(url_for('admin'))
