@@ -264,34 +264,42 @@ def update_status():
     return redirect(url_for('admin'))
 
 
+
+def ecrire_code_html(nom_fichier,nom_produit):
+    # Code HTML du produit
+    code_html = f"""
+        <div class="col-md-6 col-lg-6 col-xl-4">
+            <div class="rounded position-relative fruite-item">
+                <div class="fruite-img">
+                    <img src="static/img/{nom_produit}.jpg" class="img-fluid w-100 rounded-top" alt="">
+                </div>
+                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
+                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                    <h4>{nom_produit}</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
+                    <div class="d-flex justify-content-between flex-lg-wrap">
+                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
+                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+    print(code_html)
+    # Ouvrir le fichier en mode écriture
+    with open(nom_fichier, "w") as fichier:
+        # Écrire le code HTML dans le fichier
+        fichier.write(code_html)
+
+
+
 @app.route("/votre_page_de_resultats", methods=['post'])
 def votre_page_de_resultats():
     mot = request.form.get('keyword')
     produit = bdd.get_produitData()
-    L=[]
     for i in produit:
         if mot[:3]==i['nom'][:3]:
-            L.append(i['nom'])
-            code_html = """
-                                <div class="col-md-6 col-lg-6 col-xl-4">
-                                    <div class="rounded position-relative fruite-item">
-                                        <div class="fruite-img">
-                                            <img src="static/img/coca.jpg" class="img-fluid w-100 rounded-top" alt="">
-                                        </div>
-                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                            <h4>Coca-Cola</h4>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                            <div class="d-flex justify-content-between flex-lg-wrap">
-                                                <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                """
-            with open("page.html", "w") as fichier:
-                fichier.write(code_html)
+            ecrire_code_html("recherche.html",i['nom'])
     return redirect(url_for('recherche'))
 
 
@@ -303,7 +311,6 @@ def ajout_produit():
     quantite_sucre = request.form.get('quantite_sucre')
     categorie = request.form.get('categorie')
     idUtilisateur = session['idUtilisateur']
-    fichi
     print('Info produit:', nom_produit, marque, quantite_sucre, categorie, idUtilisateur)
     bdd.add_produit(nom_produit, marque, quantite_sucre, categorie, idUtilisateur)  
     return redirect(url_for('compte'))
