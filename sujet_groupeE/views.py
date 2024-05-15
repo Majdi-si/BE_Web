@@ -299,7 +299,7 @@ def votre_page_de_resultats():
     produit = bdd.get_produitData()
     for i in produit:
         if mot[:3]==i['nom'][:3]:
-            ecrire_code_html("recherche.html",i['nom'])
+            ecrire_code_html("sujet_groupeE\\template\\recherche.html", i['nom'])
     return redirect(url_for('recherche'))
 
 
