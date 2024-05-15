@@ -4,6 +4,7 @@ from sujet_groupeE.controller import function as f
 import sujet_groupeE.model.bdd as bdd
 from werkzeug.utils import secure_filename
 import pandas, os
+import json
 
 app = Flask(__name__)
 app.template_folder = "template"
@@ -314,3 +315,10 @@ def ajout_produit():
     print('Info produit:', nom_produit, marque, quantite_sucre, categorie, idUtilisateur)
     bdd.add_produit(nom_produit, marque, quantite_sucre, categorie, idUtilisateur)  
     return redirect(url_for('compte'))
+
+
+
+# @app.route('/produits')
+# def produits():
+#     products = Product.query.all()
+#     return render_template('produits.html', products=products)
