@@ -186,3 +186,34 @@ def truncateTable(nomTable):
         "error" :"Failed truncate data"
     }
     return bddGen.deleteData(cnx, sql, param, msg)
+
+def get_produitData():
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = " SELECT nom FROM produit"
+    param = None
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    listeProduit = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    return listeProduit
+
+def add_produit(nom_produit, marque, qtsucre, idCategorie, idUtilisateur):
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    cursor = cnx.cursor()
+    cursor.execute("SELECT MAX(idProduit) FROM produit")
+    max_id = cursor.fetchone()[0]
+    new_id = max_id + 1 if max_id is not None else 1
+
+    sql = "INSERT INTO produit(idProduit, nom, marque, qtsucre, idCategorie, idUtilisateur) VALUES(%s,%s,%s,%s,%s,%s)"
+    param = (new_id, nom_produit, marque, qtsucre, idCategorie, idUtilisateur)
+    msg = {
+        "success": "addProduitOK",
+        "error": "Failed add produit data"
+    }
+    lastId = bddGen.addData(cnx, sql, param, msg)
+    cnx.close()
+    return lastId

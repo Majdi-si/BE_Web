@@ -125,6 +125,41 @@
                         </div>
                     </div>
                 </form>
+
+
+                <h1 class="mb-7">Ajouter un produit</h1>
+                <form action="ajout_produit" method="post">
+                    <div class="row g-9">
+                        <div class="col-md-20 col-lg-6 col-xl-10">
+                            <div class="row">
+                                <label class = "form-label my-3">Nom du produit</label>
+                                <input type="text" name="nom_produit" id="nom" placeholder="Nom" class="form-control"/>
+                                <label class = "form-label my-3">Marque du produit</label>
+                                <input type="text" name="marque" id="marque" placeholder="Marque" class="form-control"/>
+                                <label class = "form-label my-3">Quantité de sucre par portion (en grammes)</label>
+                                <input type="number" name="quantite_sucre" id="quantité" placeholder="Quantité de sucre" class="form-control"/>
+                                <label class="form-label my-3">Catégorie du produit</label>
+                                <select class="form-select" name="categorie" id="monSelect" >
+                                    <option selected disabled>
+                                    Catégorie du produit
+                                    </option>
+                                    <option value="1">goûter/dessert</option>
+                                    <option value="2">produits laitiers</option>
+                                    <option value="3">sauce</option>
+                                    <option value="4">fruits/légumes</option>
+                                    <option value="5">viande/poisson</option>
+                                    <option value="6">boisson</option>
+                                    <option value="7">féculents/céréales</option>
+                                    </select>
+                                <label class = "form-label my-3">Importer une photo du produit</label>
+                                <input type="file" name="photo_produit" id="photo_produit" class="form-control"/>
+                                <div class="form-item d-flex justify-content-center align-items-center">
+                                    <button type="submit" class="btn btn-primary mt-5">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </form>

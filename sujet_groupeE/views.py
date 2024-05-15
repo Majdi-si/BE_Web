@@ -43,6 +43,14 @@ def shop():
 def produits2():
     return render_template("produits2.html")
 
+@app.route("/produits3")
+def produits3():
+    return render_template("produits3.html")
+
+@app.route("/produits4")
+def produits4():
+    return render_template("produits4.html")
+
 @app.route("/testimonial")
 def testimonial():
     return render_template("testimonial.html")
@@ -140,7 +148,7 @@ def connect():
 @app.route('/logout')
 def logout():
     # Supprime 'login' de la session
-    session.clear() 
+    session.clear()
     # Redirige l'utilisateur vers la page de connexion
     return redirect(url_for('login'))
 
@@ -148,6 +156,9 @@ def logout():
 def compte():
     return render_template("compte.html")
 
+@app.route("/recherche")
+def recherche():
+    return render_template("recherche.html")
 
 @app.route("/admin")
 def admin():
@@ -177,7 +188,7 @@ def update_info():
     newPassword = request.form.get('newPassword')
     confirmPassword = request.form.get('confirmPassword')
     oldPassword = request.form.get('oldPassword')
-
+    
     # Vérifier si l'utilisateur a entré un nouveau mot de passe
     if newPassword:
         try:
@@ -252,7 +263,47 @@ def update_status():
     bdd.update_userData('admin', admin, idUtilisateur)
     return redirect(url_for('admin'))
 
-@app.route("/votre_page_de_resultats", methods=['GET'])
+
+@app.route("/votre_page_de_resultats", methods=['post'])
 def votre_page_de_resultats():
-    mot = request.form.get('keywordSearchInput')
-    return render_template("recherche.html")
+    mot = request.form.get('keyword')
+    produit = bdd.get_produitData()
+    L=[]
+    for i in produit:
+        if mot[:3]==i['nom'][:3]:
+            L.append(i['nom'])
+            code_html = """
+                                <div class="col-md-6 col-lg-6 col-xl-4">
+                                    <div class="rounded position-relative fruite-item">
+                                        <div class="fruite-img">
+                                            <img src="static/img/coca.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                        </div>
+                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
+                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                            <h4>Coca-Cola</h4>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
+                                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                                <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
+                                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                """
+            with open("page.html", "w") as fichier:
+                fichier.write(code_html)
+    return redirect(url_for('recherche'))
+
+
+
+@app.route("/ajout_produit", methods=['POST'])
+def ajout_produit():
+    nom_produit = request.form.get('nom_produit')
+    marque = request.form.get('marque')
+    quantite_sucre = request.form.get('quantite_sucre')
+    categorie = request.form.get('categorie')
+    idUtilisateur = session['idUtilisateur']
+    fichi
+    print('Info produit:', nom_produit, marque, quantite_sucre, categorie, idUtilisateur)
+    bdd.add_produit(nom_produit, marque, quantite_sucre, categorie, idUtilisateur)  
+    return redirect(url_for('compte'))
