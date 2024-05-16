@@ -187,11 +187,11 @@ def truncateTable(nomTable):
     }
     return bddGen.deleteData(cnx, sql, param, msg)
 
-def get_produitData():
+def get_produitData_per_15(page, per_page=15):
     cnx = bddGen.connexion()
     if cnx is None: return None
-    sql = " SELECT nom FROM produit"
-    param = None
+    sql = "SELECT * FROM produit ORDER BY idProduit LIMIT %s OFFSET %s"
+    param = (per_page, (page - 1) * per_page)
     msg = {
         "success":"ok",
         "error" : "Ce produit n'existe pas"
@@ -217,3 +217,42 @@ def add_produit(nom_produit, marque, qtsucre, idCategorie, idUtilisateur):
     lastId = bddGen.addData(cnx, sql, param, msg)
     cnx.close()
     return lastId
+
+def get_imageData():
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = " SELECT image FROM produit"
+    param = None
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    listeimage = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    return listeimage
+
+def get_qtsurcreData():
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = " SELECT qtsucre FROM produit"
+    param = None
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    listeqtsucre = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    return listeqtsucre
+
+def get_produitData():
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "SELECT * FROM produit"
+    param = None
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    listeProduit = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    return listeProduit

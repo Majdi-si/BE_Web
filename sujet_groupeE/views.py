@@ -36,21 +36,10 @@ def contact():
 def shop_detail():
     return render_template("recettes.html")
 
-@app.route("/produits")
-def shop():
-    return render_template("produits.html")
 
 @app.route("/produits2")
-def produits2():
+def shop2():
     return render_template("produits2.html")
-
-@app.route("/produits3")
-def produits3():
-    return render_template("produits3.html")
-
-@app.route("/produits4")
-def produits4():
-    return render_template("produits4.html")
 
 @app.route("/testimonial")
 def testimonial():
@@ -266,41 +255,50 @@ def update_status():
 
 
 
-def ecrire_code_html(nom_fichier,nom_produit):
+def ecrire_code_html(nom_fichier,nom_produit,image,qtsucre):
     # Code HTML du produit
     code_html = f"""
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <div class="rounded position-relative fruite-item">
-                <div class="fruite-img">
-                    <img src="static/img/{nom_produit}.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                    <h4>{nom_produit}</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                <div class="col-md-6 col-lg-6 col-xl-4">
+                    <div class="rounded shadow-sm position-relative fruite-item border border-primary">
+                        <div class="fruite-img">
+                            <img src="static/img/{image}" class="img-fluid w-100 rounded-top" alt="">
+                        </div>
+                        <div class="p-4 border border-primary border-top-0 rounded-bottom">
+                            <h4 class="text-primary">{nom_produit}</h4>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="text-dark fs-5 fw-bold mb-0"> {qtsucre} g / portion</p>
+                                <button type="button" class="btn btn-primary rounded-pill px-3">Ajouter au panier</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
         """
     print(code_html)
     # Ouvrir le fichier en mode écriture
-    with open(nom_fichier, "w") as fichier:
+    with open(nom_fichier, "a") as fichier:
         # Écrire le code HTML dans le fichier
         fichier.write(code_html)
+        fichier.close()
 
+def suppression_code_html(nom_fichier):
+    # Ouvrir le fichier en mode écriture
+    with open(nom_fichier, "w") as fichier:
+        # Écrire le code HTML dans le fichier
+        fichier.write("")
+        fichier.close()
 
 
 @app.route("/votre_page_de_resultats", methods=['post'])
 def votre_page_de_resultats():
+    suppression_code_html("sujet_groupeE\\template\\recherche.html")
     mot = request.form.get('keyword')
     produit = bdd.get_produitData()
-    for i in produit:
-        if mot[:3]==i['nom'][:3]:
-            ecrire_code_html("sujet_groupeE\\template\\recherche.html", i['nom'])
+    images = bdd.get_imageData()
+    qtsucre = bdd.get_qtsurcreData()
+    print(qtsucre)
+    for i in range(len(produit)):
+        if mot[:3]==produit[i]['nom'][:3]:
+            ecrire_code_html("sujet_groupeE\\template\\recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
     return redirect(url_for('recherche'))
 
 
@@ -318,6 +316,12 @@ def ajout_produit():
 
 
 
-@app.route("/page_produits_test", methods=['POST'])
+@app.route("/page_produits_test")
 def page_produits_test():
-    render_template("produits.html")
+    page = request.args.get('page', type=int)
+    if page is None:
+        page = 1
+    print("page:", page)
+    produits = bdd.get_produitData_per_15(page, per_page=15)
+    print("produits:", produits)  # Ajoutez cette ligne pour déboguer
+    return render_template("page_produits_test.html", produits=produits)
