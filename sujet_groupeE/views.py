@@ -318,7 +318,6 @@ def ajout_produit():
 
 
 
-# @app.route('/produits')
-# def produits():
-#     products = Product.query.all()
-#     return render_template('produits.html', products=products)
+@app.route("/page_produits_test", methods=['POST'])
+def page_produits_test():
+    render_template("produits.html")
