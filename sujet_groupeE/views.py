@@ -37,10 +37,6 @@ def shop_detail():
     return render_template("recettes.html")
 
 
-@app.route("/produits2")
-def shop2():
-    return render_template("produits2.html")
-
 @app.route("/testimonial")
 def testimonial():
     return render_template("testimonial.html")
@@ -316,12 +312,42 @@ def ajout_produit():
 
 
 
-@app.route("/page_produits_test")
-def page_produits_test():
-    page = request.args.get('page', type=int)
-    if page is None:
-        page = 1
-    print("page:", page)
-    produits = bdd.get_produitData_per_15(page, per_page=15)
-    print("produits:", produits)  # Ajoutez cette ligne pour déboguer
-    return render_template("page_produits_test.html", produits=produits)
+# @app.route("/page_produits_test")
+# def page_produits_test():
+#     page = request.args.get('page', type=int)
+#     if page is None:
+#         page = 1
+#     print("page:", page)
+#     produits = bdd.get_produitData_per_15(page, per_page=15)
+#     print("produits:", produits)  # Ajoutez cette ligne pour déboguer
+#     return render_template("page_produits_test.html", produits=produits)
+
+
+from flask import request
+
+@app.route('/produits')
+@app.route('/produits/<int:page>')
+def produits(page=1):
+    if 'application/json' in request.headers.get('Accept', ''):
+        print("C'est une requête AJAX")
+    else:
+        print("Ce n'est pas une requête AJAX")
+    per_page = 15
+    produits = bdd.get_produitData_per_15(page, per_page)
+    total = bdd.get_total_produit()  # Cette fonction doit retourner le nombre total de produits
+    print("total:", total)
+
+    next_url = url_for('produits', page=page + 1) if total > page * per_page else None
+    print("next_url:", next_url)
+    prev_url = url_for('produits', page=page - 1) if page > 1 else None
+    print("prev_url:", prev_url)
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url)
+    else:
+        return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url)
+
+@app.route('/produits_partiel')
+def produits_partiel():
+    produits = bdd.get_produitData()
+    return render_template('produits_partiel.html', produits=produits)

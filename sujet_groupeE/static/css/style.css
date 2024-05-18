@@ -10,6 +10,16 @@
     content: "";
 }
 
+body.night-mode {
+    background-color: #242424;
+    color: #ddd;
+}
+
+/* Mettez à jour d'autres éléments au besoin */
+.night-mode a {
+    color: #1da1f2;
+}
+
 .shadow {
     box-shadow: 0 4px 2px -2px gray;
 }

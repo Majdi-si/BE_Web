@@ -256,3 +256,17 @@ def get_produitData():
     listeProduit = bddGen.selectData(cnx, sql, param, msg)
     cnx.close()
     return listeProduit
+
+def get_total_produit() :   # Cette fonction doit retourner le nombre total de produits
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "SELECT COUNT(*) FROM produit"
+    param = None
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    dico_total = bddGen.selectData(cnx, sql, param, msg)
+    total = dico_total[0]['COUNT(*)']
+    cnx.close()
+    return total
