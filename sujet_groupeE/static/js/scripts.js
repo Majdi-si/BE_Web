@@ -170,19 +170,3 @@ ajoutProduitForm.addEventListener('submit', function(event) {
     });
 });
 
-// Définir la fonction pour basculer le mode nuit
-function toggleNightMode() {
-    document.body.classList.toggle('night-mode');
-    // Enregistrer le choix de mode nuit dans le localStorage
-    localStorage.setItem('night-mode', document.body.classList.contains('night-mode'));
-}
-
-// Ajouter un écouteur d'événement sur le bouton "Mode nuit"
-document.getElementById('night-mode-toggle').addEventListener('click', toggleNightMode);
-
-// Vérifier le localStorage au chargement de la page pour déterminer si le mode nuit doit être activé
-window.addEventListener('DOMContentLoaded', (event) => {
-    if (localStorage.getItem('night-mode') === 'true') {
-        document.body.classList.add('night-mode');
-    }
-});

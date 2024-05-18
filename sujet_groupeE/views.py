@@ -324,6 +324,7 @@ def ajout_produit():
 
 
 from flask import request
+from math import ceil
 
 @app.route('/produits')
 @app.route('/produits/<int:page>')
@@ -335,6 +336,8 @@ def produits(page=1):
     per_page = 15
     produits = bdd.get_produitData_per_15(page, per_page)
     total = bdd.get_total_produit()  # Cette fonction doit retourner le nombre total de produits
+    total_pages = ceil(total / per_page)  # Ajoutez cette ligne pour calculer le nombre total de pages
+
     print("total:", total)
 
     next_url = url_for('produits', page=page + 1) if total > page * per_page else None
@@ -343,9 +346,9 @@ def produits(page=1):
     print("prev_url:", prev_url)
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url)
+        return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page)
     else:
-        return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url)
+        return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page)
 
 @app.route('/produits_partiel')
 def produits_partiel():
