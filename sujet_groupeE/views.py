@@ -5,6 +5,8 @@ import sujet_groupeE.model.bdd as bdd
 from werkzeug.utils import secure_filename
 import pandas, os
 import json
+from math import ceil
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.template_folder = "template"
@@ -301,56 +303,45 @@ def votre_page_de_resultats():
 
 @app.route("/ajout_produit", methods=['POST'])
 def ajout_produit():
+    photo_produit = request.files['photo_produit']
+    filename = secure_filename(photo_produit.filename) 
+    photo_produit.save(os.path.join('sujet_groupeE\static\img', filename))
     nom_produit = request.form.get('nom_produit')
     marque = request.form.get('marque')
     quantite_sucre = request.form.get('quantite_sucre')
     categorie = request.form.get('categorie')
     idUtilisateur = session['idUtilisateur']
-    print('Info produit:', nom_produit, marque, quantite_sucre, categorie, idUtilisateur)
-    bdd.add_produit(nom_produit, marque, quantite_sucre, categorie, idUtilisateur)  
+    bdd.add_produit(nom_produit, marque, quantite_sucre, categorie, idUtilisateur, filename)  
     return redirect(url_for('compte'))
 
 
 
-# @app.route("/page_produits_test")
-# def page_produits_test():
-#     page = request.args.get('page', type=int)
-#     if page is None:
-#         page = 1
-#     print("page:", page)
-#     produits = bdd.get_produitData_per_15(page, per_page=15)
-#     print("produits:", produits)  # Ajoutez cette ligne pour déboguer
-#     return render_template("page_produits_test.html", produits=produits)
-
-
-from flask import request
-from math import ceil
-
 @app.route('/produits')
 @app.route('/produits/<int:page>')
 def produits(page=1):
-    if 'application/json' in request.headers.get('Accept', ''):
-        print("C'est une requête AJAX")
-    else:
-        print("Ce n'est pas une requête AJAX")
+    categories = {
+        1: "Goûter/Dessert",
+        2: "Produits Laitiers",
+        3: "Sauce",
+        4: "Fruits/Légumes",
+        5: "Viande/Poisson",
+        6: "Boisson",
+        7: "Féculents/Céréales"
+    }
     per_page = 15
     produits = bdd.get_produitData_per_15(page, per_page)
     total = bdd.get_total_produit()  # Cette fonction doit retourner le nombre total de produits
     total_pages = ceil(total / per_page)  # Ajoutez cette ligne pour calculer le nombre total de pages
+    # j'ai un dictionnaire du nombre de produits par catégorie (clé = id de la catégorie, valeur = nombre de produits) get_total_produit_per_categorie()
+    total_produits_par_categorie = bdd.get_total_produit_per_categorie()
+    
 
-    print("total:", total)
 
     next_url = url_for('produits', page=page + 1) if total > page * per_page else None
-    print("next_url:", next_url)
     prev_url = url_for('produits', page=page - 1) if page > 1 else None
-    print("prev_url:", prev_url)
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page)
+        return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
     else:
-        return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page)
+        return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
 
-@app.route('/produits_partiel')
-def produits_partiel():
-    produits = bdd.get_produitData()
-    return render_template('produits_partiel.html', produits=produits)

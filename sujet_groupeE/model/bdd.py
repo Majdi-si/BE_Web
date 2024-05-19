@@ -200,7 +200,7 @@ def get_produitData_per_15(page, per_page=15):
     cnx.close()
     return listeProduit
 
-def add_produit(nom_produit, marque, qtsucre, idCategorie, idUtilisateur):
+def add_produit(nom_produit, marque, qtsucre, idCategorie, idUtilisateur, image):
     cnx = bddGen.connexion()
     if cnx is None: return None
     cursor = cnx.cursor()
@@ -208,8 +208,8 @@ def add_produit(nom_produit, marque, qtsucre, idCategorie, idUtilisateur):
     max_id = cursor.fetchone()[0]
     new_id = max_id + 1 if max_id is not None else 1
 
-    sql = "INSERT INTO produit(idProduit, nom, marque, qtsucre, idCategorie, idUtilisateur) VALUES(%s,%s,%s,%s,%s,%s)"
-    param = (new_id, nom_produit, marque, qtsucre, idCategorie, idUtilisateur)
+    sql = "INSERT INTO produit(idProduit, nom, marque, qtsucre, idCategorie, idUtilisateur, image) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+    param = (new_id, nom_produit, marque, qtsucre, idCategorie, idUtilisateur, image)
     msg = {
         "success": "addProduitOK",
         "error": "Failed add produit data"
@@ -270,3 +270,22 @@ def get_total_produit() :   # Cette fonction doit retourner le nombre total de p
     total = dico_total[0]['COUNT(*)']
     cnx.close()
     return total
+
+def get_total_produit_per_categorie():
+    cnx = bddGen.connexion()
+    if cnx is None: 
+        return None
+    
+    sql = "SELECT idCategorie, COUNT(*) as total FROM produit GROUP BY idCategorie"
+    param = None
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    result = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    
+    # Convert the result into a dictionary
+    total_per_categorie = {item['idCategorie']: item['total'] for item in result}
+    
+    return total_per_categorie
