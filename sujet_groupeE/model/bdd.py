@@ -302,3 +302,16 @@ def get_produitData_per_categorie(idCategorie):
     listeProduit = bddGen.selectData(cnx, sql, param, msg)
     cnx.close()
     return listeProduit
+
+def get_produit_by_id(idProduit):
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "SELECT * FROM produit WHERE idProduit = %s"
+    param = (idProduit,)
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    produit = bddGen.selectOneData(cnx, sql, param, msg)
+    cnx.close()
+    return produit

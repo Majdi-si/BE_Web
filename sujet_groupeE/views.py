@@ -7,6 +7,7 @@ import pandas, os
 import json
 from math import ceil
 from werkzeug.utils import secure_filename
+from flask import jsonify
 
 app = Flask(__name__)
 app.template_folder = "template"
@@ -20,7 +21,8 @@ def index():
 #page home
 @app.route("/menu")
 def menu():
-    return render_template("menu.html")
+    produits_menu = session.get('meal', [])  # Récupère les produits du repas
+    return render_template("menu.html", produits_menu=produits_menu)
 
 @app.route("/404")
 def error():
@@ -346,3 +348,30 @@ def produits(page=1, category_id=None):
         return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
     else:
         return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
+    
+@app.route('/add_to_meal', methods=['POST'])
+def add_to_meal():
+    data = request.get_json()
+    produit_nom = data.get('nom_produit')
+    produit_cat = data.get('idCategorie')
+    produit_qtsucre = data.get('qtsucre')
+    produit_image = data.get('image')
+    produit_id = data.get('idProduit')
+
+    meal = session.get('meal', [])
+    meal.append({'nom_produit': produit_nom, 'idCategorie': produit_cat, 'qtsucre': produit_qtsucre, 'image': produit_image, 'idProduit': produit_id})
+    session['meal'] = meal
+    return jsonify({'productCount': len(meal)})
+    
+
+@app.route('/delete_product', methods=['POST'])
+def delete_product():
+    data = request.get_json()
+    print("data",data)  # Ajoutez cette ligne pour afficher les données reçues
+    product_id = data.get('id')  # Utilisez la clé 'id' pour obtenir l'ID du produit
+    meal = session.get('meal', [])
+    meal = [product for product in meal if product['idProduit'] != product_id]
+    session['meal'] = meal
+    print(session['meal'])
+    print("len(meal): ", len(meal))
+    return jsonify({'productCount': len(meal)})

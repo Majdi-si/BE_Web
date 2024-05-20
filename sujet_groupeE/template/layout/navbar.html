@@ -18,6 +18,8 @@
     }
 </style>
 <script src="\static\js\scripts.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 
 <div class="container-fluid fixed-top">
@@ -83,7 +85,7 @@
                 
                 <a href="/menu" class="position-relative me-4 my-auto spaced-element">
                     <i class="fas fa-utensils fa-2x"></i>
-                    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 26px; height: 20px; min-width: 20px;">3</span>
+                    <span class="product-count position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 26px; height: 20px; min-width: 20px;">{{ session['meal']|length if 'meal' in session else 0 }}</span>
                 </a>
                 <style>
                 .dropdown-content {
@@ -134,5 +136,53 @@
     </div>
 </div>
 
-d-flex m-3 me-0
-btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4
+<script>
+    $(document).ready(function() {
+        $('.btn-add').click(function(event) {
+            event.preventDefault();
+    
+            var formElement = $(this).closest('form');
+            var nom_produit = formElement.find('input[name="produit.nom_produit"]').val();
+            var idCategorie = formElement.find('input[name="produit.idCategorie"]').val();
+            var qtsucre = formElement.find('input[name="produit.qtsucre"]').val();
+            var image = formElement.find('input[name="produit.image"]').val();
+            var idProduit = formElement.find('input[name="produit.idProduit"]').val();
+
+            $.ajax({
+                url: '/add_to_meal',
+                type: 'POST',
+                data: JSON.stringify({
+                    nom_produit: nom_produit,
+                    idCategorie: idCategorie,
+                    qtsucre: qtsucre,
+                    image: image,
+                    idProduit: idProduit
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    $('.product-count').text(response.productCount);
+                }
+            });
+        });
+
+        $('.btn-delete').click(function(event) {
+            event.preventDefault();
+    
+            var formElement = $(this).closest('form');
+            var idProduit = formElement.find('input[name="produit.idProduit"]').val();
+
+            $.ajax({
+                url: '/delete_product',
+                type: 'POST',
+                data: JSON.stringify({ id: idProduit }),
+                contentType: 'application/json',
+                success: function(response) {
+                    // Supprimer la ligne du produit du tableau
+                    $('#product-row-' + idProduit).remove();
+                    // Mettre à jour le nombre de produits
+                    $('.product-count').text(response.productCount - 1);
+                }
+            });
+        });
+    });
+</script>
