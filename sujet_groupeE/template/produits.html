@@ -193,6 +193,36 @@
 
     <!-- JavaScript Libraries -->
     {% include("layout/script.html") %}
+    
+    <script>
+    $('form').on('submit', function(e) {
+        e.preventDefault();
+    
+        var data = $(this).serializeArray().reduce(function(obj, item) {
+            obj[item.name] = item.value;
+            return obj;
+        }, {});
+    
+        $.ajax({
+            url: $(this).attr('action'),
+            type: "POST",
+            headers: { 
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'  // Ajoutez cette ligne
+            },
+            data: JSON.stringify(data),  // Assurez-vous que les données sont au format JSON
+            success: function(response){
+                // handle success
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log("Erreur AJAX : ", textStatus, errorThrown);
+            }
+        });
+    });
+    </script>
+    
+    </body>
+    </html>
 </body>
 </html>
 
