@@ -18,9 +18,9 @@ def index():
     return render_template("index.html", **params)
 
 #page home
-@app.route("/cart")
-def cart():
-    return render_template("cart.html")
+@app.route("/menu")
+def menu():
+    return render_template("menu.html")
 
 @app.route("/404")
 def error():
@@ -289,13 +289,13 @@ def suppression_code_html(nom_fichier):
 @app.route("/votre_page_de_resultats", methods=['post'])
 def votre_page_de_resultats():
     suppression_code_html("sujet_groupeE\\template\\recherche.html")
-    mot = request.form.get('keyword')
+    mot = request.form.get('keyword').lower()  # Convertir le mot de recherche en minuscules
     produit = bdd.get_produitData()
     images = bdd.get_imageData()
     qtsucre = bdd.get_qtsurcreData()
     print(qtsucre)
     for i in range(len(produit)):
-        if mot[:3]==produit[i]['nom'][:3]:
+        if mot[:3] == produit[i]['nom'].lower()[:3]: 
             ecrire_code_html("sujet_groupeE\\template\\recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
     return redirect(url_for('recherche'))
 
@@ -318,7 +318,9 @@ def ajout_produit():
 
 @app.route('/produits')
 @app.route('/produits/<int:page>')
-def produits(page=1):
+@app.route('/produits/categorie/<int:category_id>')
+@app.route('/produits/categorie/<int:category_id>/<int:page>')
+def produits(page=1, category_id=None):
     categories = {
         1: "Goûter/Dessert",
         2: "Produits Laitiers",
@@ -329,13 +331,13 @@ def produits(page=1):
         7: "Féculents/Céréales"
     }
     per_page = 15
-    produits = bdd.get_produitData_per_15(page, per_page)
+    if category_id:
+        produits = bdd.get_produitData_per_categorie(category_id)
+    else:
+        produits = bdd.get_produitData_per_15(page, per_page)
     total = bdd.get_total_produit()  # Cette fonction doit retourner le nombre total de produits
     total_pages = ceil(total / per_page)  # Ajoutez cette ligne pour calculer le nombre total de pages
-    # j'ai un dictionnaire du nombre de produits par catégorie (clé = id de la catégorie, valeur = nombre de produits) get_total_produit_per_categorie()
     total_produits_par_categorie = bdd.get_total_produit_per_categorie()
-    
-
 
     next_url = url_for('produits', page=page + 1) if total > page * per_page else None
     prev_url = url_for('produits', page=page - 1) if page > 1 else None
@@ -344,4 +346,3 @@ def produits(page=1):
         return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
     else:
         return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
-

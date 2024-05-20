@@ -289,3 +289,16 @@ def get_total_produit_per_categorie():
     total_per_categorie = {item['idCategorie']: item['total'] for item in result}
     
     return total_per_categorie
+
+def get_produitData_per_categorie(idCategorie):
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "SELECT * FROM produit WHERE idCategorie = %s"
+    param = (idCategorie,)
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    listeProduit = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    return listeProduit
