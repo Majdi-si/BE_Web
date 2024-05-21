@@ -1,3 +1,7 @@
+<div style="display: none;">
+    {% include("layout/navbar.html") %}
+</div>
+
 <div class="row g-4 justify-content-center" id = "produits">
     {% for produit in produits %}
     <div class="col-md-6 col-lg-6 col-xl-4">
@@ -11,11 +15,12 @@
                 <div class="d-flex justify-content-between flex-lg-wrap">
                     <p class="text-dark fs-5 fw-bold mb-0">{{ produit.qtsucre}}g/portion</p>
                     <form action="/add_to_meal" method="POST">
+                        <input type="hidden" name="produit.idProduit" value="{{ produit.idProduit }}">
                         <input type="hidden" name="produit.nom_produit" value="{{ produit.nom }}">
                         <input type="hidden" name="produit.qtsucre" value="{{ produit.qtsucre }}">
                         <input type="hidden" name="produit.idCategorie" value="{{ produit.idCategorie }}">
                         <input type="hidden" name="produit.image" value="{{ produit.image }}">
-                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas</button>
+                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-add"><i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas</button>
                     </form>
                 </div>
             </div>

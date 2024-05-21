@@ -177,6 +177,7 @@
                 data: JSON.stringify({ id: idProduit }),
                 contentType: 'application/json',
                 success: function(response) {
+                    console.log("Produit supprimé avec succès !, idProduit = " + idProduit);
                     // Supprimer la ligne du produit du tableau
                     $('#product-row-' + idProduit).remove();
                     // Mettre à jour le nombre de produits

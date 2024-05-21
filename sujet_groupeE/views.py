@@ -352,6 +352,7 @@ def produits(page=1, category_id=None):
 @app.route('/add_to_meal', methods=['POST'])
 def add_to_meal():
     data = request.get_json()
+    print("data",data)  # Ajoutez cette ligne pour afficher les données reçues 
     produit_nom = data.get('nom_produit')
     produit_cat = data.get('idCategorie')
     produit_qtsucre = data.get('qtsucre')
@@ -361,6 +362,8 @@ def add_to_meal():
     meal = session.get('meal', [])
     meal.append({'nom_produit': produit_nom, 'idCategorie': produit_cat, 'qtsucre': produit_qtsucre, 'image': produit_image, 'idProduit': produit_id})
     session['meal'] = meal
+    session.modified = True
+    print(session['meal'])
     return jsonify({'productCount': len(meal)})
     
 
