@@ -15,8 +15,19 @@ app.static_folder = "static"
 app.config.from_object('sujet_groupeE.config')
 @app.route("/")
 def index():
+    categories = {
+        1: "Goûter/Dessert",
+        2: "Produits Laitiers",
+        3: "Sauce",
+        4: "Fruits/Légumes",
+        5: "Viande/Poisson",
+        6: "Boisson",
+        7: "Féculents/Céréales"
+    }
+    last_products = bdd.get_latest_products()
+    print("last_produit", last_products)
     params = f.messageInfo() # récupération des messages d'info
-    return render_template("index.html", **params)
+    return render_template("index.html", **params, last_products=last_products, categories=categories)
 
 #page home
 @app.route("/menu")

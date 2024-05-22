@@ -315,3 +315,17 @@ def get_produit_by_id(idProduit):
     produit = bddGen.selectOneData(cnx, sql, param, msg)
     cnx.close()
     return produit
+
+def get_latest_products():
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    sql = "SELECT * FROM produit ORDER BY idProduit DESC LIMIT 8"
+    param = None
+    msg = {
+        "success": "ok",
+        "error": "Failed to get latest products"
+    }
+    latest_products = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close() 
+    return latest_products
