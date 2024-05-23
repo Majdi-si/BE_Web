@@ -35,6 +35,10 @@ def menu():
     produits_menu = session.get('meal', [])  # Récupère les produits du repas
     return render_template("menu.html", produits_menu=produits_menu)
 
+@app.route("/CV_Majdi")
+def CV_Majdi():
+    return render_template("CV_Majdi.html")
+
 @app.route("/404")
 def error():
     return render_template("404.html")
