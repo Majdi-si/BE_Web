@@ -24,6 +24,21 @@
  * Copyright 2012-2013 Mattia Larentis
  * http://www.apache.org/licenses/LICENSE-2.0
  */
+
+
+#email {
+  cursor: pointer;
+  position: relative;
+}
+
+#email:hover {
+  text-decoration: underline;
+}
+.modal.modal-primary .modal-content {
+  background-color: #378C3F;
+  color: #FFFFFF;
+}
+
 .bootstrap-switch {
   display: inline-block;
   direction: ltr;
@@ -5175,7 +5190,8 @@ Created using IcoMoon - icomoon.io
   margin: 0;
   border: 15px solid transparent;
   z-index: 9999;
-  transition: all .3s ease-out; }
+  transition: all .3s ease-out;
+  object-fit: cover; }
 
 .cc-profile-image a:hover img {
   transform: scale(1.06, 1.06); }
@@ -5209,7 +5225,7 @@ Created using IcoMoon - icomoon.io
   padding-right: 0;
   text-align: center;
   color: #fff;
-  text-transform: uppercase; }
+ }
 
 /* Education Style */
 .cc-education .h5 {

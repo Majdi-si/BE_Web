@@ -39,6 +39,18 @@ def menu():
 def CV_Majdi():
     return render_template("CV_Majdi.html")
 
+@app.route("/CV_Julie")
+def CV_Julie():
+    return render_template("CV_Julie.html")
+
+@app.route("/CV_Margot")
+def CV_Margot():
+    return render_template("CV_Margot.html")
+
+@app.route("/CV_Lea")
+def CV_Lea():
+    return render_template("CV_Lea.html")
+
 @app.route("/404")
 def error():
     return render_template("404.html")
