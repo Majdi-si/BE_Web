@@ -123,7 +123,7 @@
             // Fonction pour calculer et afficher le total
             function calculateTotal(quantityInput, totalElement, sugarQuantity) {
                 var quantity = parseFloat(quantityInput.val());
-                var total = quantity * sugarQuantity;
+                var total = quantity * sugarQuantity/100;
                 totalElement.text(total.toFixed(2));
                 return total;
             }
@@ -135,8 +135,8 @@
                     var quantityInput = $(this);
                     var sugarElement = $(this).closest('tr').find('[data-qtsucre]');
                     var sugarQuantity = parseFloat(sugarElement.attr('data-qtsucre'));
-                    var quantity = parseFloat(quantityInput.val());
-                    totalSugar += quantity/100 * sugarQuantity;
+                    var quantity = parseFloat(quantityInput.val())/100;
+                    totalSugar += quantity * sugarQuantity;
                 });
                 $('.total-sugar').text(totalSugar.toFixed(2));
             }

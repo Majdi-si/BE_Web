@@ -159,10 +159,10 @@ CREATE TABLE `utilisateur` (
 
 INSERT INTO `utilisateur` (`idUtilisateur`, `login`, `nom`, `prenom`,`age`, `mail`, `motPasse`,`qtmax`, `statut`, `avatar`) VALUES
 (3, 'Léa', 'Terrin', 'Léa','20', 'leaterrin@gmail.com', '2f9b41cb15524d25550b14708d0f706fc01365135102d6e7f16756223f698a2c','100', 'gestionnaire', 'avatar6'),
-(5, 'sisalama', 'SI SALAH', 'Majdi', 'sisalahmajdi@gmail.com', 'f2d81a260dea8a100dd517984e53c56a7523d96942a834b9cdc249bd4e8c7aa9','100', 'admin', 'avatar5'),
-(6, 'Julie', 'Lombardi', 'Julie', 'c@c.c', '9f13e2b013a7c621dd1be1cf1caa05d2f785507fd7fb2ba70729aca6d650f2e7','100' ,'admin', 1, 'avatar4'),
-(7, 'margotte', 'Deveil Villelga', 'Margot', 'margot.deveil@gmail.com', '4d8213eb7377dfefbdca96ab6f4f5e9f1837e1a233abf5680db2eb0865dfd2e6','100', 'gestionnaire', 'avatar8'),
-(8, 'Lea-T', 'Terrin', 'Léa', 'c@c.c', '2f9b41cb15524d25550b14708d0f706fc01365135102d6e7f16756223f698a2c','100', 'admin', 'avatar4');
+(5, 'sisalama', 'SI SALAH', 'Majdi','20', 'sisalahmajdi@gmail.com', 'f2d81a260dea8a100dd517984e53c56a7523d96942a834b9cdc249bd4e8c7aa9','100', 'admin', 'avatar5'),
+(6, 'Julie', 'Lombardi', 'Julie','21', 'c@c.c', '9f13e2b013a7c621dd1be1cf1caa05d2f785507fd7fb2ba70729aca6d650f2e7','100' ,'admin', 'avatar4'),
+(7, 'margotte', 'Deveil Villelga','20', 'Margot', 'margot.deveil@gmail.com', '4d8213eb7377dfefbdca96ab6f4f5e9f1837e1a233abf5680db2eb0865dfd2e6','100', 'gestionnaire', 'avatar8'),
+(8, 'Lea-T', 'Terrin', 'Léa','20' 'c@c.c', '2f9b41cb15524d25550b14708d0f706fc01365135102d6e7f16756223f698a2c','100', 'admin', 'avatar4');
 
 --
 -- Index pour les tables déchargées
