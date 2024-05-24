@@ -97,17 +97,13 @@ def ajout():
     #         avatar_connexion = secure_filename(avatar_file.filename)
     #         avatar_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatar_connexion))
 
-    if statut_connexion == "admin":
-        admin = 1
-    else:
-        admin = 0
     avatar_connexion = None
     if 'avatar' in request.form:
         avatar_connexion = request.form['avatar']
     else:
         # Gérer le cas où 'avatar' n'est pas présent
         print("Le fichier 'avatar' n'est pas présent dans la requête.")
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion,age) #ajouter avatar_extension
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, avatar_connexion, age) #ajouter avatar_extension
     if lastId == 0:  # Si l'insertion a échoué
         lastId = bdd.get_membresData()  # Récupère l'ID de l'utilisateur à partir du login
     # print(lastId) # dernier id créé par le serveur de BDD
@@ -119,7 +115,6 @@ def ajout():
     # Stocke les informations de l'utilisateur dans la session
     session['idUtilisateur'] = lastId
     session['login'] = login_connexion
-    session['admin'] = admin
     session['nom'] = nom_connexion
     session['prenom'] = prenom_connexion
     session['mail'] = mail_connexion
@@ -150,7 +145,7 @@ def connect():
         session["prenom"] = user["prenom"]
         session["mail"] = user["mail"]
         session["statut"] = user["statut"]
-        session["admin"] = user["admin"]
+        session["age"]=user["age"]
         session["avatar"] = user["avatar"]
         session["login"] = user["login"]
         session["mdp"] = mdp

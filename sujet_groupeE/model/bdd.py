@@ -52,7 +52,7 @@ def get_membresData():
     return listeMembres
 
 
-def add_userData(nom, prenom, mail, login, motPasse, statut, admin, avatar):
+def add_userData(nom, prenom, mail, login, motPasse, statut, avatar, age):
     mdp = hashlib.sha256(motPasse.encode()).hexdigest()
     cnx = bddGen.connexion()
     if cnx is None:
@@ -63,8 +63,8 @@ def add_userData(nom, prenom, mail, login, motPasse, statut, admin, avatar):
     max_id = cursor.fetchone()[0]
     new_id = max_id + 1 if max_id is not None else 1
 
-    sql = "INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, admin, avatar) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-    param = (new_id, login, nom, prenom, mail, mdp, statut, admin, avatar)  
+    sql = "INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, mail, motPasse, statut, avatar, age) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    param = (new_id, login, nom, prenom, mail, mdp, statut, avatar, age)  
     msg = {
         "success": "addMembreOK",
         "error": "Failed add membres data"

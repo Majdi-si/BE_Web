@@ -71,7 +71,7 @@
                 </style>
 
                 {% if session["idUtilisateur"] %}
-                    {% if session["admin"] == 1 %}
+                    {% if session["statut"] == "admin" %}
                         <a href="/admin" class="btn btn-primary">Admin</a>
                     {% endif %}
                 {% endif %}
