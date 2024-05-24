@@ -112,7 +112,7 @@ INSERT INTO `produit` (`idProduit`, `nom`, `marque`, `qtsucre`, `idCategorie`, `
 (44, 'schoko_bons', 'kinder', '52.2', 1, 1, 'schoko_bons.jpg'),
 (45, 'glace_vanille', 'carte_dor', '9', 1, 1, 'glace_vanille.jpg'),
 (47, 'Pain au lait', 'Pasquier', '11', 1, 5, 'prod_pal_x10_2022.jpg'),
-(48, 'Sauce algérienne', 'Samia', '2.25', 3, 5, 'sauce-alger.webp');
+(48, 'Sauce algérienne', 'Samia', '8.9', 3, 5, 'sauce-alger.webp');
 
 -- --------------------------------------------------------
 
