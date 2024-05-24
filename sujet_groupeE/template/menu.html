@@ -39,8 +39,8 @@
                           <tr>
                             <th scope="col">Produit</th>
                             <th scope="col">Nom</th>
-                            <th scope="col">Quantité de sucre (en g)</th>
-                            <th scope="col">Quantité</th>
+                            <th scope="col">Quantité de sucre pour 100g (en g)</th>
+                            <th scope="col">Portion (en g)</th>
                             <th scope="col">Total (en g)</th>
                             <th scope="col">Supprimer</th>
                           </tr>
@@ -60,18 +60,8 @@
                                         <p class="mb-0 mt-4" data-qtsucre="{{ produit.qtsucre }}">{{ produit.qtsucre }}</p>
                                     </td>
                                     <td>
-                                        <div class="input-group quantity mt-4" style="width: 100px;">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                            </div>
-                                            <input type="text" class="form-control form-control-sm text-center border-0 quantity-input" value="1" name = "quantity-input">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
+                                        <div class="mt-4">
+                                            <input type="text" class="form-control form-control-sm text-center quantity-input" value="1" name="quantity-input" style="width: 100px;">
                                         </div>
                                     </td>
                                     <td>
@@ -101,7 +91,7 @@
                                 <div class="d-flex justify-content-between mb-4">
                             </div>
                             <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                <h5 class="mb-0 ps-4 me-4">Quantité totale de sucre</h5>
+                                <h5 class="mb-0 ps-4 me-4">Quantité totale de sucre (en g)</h5>
                                 <p class="mb-0 pe-4 total-sugar"></p>
                             </div>
                         </div>
@@ -129,13 +119,6 @@
     <!-- JavaScript Libraries -->
     {% include("layout/script.html") %}
     <script>
-                function calculateTotalSugar() {
-            var totalSugar = 0;
-            $('.total').each(function() {
-                totalSugar += parseFloat($(this).text());
-            });
-            $('.total-sugar').text(totalSugar.toFixed(2) + " g");
-        }
         $(document).ready(function() {
             // Fonction pour calculer et afficher le total
             function calculateTotal(quantityInput, totalElement, sugarQuantity) {
@@ -144,30 +127,41 @@
                 totalElement.text(total.toFixed(2));
                 return total;
             }
-    
-
-    
+        
+            // Fonction pour calculer et afficher la quantité totale de sucre
+            function calculateTotalSugar() {
+                var totalSugar = 0;
+                $('.quantity-input').each(function() {
+                    var quantityInput = $(this);
+                    var sugarElement = $(this).closest('tr').find('[data-qtsucre]');
+                    var sugarQuantity = parseFloat(sugarElement.attr('data-qtsucre'));
+                    var quantity = parseFloat(quantityInput.val());
+                    totalSugar += quantity/100 * sugarQuantity;
+                });
+                $('.total-sugar').text(totalSugar.toFixed(2));
+            }
+        
             // Calculer et afficher le total pour chaque produit au chargement de la page
-            $('.quantity').each(function() {
-                var quantityInput = $(this).find('[name="quantity-input"]');
+            $('.quantity-input').each(function() {
+                var quantityInput = $(this);
                 var totalElement = $(this).closest('tr').find('[name="total"]');
                 var sugarElement = $(this).closest('tr').find('[data-qtsucre]');
                 var sugarQuantity = parseFloat(sugarElement.attr('data-qtsucre'));
                 calculateTotal(quantityInput, totalElement, sugarQuantity);
             });
-    
-            // Calculer et afficher la quantité totale de sucre au chargement de la page
-            calculateTotalSugar();
-    
+        
             // Mettre à jour le total et la quantité totale de sucre lorsque la quantité est modifiée
-            $('.btn-plus, .btn-minus').click(function() {
-                var quantityInput = $(this).closest('.quantity').find('[name="quantity-input"]');
+            $('.quantity-input').change(function() {
+                var quantityInput = $(this);
                 var totalElement = $(this).closest('tr').find('[name="total"]');
                 var sugarElement = $(this).closest('tr').find('[data-qtsucre]');
                 var sugarQuantity = parseFloat(sugarElement.attr('data-qtsucre'));
                 calculateTotal(quantityInput, totalElement, sugarQuantity);
                 calculateTotalSugar();
             });
+        
+            // Calculer et afficher la quantité totale de sucre au chargement de la page
+            calculateTotalSugar();
         });
         $(document).ready(function() {
             // Ajouter un gestionnaire d'événements click aux boutons de suppression

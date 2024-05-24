@@ -85,6 +85,7 @@ def ajout():
     login_connexion = request.form['login']
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
+    age_connexion = request.form['age']
 
     ## Gestion du fichier avatar
     # avatar_connexion = None
@@ -106,7 +107,7 @@ def ajout():
     else:
         # Gérer le cas où 'avatar' n'est pas présent
         print("Le fichier 'avatar' n'est pas présent dans la requête.")
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion) #ajouter avatar_extension
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion,age) #ajouter avatar_extension
     if lastId == 0:  # Si l'insertion a échoué
         lastId = bdd.get_membresData()  # Récupère l'ID de l'utilisateur à partir du login
     # print(lastId) # dernier id créé par le serveur de BDD
@@ -125,6 +126,7 @@ def ajout():
     session['avatar'] = avatar_connexion
     session['statut'] = statut_connexion
     session['mdp'] = mdp_connexion
+    session['age'] = age_connexion
     return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
@@ -302,14 +304,20 @@ def ecrire_code_html(nom_fichier,nom_produit,image,qtsucre):
         """
     print(code_html)
     # Ouvrir le fichier en mode écriture
-    with open(nom_fichier, "a") as fichier:
+    with open(nom_fichier, "a", encoding='utf-8') as fichier:
         # Écrire le code HTML dans le fichier
         fichier.write(code_html)
         fichier.close()
 
+def ecrire_rien(fichier):
+    with open(fichier, "a", encoding='utf-8') as fichier:
+        fichier.write(f'Aucun produit ne correspond à votre recherche')
+        fichier.close()
+
+
 def suppression_code_html(nom_fichier):
     # Ouvrir le fichier en mode écriture
-    with open(nom_fichier, "w") as fichier:
+    with open(nom_fichier, "w",encoding='utf-8') as fichier:
         # Écrire le code HTML dans le fichier
         fichier.write("")
         fichier.close()
@@ -319,13 +327,19 @@ def suppression_code_html(nom_fichier):
 def votre_page_de_resultats():
     suppression_code_html("sujet_groupeE\\template\\recherche.html")
     mot = request.form.get('keyword').lower()  # Convertir le mot de recherche en minuscules
+    print("Mot de recherche: ", mot)
     produit = bdd.get_produitData()
     images = bdd.get_imageData()
     qtsucre = bdd.get_qtsurcreData()
-    print(qtsucre)
+    n=0
     for i in range(len(produit)):
         if mot[:3] == produit[i]['nom'].lower()[:3]: 
+            print("Produit trouvé: ", produit[i]['nom'])
+            n=n+1
             ecrire_code_html("sujet_groupeE\\template\\recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
+    if n==0 :
+        print("no product found")
+        ecrire_rien("sujet_groupeE\\template\\recherche.html")
     return redirect(url_for('recherche'))
 
 
