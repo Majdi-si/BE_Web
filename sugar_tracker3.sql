@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 16 mai 2024 à 22:42
+-- Généré le : ven. 24 mai 2024 à 07:44
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -111,7 +111,8 @@ INSERT INTO `produit` (`idProduit`, `nom`, `marque`, `qtsucre`, `idCategorie`, `
 (43, 'veloute_de_legumes', 'liebig', '1.4', 4, 1, 'veloute_de_legumes.jpg'),
 (44, 'schoko_bons', 'kinder', '3.03', 1, 1, 'schoko_bons.jpg'),
 (45, 'glace_vanille', 'carte_dor', '9', 1, 1, 'glace_vanille.jpg'),
-(46, 'pain', 'eco+', '4', 7, 5, NULL);
+(47, 'Pain au lait', 'Pasquier', '11', 1, 5, 'prod_pal_x10_2022.jpg'),
+(48, 'Sauce algérienne', 'Samia', '2.25', 3, 5, 'sauce-alger.webp');
 
 -- --------------------------------------------------------
 
@@ -157,7 +158,7 @@ CREATE TABLE `utilisateur` (
 
 INSERT INTO `utilisateur` (`idUtilisateur`, `login`, `nom`, `prenom`, `mail`, `motPasse`, `statut`, `admin`, `avatar`) VALUES
 (3, 'Léa', 'Terrin', 'Léa', 'leaterrin@gmail.com', '2f9b41cb15524d25550b14708d0f706fc01365135102d6e7f16756223f698a2c', 'gestionnaire', 0, 'avatar6'),
-(5, 'sisalama', 'SI SALAh', 'Majdi', 'sisalahmajdi@gmail.com', 'f2d81a260dea8a100dd517984e53c56a7523d96942a834b9cdc249bd4e8c7aa9', 'admin', 1, 'avatar5'),
+(5, 'sisalama', 'SI SALAH', 'Majdi', 'sisalahmajdi@gmail.com', 'f2d81a260dea8a100dd517984e53c56a7523d96942a834b9cdc249bd4e8c7aa9', 'admin', 1, 'avatar5'),
 (6, 'Julie', 'Lombardi', 'Julie', 'c@c.c', '9f13e2b013a7c621dd1be1cf1caa05d2f785507fd7fb2ba70729aca6d650f2e7', 'admin', 1, 'avatar4'),
 (7, 'margotte', 'Deveil Villelga', 'Margot', 'margot.deveil@gmail.com', '4d8213eb7377dfefbdca96ab6f4f5e9f1837e1a233abf5680db2eb0865dfd2e6', 'gestionnaire', 0, 'avatar8'),
 (8, 'Lea-T', 'Terrin', 'Léa', 'c@c.c', '2f9b41cb15524d25550b14708d0f706fc01365135102d6e7f16756223f698a2c', 'admin', 1, 'avatar4');
