@@ -65,6 +65,13 @@
                                         </div>
                                     </div>
                                     <div class="form-item">
+                                        <label class="form-label my-3">Age</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="age" name="age" value="{{ session['age'] }}" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('age')"><i class="bi bi-pencil-fill"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
                                         <label class="form-label my-3">Adresse e-mail</label>
                                         <div class="input-group">
                                             <input type="email" class="form-control" id="mail" name="mail" value="{{ session['mail'] }}" readonly>

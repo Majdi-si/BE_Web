@@ -89,15 +89,19 @@
                             <div class="p-4">
                                 <h1 class="display-6 mb-4">Total</h1>
                                 <div class="d-flex justify-content-between mb-4">
-                            </div>
-                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                <h5 class="mb-0 ps-4 me-4">Quantité totale de sucre (en g)</h5>
-                                <p class="mb-0 pe-4 total-sugar"></p>
+                                </div>
+                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                    <h5 class="mb-0 ps-4 me-4">Quantité totale de sucre à ne pas dépasser (en g)</h5>
+                                    <p class="mb-0 pe-4 total-sugar-max">{{ session['qtmax']}}</p>
+                                </div>
+                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                    <h5 class="mb-0 ps-4 me-4">Quantité totale de sucre (en g)</h5>
+                                    <p class="mb-0 pe-4 total-sugar"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
         <!-- Cart Page End -->
 
@@ -139,6 +143,7 @@
                     totalSugar += quantity * sugarQuantity;
                 });
                 $('.total-sugar').text(totalSugar.toFixed(2));
+                return totalSugar;
             }
         
             // Calculer et afficher le total pour chaque produit au chargement de la page
@@ -156,14 +161,17 @@
                 var totalElement = $(this).closest('tr').find('[name="total"]');
                 var sugarElement = $(this).closest('tr').find('[data-qtsucre]');
                 var sugarQuantity = parseFloat(sugarElement.attr('data-qtsucre'));
+                var qtmax = parseFloat($('.total-sugar-max').text());
                 calculateTotal(quantityInput, totalElement, sugarQuantity);
-                calculateTotalSugar();
+                var totalSugar = calculateTotalSugar();
+                if (totalSugar > qtmax) {
+                alert('La quantité totale de sucre a dépassé la quantité maximale de ' + qtmax + 'g.');
+            }
             });
         
             // Calculer et afficher la quantité totale de sucre au chargement de la page
             calculateTotalSugar();
-        });
-        $(document).ready(function() {
+
             // Ajouter un gestionnaire d'événements click aux boutons de suppression
             $('.btn-delete').click(function() {
                 // Obtenir l'ID du produit à supprimer

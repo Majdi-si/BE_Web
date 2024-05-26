@@ -25,7 +25,6 @@ def index():
         7: "Féculents/Céréales"
     }
     last_products = bdd.get_latest_products()
-    print("last_produit", last_products)
     params = f.messageInfo() # récupération des messages d'info
     return render_template("index.html", **params, last_products=last_products, categories=categories)
 
@@ -103,7 +102,13 @@ def ajout():
     else:
         # Gérer le cas où 'avatar' n'est pas présent
         print("Le fichier 'avatar' n'est pas présent dans la requête.")
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, avatar_connexion, age) #ajouter avatar_extension
+
+    if int(age_connexion) >= 18:
+        qtmax = 25 #quantité de sucre max par jour pour un adulte
+    else:
+        qtmax = 15 #quantité de sucre max par jour
+
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, avatar_connexion, age_connexion, qtmax) #ajouter avatar_extension
     if lastId == 0:  # Si l'insertion a échoué
         lastId = bdd.get_membresData()  # Récupère l'ID de l'utilisateur à partir du login
     # print(lastId) # dernier id créé par le serveur de BDD
@@ -122,6 +127,7 @@ def ajout():
     session['statut'] = statut_connexion
     session['mdp'] = mdp_connexion
     session['age'] = age_connexion
+    session['qtmax'] = qtmax
     return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
@@ -149,6 +155,7 @@ def connect():
         session["avatar"] = user["avatar"]
         session["login"] = user["login"]
         session["mdp"] = mdp
+        session["qtmax"] = user["qtmax"]
         # session["avatar"] = user["avatar"]
         flash("Authentification réussie", "success")
         session["infoVert"]="Authentification réussie"
@@ -197,6 +204,7 @@ def update_info():
     prenom = request.form.get('prenom')
     nom = request.form.get('nom')
     login = request.form.get('login')
+    age = request.form.get('age')
     mail = request.form.get('mail')
     statut = request.form.get('statut')
     newPassword = request.form.get('newPassword')
@@ -224,6 +232,7 @@ def update_info():
         bdd.update_userData('login', login, session['idUtilisateur'])
         bdd.update_userData('mail', mail, session['idUtilisateur'])
         bdd.update_userData('statut', statut, session['idUtilisateur'])
+        bdd.update_userData('age', age, session['idUtilisateur'])
 
         # Mettre à jour les informations de la session
         session['prenom'] = prenom
@@ -231,6 +240,7 @@ def update_info():
         session['login'] = login
         session['mail'] = mail
         session['statut'] = statut
+        session['age'] = age
     except Exception as e:
         flash('Une erreur est survenue lors de la mise à jour de vos informations.', 'error')
 
@@ -297,7 +307,6 @@ def ecrire_code_html(nom_fichier,nom_produit,image,qtsucre):
                     </div>
                 </div>
         """
-    print(code_html)
     # Ouvrir le fichier en mode écriture
     with open(nom_fichier, "a", encoding='utf-8') as fichier:
         # Écrire le code HTML dans le fichier
@@ -388,7 +397,6 @@ def produits(page=1, category_id=None):
 @app.route('/add_to_meal', methods=['POST'])
 def add_to_meal():
     data = request.get_json()
-    print("data",data)  # Ajoutez cette ligne pour afficher les données reçues 
     produit_nom = data.get('nom_produit')
     produit_cat = data.get('idCategorie')
     produit_qtsucre = data.get('qtsucre')
@@ -399,18 +407,14 @@ def add_to_meal():
     meal.append({'nom_produit': produit_nom, 'idCategorie': produit_cat, 'qtsucre': produit_qtsucre, 'image': produit_image, 'idProduit': produit_id})
     session['meal'] = meal
     session.modified = True
-    print(session['meal'])
     return jsonify({'productCount': len(meal)})
     
 
 @app.route('/delete_product', methods=['POST'])
 def delete_product():
     data = request.get_json()
-    print("data",data)  # Ajoutez cette ligne pour afficher les données reçues
     product_id = data.get('id')  # Utilisez la clé 'id' pour obtenir l'ID du produit
     meal = session.get('meal', [])
     meal = [product for product in meal if product['idProduit'] != product_id]
     session['meal'] = meal
-    print(session['meal'])
-    print("len(meal): ", len(meal))
     return jsonify({'productCount': len(meal)})
