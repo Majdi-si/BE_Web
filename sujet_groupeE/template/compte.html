@@ -131,13 +131,9 @@
                                         <label class="form-label my-3">Catégorie du produit</label>
                                         <select class="form-select" name="categorie" id="monSelect">
                                             <option selected disabled>Catégorie du produit</option>
-                                            <option value="1">goûter/dessert</option>
-                                            <option value="2">produits laitiers</option>
-                                            <option value="3">sauce</option>
-                                            <option value="4">fruits/légumes</option>
-                                            <option value="5">viande/poisson</option>
-                                            <option value="6">boisson</option>
-                                            <option value="7">féculents/céréales</option>
+                                            {% for categorie in categories %}
+                                                <option value="{{ categorie.idCategorie }}">{{ categorie.nom.replace('_', '/') | capitalize }}</option>
+                                            {% endfor %}
                                         </select>
                                         <label class="form-label my-3">Importer une photo du produit</label>
                                         <input type="file" name="photo_produit" id="photo_produit" class="form-control"/>

@@ -194,42 +194,13 @@
                                         <span class="text-dark" style="width: 130px;">Tout</span>
                                     </a>
                                 </li>
-
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-2" data-category="Goûter/Dessert">
-                                        <span class="text-dark" style="width: 130px;">Goûter/Dessert</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-3 " data-category="Produits Laitiers">
-                                        <span class="text-dark" style="width: 130px;">Produits laitiers</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-4" data-category="Sauce">
-                                        <span class="text-dark" style="width: 130px;">Sauces</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-5" data-category="Boisson">
-                                        <span class="text-dark" style="width: 130px;">Boissons</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-6" data-category="Fruits/Légumes">
-                                        <span class="text-dark" style="width: 130px;">Fruits/Légumes</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-7" data-category="Viande/Poisson">
-                                        <span class="text-dark" style="width: 130px;">Viande/Poisson</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-8" data-category="Féculents/Céréales">
-                                        <span class="text-dark" style="width: 130px;">Féculents/Céréales</span>
-                                    </a>
-                                </li>
+                                {% for categorie in categories %}
+                                    <li class="nav-item">
+                                        <a class="d-flex m-2 py-2 bg-light rounded-pill category-link" data-bs-toggle="pill" href="#tab-{{ loop.index }}" data-category="{{ categorie.nom.replace('_', '/') | capitalize }}">
+                                            <span class="text-dark" style="width: 130px;">{{ categorie.nom.replace('_', '/') | capitalize }}</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -238,32 +209,37 @@
                             <div class="row g-4">
                                 <div class="col-lg-12">
                                     <div class="row g-4">
+                                        {% set categories_dict = {} %}
+                                        {% for categorie in categories %}
+                                            {% set _ = categories_dict.update({categorie.idCategorie: categorie}) %}
+                                        {% endfor %}
+                                        
                                         {% for produit in last_products %}
-                                        <div class="col-md-6 col-lg-4 col-xl-3 product" data-category="{{ categories[produit.idCategorie] }}">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="static/img/{{ produit.image }}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
-                                                    {{ categories[produit.idCategorie] }}
-                                                </div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>{{ produit.nom.replace('_', ' ') | capitalize }}</h4>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <form action="/add_to_meal" method="POST">
-                                                            <input type="hidden" name="produit.idProduit" value="{{ produit.idProduit }}">
-                                                            <input type="hidden" name="produit.nom_produit" value="{{ produit.nom }}">
-                                                            <input type="hidden" name="produit.qtsucre" value="{{ produit.qtsucre }}">
-                                                            <input type="hidden" name="produit.idCategorie" value="{{ produit.idCategorie }}">
-                                                            <input type="hidden" name="produit.image" value="{{ produit.image }}">
-                                                            <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-add">
-                                                                <i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas
-                                                            </button>
-                                                        </form>
+                                            <div class="col-md-6 col-lg-4 col-xl-3 product" data-category="{{ categories_dict[produit.idCategorie].nom.replace('_', '/') | capitalize }}">
+                                                <div class="rounded position-relative fruite-item">
+                                                    <div class="fruite-img">
+                                                        <img src="static/img/{{ produit.image }}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}">
+                                                    </div>
+                                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
+                                                        {{ categories_dict[produit.idCategorie].nom.replace('_', '/') | capitalize }}
+                                                    </div>
+                                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                        <h4>{{ produit.nom.replace('_', ' ') | capitalize }}</h4>
+                                                        <div class="d-flex justify-content-between flex-lg-wrap">
+                                                            <form action="/add_to_meal" method="POST">
+                                                                <input type="hidden" name="produit.idProduit" value="{{ produit.idProduit }}">
+                                                                <input type="hidden" name="produit.nom_produit" value="{{ produit.nom }}">
+                                                                <input type="hidden" name="produit.qtsucre" value="{{ produit.qtsucre }}">
+                                                                <input type="hidden" name="produit.idCategorie" value="{{ produit.idCategorie }}">
+                                                                <input type="hidden" name="produit.image" value="{{ produit.image }}">
+                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-add">
+                                                                    <i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         {% endfor %}
                                     </div>
                                 </div>

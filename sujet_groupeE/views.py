@@ -15,15 +15,7 @@ app.static_folder = "static"
 app.config.from_object('sujet_groupeE.config')
 @app.route("/")
 def index():
-    categories = {
-        1: "Goûter/Dessert",
-        2: "Produits Laitiers",
-        3: "Sauce",
-        4: "Fruits/Légumes",
-        5: "Viande/Poisson",
-        6: "Boisson",
-        7: "Féculents/Céréales"
-    }
+    categories = bdd.get_categorieData()
     last_products = bdd.get_latest_products()
     params = f.messageInfo() # récupération des messages d'info
     return render_template("index.html", **params, last_products=last_products, categories=categories)
@@ -110,7 +102,8 @@ def ajout():
 
     lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, avatar_connexion, age_connexion, qtmax) #ajouter avatar_extension
     if lastId == 0:  # Si l'insertion a échoué
-        lastId = bdd.get_membresData()  # Récupère l'ID de l'utilisateur à partir du login
+        data = bdd.get_membresData()
+        lastId = data[-1]['idUtilisateur']
     # print(lastId) # dernier id créé par le serveur de BDD
     # if "errorDB" not in session: 
     #     session["infoVert"]="Nouveau membre inséré"
@@ -175,7 +168,8 @@ def logout():
 
 @app.route("/compte")
 def compte():
-    return render_template("compte.html")
+    categories = bdd.get_categorieData()
+    return render_template("compte.html", categories=categories)
 
 @app.route("/recherche")
 def recherche():
@@ -354,6 +348,7 @@ def ajout_produit():
     filename = secure_filename(photo_produit.filename) 
     photo_produit.save(os.path.join('sujet_groupeE\static\img', filename))
     nom_produit = request.form.get('nom_produit')
+    nom_produit = ''.join(nom_produit)
     marque = request.form.get('marque')
     quantite_sucre = request.form.get('quantite_sucre')
     categorie = request.form.get('categorie')
@@ -368,15 +363,7 @@ def ajout_produit():
 @app.route('/produits/categorie/<int:category_id>')
 @app.route('/produits/categorie/<int:category_id>/<int:page>')
 def produits(page=1, category_id=None):
-    categories = {
-        1: "Goûter/Dessert",
-        2: "Produits Laitiers",
-        3: "Sauce",
-        4: "Fruits/Légumes",
-        5: "Viande/Poisson",
-        6: "Boisson",
-        7: "Féculents/Céréales"
-    }
+    categories = bdd.get_categorieData()
     per_page = 15
     if category_id:
         produits = bdd.get_produitData_per_categorie(category_id)
@@ -385,6 +372,7 @@ def produits(page=1, category_id=None):
     total = bdd.get_total_produit()  # Cette fonction doit retourner le nombre total de produits
     total_pages = ceil(total / per_page)  # Ajoutez cette ligne pour calculer le nombre total de pages
     total_produits_par_categorie = bdd.get_total_produit_per_categorie()
+    print("total_produits_par_categorie", total_produits_par_categorie)
 
     next_url = url_for('produits', page=page + 1) if total > page * per_page else None
     prev_url = url_for('produits', page=page - 1) if page > 1 else None
@@ -418,3 +406,54 @@ def delete_product():
     meal = [product for product in meal if product['idProduit'] != product_id]
     session['meal'] = meal
     return jsonify({'productCount': len(meal)})
+
+@app.route('/update_product', methods=['POST'])
+def update_product():
+    data = request.get_json()
+    if not data:  # Si l'objet est vide, retournez une réponse sans effectuer aucune action
+        return jsonify({'message': 'No data received'})
+
+    idProduit = data.get('update_idProduit')
+    nomProduit = data.get('update_nomProduit')
+    marque = data.get('update_marque')
+    qtsucre = data.get('update_qtsucre')
+    idCategorie = data.get('update_idCategorie')
+    bdd.update_produitData('nom', nomProduit, idProduit)
+    bdd.update_produitData('marque', marque, idProduit)
+    bdd.update_produitData('qtsucre', qtsucre, idProduit)
+    bdd.update_produitData('idCategorie', idCategorie, idProduit)
+
+    return jsonify({'message': 'Product updated successfully'})
+
+@app.route('/delete_produit/<int:idProduit>', methods=['DELETE'])
+def delete_produit(idProduit):
+    bdd.delete_produitData(idProduit)
+    return redirect(url_for('produits'))
+
+@app.route('/add_category', methods=['POST'])
+def add_categorie():
+    data = request.get_json()
+    print("data", data)
+    if data == {'category': ['']}:
+        return jsonify({'message': 'No data received'})
+    else:  
+        categories = data.get('category')
+
+        print("categories", categories)
+        for categorie in categories: 
+            if categorie == '':
+                continue   
+            print("catégorie :", categorie)
+            # def add_new_categorie(nomCategorie)
+            bdd.add_new_categorie(categorie)
+
+    return jsonify({'message': 'Category added successfully'})
+
+@app.route('/delete_category', methods=['POST'])
+def delete_categorie():
+    data = request.get_json()
+    print("data", data )
+    category_id = data['category_to_delete']
+    print("category_id", category_id)
+    bdd.delete_categorieData(category_id)
+    return jsonify({'message': 'Category deleted successfully'})

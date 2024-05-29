@@ -51,7 +51,6 @@ def get_membresData():
         session['errorDB'] = "Failed get membres data : {}".format(err)
     return listeMembres
 
-
 def add_userData(nom, prenom, mail, login, motPasse, statut, avatar, age, qtmax):
     mdp = hashlib.sha256(motPasse.encode()).hexdigest()
     cnx = bddGen.connexion()
@@ -63,7 +62,7 @@ def add_userData(nom, prenom, mail, login, motPasse, statut, avatar, age, qtmax)
     max_id = cursor.fetchone()[0]
     new_id = max_id + 1 if max_id is not None else 1
 
-    sql = "INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, age, mail, motPasse, qtmax, statut, avatar) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)"
+    sql = "INSERT INTO utilisateur(idUtilisateur, login, nom, prenom, age, mail, motPasse, qtmax, statut, avatar) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     param = (new_id, login, nom, prenom, age, mail, mdp, qtmax, statut, avatar)  
     msg = {
         "success": "addMembreOK",
@@ -329,3 +328,81 @@ def get_latest_products():
     latest_products = bddGen.selectData(cnx, sql, param, msg)
     cnx.close() 
     return latest_products
+
+def update_produitData(champ, newValue, idProduit):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    sql = "UPDATE produit SET " + champ + "=%s WHERE idProduit=%s;"
+    param = (newValue, idProduit)
+    msg = {
+        "success": "updateProduitOK",
+        "error": "Failed update produit data"
+    }
+    bddGen.updateData(cnx, sql, param, msg)
+    cnx.close()
+    return 1
+
+def delete_produitData(idProduit):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    else:
+        sql = "DELETE FROM produit WHERE idProduit=%s"
+        param = (idProduit,)
+        msg = {
+            "success": "deleteProduitOK",
+            "error": "Failed delete produit data"
+        }
+        bddGen.deleteData(cnx, sql, param, msg)
+        cnx.close()
+    return 1
+
+
+def add_new_categorie(nomCategorie):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    cursor = cnx.cursor()
+    cursor.execute("SELECT MAX(idCategorie) FROM categorie")
+    max_id = cursor.fetchone()[0]
+    new_id = max_id + 1 if max_id is not None else 1
+
+    sql = "INSERT INTO categorie(idCategorie, nom) VALUES(%s,%s)"
+    param = (new_id, nomCategorie)
+    msg = {
+        "success": "addCategorieOK",
+        "error": "Failed add categorie data"
+    }
+    lastId = bddGen.addData(cnx, sql, param, msg)
+    cnx.close()
+    return lastId
+
+def get_categorieData():
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    sql = "SELECT * FROM categorie"
+    param = None
+    msg = {
+        "success": "ok",
+        "error": "Failed get categorie data"
+    }
+    listeCategorie = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    return listeCategorie
+
+def delete_categorieData(category_id):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    else:
+        sql = "DELETE FROM categorie WHERE idCategorie=%s"
+        param = (category_id,)
+        msg = {
+            "success": "deleteCategorieOK",
+            "error": "Failed delete categorie data"
+        }
+        bddGen.deleteData(cnx, sql, param, msg)
+        cnx.close()
+    return 1

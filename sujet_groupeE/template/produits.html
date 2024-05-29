@@ -7,6 +7,11 @@
 <body>
     <script src="static/js/scripts.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 
 
     <!-- Spinner Start -->
@@ -47,12 +52,154 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <h4>Categories</h4>
+                                            {% if session["statut"] == "admin" %}
+                                                <div class="d-flex justify-content-start mb-3">
+                                                    <button class="btn btn-primary me-2">Ajouter une catégorie</button>
+                                                    <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">Supprimer une catégorie</button>
+                                                </div>
+                                            {% endif %} 
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form id="addCategoryForm" action="/add_category" method="post" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="addCategoryModalLabel">Ajouter une catégorie</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                                            </div>
+                                                            <div class="modal-body" id="categoryInputs">
+                                                                <div class="mb-3">
+                                                                    <label for="categoryName" class="form-label">Nom de la catégorie</label>
+                                                                    <input type="text" class="form-control" id="categoryName" name="new_categorie[]">
+                                                                    <!-- <button type="button" class="btn btn-danger btn-sm remove-category-button">Supprimer</button> -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <!-- <button type="button" class="btn btn-secondary" id="addMoreCategoriesButton">Ajouter plus de catégories</button> -->
+                                                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form id="deleteCategoryForm" action="/delete_category" method="post">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteCategoryModalLabel">Supprimer une catégorie</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label for="categoryToDelete" class="form-label">Nom de la catégorie</label>
+                                                                    <select class="form-select" id="categoryToDelete" name="category_to_delete">
+                                                                        {% for categorie in categories %}
+                                                                            <option value="{{ categorie.idCategorie }}">{{ categorie.nom }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                            
+                                            <script>
+                                                $(document).ready(function(){
+                                                    // Ajouter une catégorie
+                                                    $('#addMoreCategoriesButton').click(function() {
+                                                        $('#categoryInputs').append('<div class="mb-3"><label for="categoryName" class="form-label">Nom de la catégorie</label><input type="text" class="form-control" name="category[]"><button type="button" class="btn btn-danger btn-sm remove-category-button">Supprimer</button></div>');
+                                                    });
+                                            
+                                                    $('.btn-primary').click(function() {
+                                                        $('#addCategoryModal').modal('show');
+                                                    });
+                                            
+                                                    $('#deleteCategoryButton').click(function(e) {
+                                                        e.preventDefault();
+                                                    });
+
+                                                    $('.btn-danger').click(function() {
+                                                        $('#deleteCategoryModal').modal('show');
+                                                    });
+                                            
+                                                    $(document).on('submit', '#addCategoryForm', function(e) {
+                                                        e.preventDefault();
+                                                        var $form = $(this);
+                                                        var data = {
+                                                            category: $form.find('input[name="new_categorie[]"]').map(function(){
+                                                                return $(this).val();
+                                                            }).get()
+                                                        };
+                                            
+                                                        $.ajax({
+                                                            url: $form.attr('action'),
+                                                            type: "POST",
+                                                            headers: {
+                                                                'X-Requested-With': 'XMLHttpRequest',
+                                                                'Content-Type': 'application/json'
+                                                            },
+                                                            data: JSON.stringify(data),
+                                                            success: function(response) {
+                                                                console.log("Success: ", response);
+                                                            },
+                                                            error: function(jqXHR, textStatus, errorThrown) {
+                                                                console.log("Error: ", textStatus, errorThrown);
+                                                            }
+                                                            
+                                                        });
+                                                        location.reload();
+                                                    });
+                                                });
+                                            </script>
+                                            <script>
+                                                $('#deleteCategoryForm').on('submit', function(event) {
+                                                    event.preventDefault();
+                                            
+                                                    var data = $(this).serializeArray().reduce(function(obj, item) {
+                                                        obj[item.name] = item.value;
+                                                        return obj;
+                                                    }, {});
+                                            
+                                                    $.ajax({
+                                                        url: $(this).attr('action'),
+                                                        type: 'post',
+                                                        headers: {
+                                                                'X-Requested-With': 'XMLHttpRequest',
+                                                                'Content-Type': 'application/json'
+                                                            },
+                                                        data: JSON.stringify(data),
+                                                        contentType: 'application/json',
+                                                        success: function(response) {
+                                                            // Fermer le modal
+                                                            $('#deleteCategoryModal').modal('hide');
+                                            
+                                                            // Actualiser la liste des catégories ou faire autre chose
+                                                        },
+                                                        error: function(jqXHR, textStatus, errorThrown) {
+                                                            console.log("Error: ", textStatus, errorThrown);
+                                                        }
+                                                        
+                                                    });
+                                                    location.reload();
+                                                });
+                                            </script>
                                         <ul class="list-unstyled fruite-categorie">
-                                            {% for categorie, total in total_produits_par_categorie.items() %}
-                                                <li data-category-id="{{ categorie }}">
+                                            {% for categorie in categories %}
+                                                <li data-category-id="{{ categorie.idCategorie }}">
                                                     <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>{{ categories[categorie] }}</a>
-                                                        <span>({{ total }})</span>
+                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>{{ categorie.nom.replace('_', '/') | capitalize  }}</a>
+                                                        <span>({{ total_produits_par_categorie.get(categorie.idCategorie, 0) }})</span>
                                                     </div>
                                                 </li>
                                             {% endfor %}
@@ -79,51 +226,103 @@
                                         });
                                     });
                                 </script>
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <h4 class="mb-2">Sucre</h4>
-                                        <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                                        <output id="amount" name="amount" min-velue="0" max-value="100" for="rangeInput">0</output>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="col-lg-9">
                             <div class="row g-4 justify-content-center" id = "produits">
+                                {% set categories_dict = {} %}
+                                {% for categorie in categories %}
+                                    {% set _ = categories_dict.update({categorie.idCategorie: categorie}) %}
+                                {% endfor %}
+                                
                                 {% for produit in produits %}
-                                <div class="col-md-6 col-lg-6 col-xl-4">
-                                    <div class="rounded position-relative fruite-item">
-                                        <div class="fruite-img">
-                                            <img src="static/img/{{produit.image}}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}">
-                                        </div>
-                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ categories[produit.idCategorie] }}</div>
-                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                            <h4>{{ produit.nom.replace('_', ' ') | capitalize }}</h4>
-                                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <img src="static/img/{{produit.image}}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ categories_dict[produit.idCategorie].nom.replace('_', '/') | capitalize }}</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <h4>{{ produit.nom.replace('_', ' ') | capitalize }}</h4>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
                                                     <p class="text-dark fs-5 fw-bold mb-0">{{ produit.qtsucre}}g/portion</p>
-                                                <form action="/add_to_meal" method="POST">
-                                                    <input type="hidden" name="produit.idProduit" value="{{ produit.idProduit }}">
-                                                    <input type="hidden" name="produit.nom_produit" value="{{ produit.nom }}">
-                                                    <input type="hidden" name="produit.qtsucre" value="{{ produit.qtsucre }}">
-                                                    <input type="hidden" name="produit.idCategorie" value="{{ produit.idCategorie }}">
-                                                    <input type="hidden" name="produit.image" value="{{ produit.image }}">
-                                                    <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-add"><i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas</button>
-                                                </form>
-                                            
+                                                    <form action="/add_to_meal" method="POST">
+                                                        <input type="hidden" name="produit.idProduit" value="{{ produit.idProduit }}">
+                                                        <input type="hidden" name="produit.nom_produit" value="{{ produit.nom }}">
+                                                        <input type="hidden" name="produit.qtsucre" value="{{ produit.qtsucre }}">
+                                                        <input type="hidden" name="produit.idCategorie" value="{{ produit.idCategorie }}">
+                                                        <input type="hidden" name="produit.image" value="{{ produit.image }}">
+                                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-add">
+                                                            <i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas
+                                                        </button>
+                                                        {% if session["statut"] == "admin" %}
+                                                            <div class="d-flex justify-content-between mt-1">
+                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ produit.idProduit }}">
+                                                                    <i class="bi bi-pencil-fill"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger" data-id="{{ produit.idProduit }}" id="deleteProductButton">
+                                                                    <i class="bi bi-trash-fill"></i>
+                                                                </button>
+                                                            </div>
+                                                    </form>
+                                                    {% endif %} 
+                                                            <!-- Modal -->
+                                                            
+                                                            <div class="modal fade" id="editModal{{ produit.idProduit }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <form id="updateProductForm" action="/update_product" method="POST" enctype="multipart/form-data">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="editModalLabel">Éditer le produit</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                                <input type="hidden" name="update_idCategorie" value="{{ produit.idCategorie }}">
+                                                                                <input type="hidden" name="update_idProduit" value="{{ produit.idProduit }}">
+                                                                                <div class="mb-3">
+                                                                                    <label for="nomProduit" class="form-label">Nom du produit</label>
+                                                                                    <input type="text" class="form-control" id="nomProduit" name="update_nomProduit" value="{{ produit.nom }}">
+                                                                                </div>
+                                                                                <div class="mb-3">
+                                                                                    <label for="qtsucre" class="form-label">Quantité de sucre</label>
+                                                                                    <input type="text" class="form-control" id="qtsucre" name="update_qtsucre" value="{{ produit.qtsucre }}">
+                                                                                </div>
+                                                                                <div class="mb-3">
+                                                                                    <label for="marque" class="form-label">Marque</label>
+                                                                                    <input type="text" class="form-control" id="marque" name="update_marque" value="{{ produit.marque }}">
+                                                                                </div>
+                                                                                <div class="mb-3">
+                                                                                    <label for="idCategorie" class="form-label">Catégorie</label>
+                                                                                    <select class="form-select" name="update_categorie" id="monSelect">
+                                                                                        <option selected disabled>{{ categories[produit.idCategorie] }}</option>
+                                                                                        <option value="1">goûter/dessert</option>
+                                                                                        <option value="2">produits laitiers</option>
+                                                                                        <option value="3">sauce</option>
+                                                                                        <option value="4">fruits/légumes</option>
+                                                                                        <option value="5">viande/poisson</option>
+                                                                                        <option value="6">boisson</option>
+                                                                                        <option value="7">féculents/céréales</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="mb-3">
+                                                                                    <label class="form-label my-3">Image : </label>
+                                                                                    <img src="static/img/{{ produit.image}}" alt="avatar" class="img-fluid mt-3" style="max-width: 150px;">
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="submit" class="btn btn-primary" >Sauvegarder les changements</button>
+                                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                                                </div>
+                                                                            
+                                                                        </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 {% endfor %}
-                                    <!-- <div class="d-flex justify-content-start">
-                                        {% for page_num in range(1, total_pages + 1) %}
-                                            {% if page_num == current_page %}
-                                                <a href="?page={{ page_num }}" class="btn btn-primary">{{ page_num }}</a>
-                                            {% else %}
-                                                <a href="?page={{ page_num }}" class="btn btn-secondary">{{ page_num }}</a>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div> -->
                                     <div class="d-flex justify-content-between w-100">
                                         <div class="d-flex justify-content-start">
                                             {% if prev_url %}
@@ -158,6 +357,57 @@
                                         });
                                     });
                                 });
+                                
+                                </script>
+                                <script>
+                                $(document).ready(function(){
+                                    $(document).on('submit', '#updateProductForm', function(e) {
+                                        e.preventDefault();
+                                
+                                        console.log("Form submitted");
+                                
+                                        var $form = $(this);
+                                        var data = {
+                                            update_nomProduit: $form.find('input[name="update_nomProduit"]').val(),
+                                            update_marque: $form.find('input[name="update_marque"]').val(),
+                                            update_qtsucre: $form.find('input[name="update_qtsucre"]').val(),
+                                            update_idCategorie: $form.find('input[name="update_idCategorie"]').val(),
+                                            update_idProduit: $form.find('input[name="update_idProduit"]').val()
+                                        };
+                                
+                                        $.ajax({
+                                            url: $form.attr('action'),
+                                            type: "POST",
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'Content-Type': 'application/json'
+                                            },
+                                            data: JSON.stringify(data),
+                                            success: function(response) {
+                                                console.log("Success: ", response);
+                                                location.reload();  // Ajoutez cette ligne
+                                            },
+                                            error: function(jqXHR, textStatus, errorThrown) {
+                                                console.log("Error: ", textStatus, errorThrown);
+                                            }
+                                        });
+                                    });
+                                });
+                                </script>
+                                <script>
+                                    document.querySelector('#deleteProductButton').addEventListener('click', function() {
+                                        var idProduit = this.getAttribute('data-id');
+                                
+                                        fetch('/delete_produit/' + idProduit, {
+                                            method: 'DELETE',
+                                        })
+                                        .then(response => response.json())
+                                    });
+                                
+                                    $('#deleteProductButton').click(function(e) {
+                                        e.preventDefault();
+                                        location.reload()
+                                    });
                                 </script>
                             </div>
                         </div>
@@ -181,41 +431,7 @@
 
     <!-- JavaScript Libraries -->
     {% include("layout/script.html") %}
-    
-    <script>
-        $(document).ready(function(){
-            $(document).on('submit', 'form', function(e) {
-                console.log("Form submitted");
-                e.preventDefault();
 
-                var $form = $(this);
-                var data = {
-                    nom_produit: $form.find('input[name="produit.nom_produit"]').val(),
-                    idCategorie: $form.find('input[name="produit.idCategorie"]').val(),
-                    qtsucre: $form.find('input[name="produit.qtsucre"]').val(),
-                    image: $form.find('input[name="produit.image"]').val(),
-                    idProduit: $form.find('input[name="produit.idProduit"]').val()
-                };
-
-                $.ajax({
-                    url: $form.attr('action'),
-                    type: "POST",
-                    headers: { 
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type': 'application/json'  // Modifiez le type de contenu
-                    },
-                    data: JSON.stringify(data),  // Convertissez les données en JSON
-                    success: function(response){
-                        // handle success
-                    },
-                    error: function(jqXHR, textStatus, errorThrown){
-                        console.log("Erreur AJAX : ", textStatus, errorThrown);
-                    }
-                });
-            });
-        });
-
-    </script>
     
     </body>
     </html>
