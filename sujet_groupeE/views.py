@@ -283,29 +283,15 @@ def update_status():
 
 
 
-def ecrire_code_html(nom_fichier,nom_produit,image,qtsucre):
-    # Code HTML du produit
-    code_html = f"""
-                <div class="col-md-6 col-lg-6 col-xl-4">
-                    <div class="rounded shadow-sm position-relative fruite-item border border-primary">
-                        <div class="fruite-img">
-                            <img src="static/img/{image}" class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="p-4 border border-primary border-top-0 rounded-bottom">
-                            <h4 class="text-primary">{nom_produit}</h4>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="text-dark fs-5 fw-bold mb-0"> {qtsucre} g / portion</p>
-                                <button type="button" class="btn btn-primary rounded-pill px-3">Ajouter au panier</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        """
+def ecrire_code_html(nom_fichier, nom_produit, image, qtsucre):
+    # Générer le HTML à partir du template
+    code_html = render_template('code_recherche.html', nom_produit=nom_produit, image=image, qtsucre=qtsucre)
     # Ouvrir le fichier en mode écriture
     with open(nom_fichier, "a", encoding='utf-8') as fichier:
         # Écrire le code HTML dans le fichier
         fichier.write(code_html)
         fichier.close()
+
 
 def ecrire_rien(fichier):
     with open(fichier, "a", encoding='utf-8') as fichier:
@@ -457,3 +443,27 @@ def delete_categorie():
     print("category_id", category_id)
     bdd.delete_categorieData(category_id)
     return jsonify({'message': 'Category deleted successfully'})
+
+@app.route('/save_products', methods=['POST'])
+def save_products():
+    # Récupérer les données du corps de la requête
+    data = request.get_json()
+    print("data", data)
+
+    for product_data in data['products']:
+        idProduit = product_data['id']
+        quantite = product_data['quantity']
+        idUtilisateur = session['idUtilisateur']
+        dico_nom_produit = bdd.get_nom_produit(idProduit)
+        nom_produit = dico_nom_produit['nom']
+        bdd.ajout_repas(idProduit, idUtilisateur, nom_produit, quantite)
+
+    # Retourner une réponse de succès
+    return jsonify({'message': 'Les produits ont été enregistrés avec succès.'})
+
+@app.route('/repas')
+def repas():
+    idUtilisateur = session['idUtilisateur']
+    repas = bdd.get_repasData(idUtilisateur)
+    
+    return render_template('repas.html', repas=repas)

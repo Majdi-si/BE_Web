@@ -21,7 +21,12 @@
 
 
     <!-- Début affichage du tableau des membres -->
-    
+    {% if session["statut"] != "admin" %}
+        <div class="alert alert-danger" role="alert">
+            Vous n'avez pas les droits pour accéder à cette page.
+        </div>
+    {% endif %}
+    {% if session["statut"] == "admin" %}
     <div style="justify-content: center; display: flex; margin-top: 50px;">
         <table class="table table-striped sortable">
             <tr>
@@ -66,6 +71,7 @@
             {% endfor %}
         </table>
     </div>
+    {% endif %}
 
     <!-- Fin affichage du tableau des membres -->
 

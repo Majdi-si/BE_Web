@@ -406,3 +406,48 @@ def delete_categorieData(category_id):
         bddGen.deleteData(cnx, sql, param, msg)
         cnx.close()
     return 1
+
+def get_nom_produit(idProduit):
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "SELECT nom FROM produit WHERE idProduit = %s"
+    param = (idProduit,)
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    nom_produit = bddGen.selectOneData(cnx, sql, param, msg)
+    cnx.close()
+    return nom_produit
+
+#         bdd.ajout_repas(idProduit, idUtilisateur, nom_produit, quantite)
+
+def ajout_repas(idProduit, idUtilisateur, nom_produit, quantite):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    cursor = cnx.cursor()
+    sql = "INSERT INTO repas(idProduit, idUtilisateur, nom_produit, quantité) VALUES(%s,%s,%s,%s)"
+    param = (idProduit, idUtilisateur, nom_produit, quantite)
+    msg = {
+        "success": "addRepasOK",
+        "error": "Failed add repas data"
+    }
+    repas = bddGen.addData(cnx, sql, param, msg)
+    cnx.close()
+    return repas
+
+def get_repasData(idUtilisateur):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    cursor = cnx.cursor()
+    sql = """SELECT repas.idProduit, repas.idUtilisateur, repas.nom_produit, repas.quantité, produit.qtsucre, produit.image, produit.marque, produit.idCategorie    
+             FROM repas
+             JOIN produit ON repas.idProduit = produit.idProduit
+             WHERE repas.idUtilisateur = %s"""
+    param = (idUtilisateur,)
+    cursor.execute(sql, param)
+    result = cursor.fetchall()
+    cnx.close()
+    return result

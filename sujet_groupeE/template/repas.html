@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+
+<head>
+    {% set titre="Administrateur" %}
+    {% include("layout/head.html") %}
+</head>
+
+<body>
+
+    <!-- Navbar start -->
+    {%include("layout/navbar.html")%}
+    <!-- Navbar End -->
+
+
+    <!-- Single Page Header start -->
+    {% set nom_page="Admin" %}
+    {% include("layout/breadcrumb.html") %}
+    <!-- Single Page Header End -->
+
+
+    <!-- Début affichage du tableau des membres -->
+    
+    <div style="justify-content: center; display: flex; margin-top: 50px;">
+        <table class="table table-striped sortable">
+            <tr>
+                <th class="sorttable_nosort">Image</th>
+                <th>Nom du produit</th>
+                <th>Marque</th>
+                <th>Quantité de sucre</th>
+                <th class="sorttable_nosort">Supprimer</th>
+            </tr>
+            {% for repas in repas %}
+            <tr>
+                <td><img src="static/img/{{ repas[5] }}" alt="Image du produit" style="width: 35px;"></td>
+                <td>{{ repas[2] }}</td>
+                <td>{{ repas[6] }}</td>
+                <td>{{ repas[4] }}</td>
+                <td>
+                    <form action="delete_product" method="post">
+                        <input type="hidden" name="id_produit" value="{{ repas[0] }}">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Fin affichage du tableau des membres -->
+
+    <!-- Footer Start -->
+    {%include("layout/footer.html")%}
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    {% include("layout/script.html") %}
+</body>
+
+</html>

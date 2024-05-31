@@ -8,9 +8,7 @@
     </head>
 
     <body>
-        <div style="display: none;">
-            {% include("layout/navbar.html") %}
-        </div>
+
 
         <!-- Spinner Start -->
         <!-- {% include("layout/spinner.html") %} -->
@@ -226,6 +224,7 @@
                                                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                         <h4>{{ produit.nom.replace('_', ' ') | capitalize }}</h4>
                                                         <div class="d-flex justify-content-between flex-lg-wrap">
+                                                            {% if session["idUtilisateur"] %}
                                                             <form action="/add_to_meal" method="POST">
                                                                 <input type="hidden" name="produit.idProduit" value="{{ produit.idProduit }}">
                                                                 <input type="hidden" name="produit.nom_produit" value="{{ produit.nom }}">
@@ -236,6 +235,7 @@
                                                                     <i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas
                                                                 </button>
                                                             </form>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </div>

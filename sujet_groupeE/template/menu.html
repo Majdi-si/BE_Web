@@ -80,7 +80,7 @@
 
                 </div>
                 <div class="mt-5">
-                    <input type="hidden" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code">
+                    <button id="saveButton" class="btn btn-primary">Enregistrer</button>
                 </div>
                 <div class="row g-4 justify-content-end">
                     <div class="col-8"></div>
@@ -191,6 +191,36 @@
                         calculateTotalSugar();
                     }
                 });
+            });
+        });
+    </script>
+    <script>
+        $('#saveButton').click(function() {
+            // Créer un tableau pour stocker les produits
+            var products = [];
+
+            // Parcourir chaque ligne du tableau
+            $('tr[id^="product-row-"]').each(function() {
+                // Obtenir l'ID du produit
+                var productId = $(this).attr('id').split('-')[2];
+
+                // Obtenir la quantité
+                var quantity = $(this).find('input[name="quantity-input"]').val();
+
+                // Ajouter le produit au tableau
+                products.push({ id: productId, quantity: quantity });
+            });
+
+            // Envoyer une requête AJAX pour enregistrer les produits
+            $.ajax({
+                url: '/save_products',
+                type: 'POST',
+                data: JSON.stringify({ products: products }),
+                contentType: 'application/json',
+                success: function(response) {
+                    // Afficher un message de succès
+                    alert('Les produits ont été enregistrés avec succès.');
+                }
             });
         });
     </script>
