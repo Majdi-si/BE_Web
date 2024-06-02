@@ -427,12 +427,29 @@ def ajout_repas(idProduit, idUtilisateur, nom_produit, quantite):
     if cnx is None:
         return None
     cursor = cnx.cursor()
-    sql = "INSERT INTO repas(idProduit, idUtilisateur, nom_produit, quantité) VALUES(%s,%s,%s,%s)"
-    param = (idProduit, idUtilisateur, nom_produit, quantite)
-    msg = {
-        "success": "addRepasOK",
-        "error": "Failed add repas data"
-    }
+
+    # Vérifier si le produit existe déjà pour l'utilisateur
+    sql_check = "SELECT quantité FROM repas WHERE idProduit=%s AND idUtilisateur=%s"
+    cursor.execute(sql_check, (idProduit, idUtilisateur))
+    result = cursor.fetchone()
+
+    if result:
+        # Si le produit existe déjà, mettre à jour la quantité
+        sql = "UPDATE repas SET quantité=quantité+%s WHERE idProduit=%s AND idUtilisateur=%s"
+        param = (quantite, idProduit, idUtilisateur)
+        msg = {
+            "success": "updateRepasOK",
+            "error": "Failed update repas data"
+        }
+    else:
+        # Si le produit n'existe pas, insérer une nouvelle ligne
+        sql = "INSERT INTO repas(idProduit, idUtilisateur, nom_produit, quantité) VALUES(%s,%s,%s,%s)"
+        param = (idProduit, idUtilisateur, nom_produit, quantite)
+        msg = {
+            "success": "addRepasOK",
+            "error": "Failed add repas data"
+        }
+
     repas = bddGen.addData(cnx, sql, param, msg)
     cnx.close()
     return repas
@@ -451,3 +468,31 @@ def get_repasData(idUtilisateur):
     result = cursor.fetchall()
     cnx.close()
     return result
+
+def delete_product_meal(id_produit):
+    cnx = bddGen.connexion()
+    if cnx is None:
+        return None
+    else:
+        sql = "DELETE FROM repas WHERE idProduit=%s"
+        param = (id_produit,)
+        msg = {
+            "success": "deleteProduitOK",
+            "error": "Failed delete produit data"
+        }
+        bddGen.deleteData(cnx, sql, param, msg)
+        cnx.close()
+    return 1
+
+def get_produitData_per_sucre(qtsucre):
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "SELECT * FROM produit WHERE qtsucre = %s"
+    param = (qtsucre,)
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    listeProduit = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    return listeProduit

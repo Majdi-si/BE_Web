@@ -203,6 +203,11 @@
                                                     </div>
                                                 </li>
                                             {% endfor %}
+                                            <form id="triForm">
+                                                <label for="maxSucre">Quantité maximale de sucre:</label>
+                                                <input type="number" id="maxSucre" name="maxSucre">
+                                                <input type="submit" value="Trier">
+                                            </form>
                                         </ul>
                                     </div>
                                 </div>
@@ -226,6 +231,26 @@
                                         });
                                     });
                                 </script> 
+                                <script>
+                                $(document).ready(function(){
+                                    $("#triForm").on('submit', function(e){
+                                        e.preventDefault();
+                                        var maxSucre = $("#maxSucre").val();
+                                        $.ajax({
+                                            url: "/produits/sucre/" + maxSucre,
+                                            type: "GET",
+                                            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                                            success: function(data){
+                                                $("#produits").html(data);
+                                                $('html, body').animate({ scrollTop: 0 }, 'fast');
+                                            },
+                                            error: function(jqXHR, textStatus, errorThrown){
+                                                console.log("Erreur AJAX : ", textStatus, errorThrown);
+                                            }
+                                        });
+                                    });
+                                });
+                                </script>
                             </div>
                         </div>
                         <div class="col-lg-9">
@@ -254,7 +279,7 @@
                                                         <input type="hidden" name="produit.idCategorie" value="{{ produit.idCategorie }}">
                                                         <input type="hidden" name="produit.image" value="{{ produit.image }}">
                                                         <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-add">
-                                                            <i class="fas fa-utensils me-2 text-primary"></i> Ajouter au repas
+                                                            <i class="fas fa-utensils me-2 text-primary"></i> Ajouter au menu
                                                         </button>
                                                         {% if session["statut"] == "admin" %}
                                                             <div class="d-flex justify-content-between mt-1">

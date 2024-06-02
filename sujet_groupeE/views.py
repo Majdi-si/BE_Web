@@ -183,7 +183,6 @@ def admin():
 @app.route("/delete_member", methods=['POST'])
 def delete_membre():
     id_membre = request.form.get('id_membre')
-    print("member id to delete: ", id_membre)
     bdd.delete_userData(id_membre)
     if "errorDB" not in session:
         session["infoVert"] = "Membre supprimé"
@@ -465,5 +464,29 @@ def save_products():
 def repas():
     idUtilisateur = session['idUtilisateur']
     repas = bdd.get_repasData(idUtilisateur)
-    
-    return render_template('repas.html', repas=repas)
+    total_sucre = 0
+    repas = [list(i) for i in repas]  # Convertir chaque tuple en liste
+    for i in repas:
+        i[4] = round(i[4] * i[3] / 100, 2)
+        total_sucre += round(i[4],2)
+    return render_template('repas.html', repas=repas, total_sucre=total_sucre)
+
+
+@app.route('/delete_product_meal', methods=['POST'])
+def delete_product_meal():
+    id_produit = request.form.get('id_produit')
+    bdd.delete_product_meal(id_produit)
+    if "errorDB" not in session:
+        session["infoVert"] = "Produit supprimé"
+    else:
+        session["infoRouge"] = "Problème suppression produit"
+
+    return redirect(url_for('repas'))
+
+@app.route('/clear_messages', methods=['POST'])
+def clear_messages():
+    if "infoVert" in session:
+        del session["infoVert"]
+    if "infoRouge" in session:
+        del session["infoRouge"]
+    return jsonify({'message': 'Messages cleared'})

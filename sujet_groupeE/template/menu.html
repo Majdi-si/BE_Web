@@ -79,9 +79,11 @@
                     </table>
 
                 </div>
+                {% if session["statut"]%}
                 <div class="mt-5">
                     <button id="saveButton" class="btn btn-primary">Enregistrer</button>
                 </div>
+                {% endif %}
                 <div class="row g-4 justify-content-end">
                     <div class="col-8"></div>
                     <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
@@ -219,7 +221,7 @@
                 contentType: 'application/json',
                 success: function(response) {
                     // Afficher un message de succès
-                    alert('Les produits ont été enregistrés avec succès.');
+                    alert('Les produits ont été enregistrés avec succès dans la page repas');
                 }
             });
         });

@@ -3,7 +3,7 @@
     <script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 
 <head>
-    {% set titre="Administrateur" %}
+    {% set titre="Repas" %}
     {% include("layout/head.html") %}
 </head>
 
@@ -15,39 +15,88 @@
 
 
     <!-- Single Page Header start -->
-    {% set nom_page="Admin" %}
+    {% set nom_page="Repas" %}
     {% include("layout/breadcrumb.html") %}
     <!-- Single Page Header End -->
 
 
     <!-- Début affichage du tableau des membres -->
     
-    <div style="justify-content: center; display: flex; margin-top: 50px;">
-        <table class="table table-striped sortable">
-            <tr>
-                <th class="sorttable_nosort">Image</th>
-                <th>Nom du produit</th>
-                <th>Marque</th>
-                <th>Quantité de sucre</th>
-                <th class="sorttable_nosort">Supprimer</th>
-            </tr>
-            {% for repas in repas %}
-            <tr>
-                <td><img src="static/img/{{ repas[5] }}" alt="Image du produit" style="width: 35px;"></td>
-                <td>{{ repas[2] }}</td>
-                <td>{{ repas[6] }}</td>
-                <td>{{ repas[4] }}</td>
-                <td>
-                    <form action="delete_product" method="post">
-                        <input type="hidden" name="id_produit" value="{{ repas[0] }}">
-                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-
+    
+        {% if "infoVert" in session %}
+            <div class="alert alert-success" role="alert" id="infoVert">
+                {{ session["infoVert"] }}
+            </div>
+        {% endif %}
+        {% if "infoRouge" in session %}
+            <div class="alert alert-danger" role="alert" id="infoRouge">
+                {{ session["infoRouge"] }}
+            </div>
+        {% endif %}
+        <script>
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $("#infoVert").fadeOut("slow", function() {
+                        $.post("/clear_messages");
+                    });
+                    $("#infoRouge").fadeOut("slow", function() {
+                        $.post("/clear_messages");
+                    });
+                }, 1000);
+            });
+        </script>
+        <div style="justify-content: center; display: flex; margin-top: 50px;">
+            {% if repas %}
+                <table class="table table-striped sortable">
+                    <tr>
+                        <th class="sorttable_nosort">Image</th>
+                        <th>Nom du produit</th>
+                        <th>Marque</th>
+                        <th>Quantité de sucre (en g)</th>
+                        <th class="sorttable_nosort">Supprimer</th>
+                    </tr>
+                    {% for repas in repas %}
+                    <tr>
+                        <td><img src="static/img/{{ repas[5] }}" alt="Image du produit" style="width: 35px;"></td>
+                        <td>{{ repas[2].replace('_', ' ') | capitalize }}</td>
+                        <td>{{ repas[6].capitalize() }}</td>
+                        <td>{{ repas[4] }}</td>
+                        <td>
+                            <form action="delete_product_meal" method="post">
+                                <input type="hidden" name="id_produit" value="{{ repas[0] }}">
+                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    N'oubliez pas d'enregistrer vos repas depuis la page menu
+                </div>
+            {% endif %}
+        </div>
+        <div class="row g-3 justify-content-end">
+            <div class="col-8"></div>
+            <div class="col-sm-6 col-md-5 col-lg-2 col-xl-3">
+                <div class="bg-light rounded">
+                    <div class="p-4">
+                        <h1 class="display-6 mb-4">Total</h1>
+                        <div class="d-flex justify-content-between mb-4">
+                        </div>
+                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                            <h5 class="mb-0 ps-4 me-4">Quantité totale de sucre à ne pas dépasser (en g)</h5>
+                            <p class="mb-0 pe-4 total-sugar-max">{{ session['qtmax']}}</p>
+                        </div>
+                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                            <h5 class="mb-0 ps-4 me-4">Quantité totale de sucre (en g)</h5>
+                            <p class="mb-0 pe-4 total-sugar">{{ total_sucre }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
     <!-- Fin affichage du tableau des membres -->
 
     <!-- Footer Start -->
