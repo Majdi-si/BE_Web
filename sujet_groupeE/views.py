@@ -175,6 +175,10 @@ def compte():
 def recherche():
     return render_template("recherche.html")
 
+@app.route("/rien")
+def rien():
+    return render_template("rien.html")
+
 @app.route("/admin")
 def admin():
     membres = bdd.get_membresData()
@@ -284,23 +288,37 @@ def update_status():
 
 def ecrire_code_html(nom_fichier, nom_produit, image, qtsucre):
     # Générer le HTML à partir du template
-    code_html = render_template('code_recherche.html', nom_produit=nom_produit, image=image, qtsucre=qtsucre)
+    code_html = f'''div class="col-md-6 col-lg-6 col-xl-4">
+                    <div class="rounded shadow-sm position-relative fruite-item border border-primary">
+                        <div class="fruite-img">
+                            <img src="static/img/{image}" class="img-fluid w-100 rounded-top" alt="">
+                        </div>
+                        <div class="p-4 border border-primary border-top-0 rounded-bottom">
+                            <h4 class="text-primary">{nom_produit}</h4>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="text-dark fs-5 fw-bold mb-0"> {qtsucre} g / portion</p>
+                                <button type="button" class="btn btn-primary rounded-pill px-3">Ajouter au panier</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>'''
     # Ouvrir le fichier en mode écriture
-    with open(nom_fichier, "a", encoding='utf-8') as fichier:
-        # Écrire le code HTML dans le fichier
-        fichier.write(code_html)
-        fichier.close()
+    with open(nom_fichier, 'a', encoding='utf-8') as fichier:
+        new_text = fichier[263:]
+        new_text.write(code_html)
+        new_text.close()
 
 
-def ecrire_rien(fichier):
-    with open(fichier, "a", encoding='utf-8') as fichier:
-        fichier.write(f'Aucun produit ne correspond à votre recherche')
-        fichier.close()
+# def ecrire_rien(fichier):
+#     with open(fichier, "a", encoding='utf-8') as fichier:
+#         fichier.write(f'Aucun produit ne correspond à votre recherche')
+#         fichier.close()
 
 
-def suppression_code_html(nom_fichier):
+def suppression_code_html(nom_fichier,n):
     # Ouvrir le fichier en mode écriture
-    with open(nom_fichier, "w",encoding='utf-8') as fichier:
+    with open(nom_fichier[263:n*15+263], "w",encoding='utf-8') as fichier:
         # Écrire le code HTML dans le fichier
         fichier.write("")
         fichier.close()
@@ -308,21 +326,20 @@ def suppression_code_html(nom_fichier):
 
 @app.route("/votre_page_de_resultats", methods=['post'])
 def votre_page_de_resultats():
-    suppression_code_html("sujet_groupeE\\template\\recherche.html")
+    n=0
+    #suppression_code_html("sujet_groupeE\\template\\recherche.html",n)
     mot = request.form.get('keyword').lower()  # Convertir le mot de recherche en minuscules
     print("Mot de recherche: ", mot)
     produit = bdd.get_produitData()
     images = bdd.get_imageData()
     qtsucre = bdd.get_qtsurcreData()
-    n=0
     for i in range(len(produit)):
         if mot[:3] == produit[i]['nom'].lower()[:3]: 
             print("Produit trouvé: ", produit[i]['nom'])
             n=n+1
-            ecrire_code_html("sujet_groupeE\\template\\recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
+            ecrire_code_html("BE_Web\sujet_groupeE\\template\\recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
     if n==0 :
-        print("no product found")
-        ecrire_rien("sujet_groupeE\\template\\recherche.html")
+        return redirect(url_for('rien'))
     return redirect(url_for('recherche'))
 
 
