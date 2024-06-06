@@ -19,7 +19,7 @@
                 <h4>{{ produit.nom.replace('_', ' ') | capitalize }}</h4>
                 <div class="d-flex justify-content-between flex-lg-wrap">
                     <p class="text-dark fs-5 fw-bold mb-0">{{ produit.qtsucre}}g/portion</p>
-                    <form action="/add_to_meal" method="POST">
+                    <form id="addMealForm" action="/add_to_meal" method="POST ">
                         <input type="hidden" name="produit.idProduit" value="{{ produit.idProduit }}">
                         <input type="hidden" name="produit.nom_produit" value="{{ produit.nom }}">
                         <input type="hidden" name="produit.qtsucre" value="{{ produit.qtsucre }}">
@@ -69,7 +69,7 @@
                                                 <div class="mb-3">
                                                     <label for="idCategorie" class="form-label">Catégorie</label>
                                                     <select class="form-select" name="update_categorie" id="monSelect">
-                                                        <option selected disabled>{{ categories[produit.idCategorie] }}</option>
+                                                        <option selected disabled>{{categories_dict[produit.idCategorie].nom.replace('_', '/') }}</option>
                                                         <option value="1">goûter/dessert</option>
                                                         <option value="2">produits laitiers</option>
                                                         <option value="3">sauce</option>
@@ -114,7 +114,7 @@
 
 <script>
     $(document).ready(function(){
-        $(document).on('submit', 'form', function(e) {
+        $('#addMealForm').on('submit', function(e) {
             console.log("Form submitted");
             e.preventDefault();
 
@@ -144,7 +144,6 @@
             });
         });
     });
-
 </script>
 <script>
     document.querySelector('#deleteProductButton').addEventListener('click', function() {

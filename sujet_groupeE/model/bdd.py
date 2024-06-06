@@ -501,7 +501,7 @@ def get_produitData_per_sucre(qtsucre):
 def get_produitData_per_nom(nom):
     cnx = bddGen.connexion()
     if cnx is None: return None
-    sql = "SELECT * FROM produit WHERE nom_produit LIKE %s"
+    sql = "SELECT * FROM produit WHERE nom LIKE %s"
     param = ("%" + nom + "%",)  # Ajoute des caractères de remplacement avant et après le nom
     msg = {
         "success":"ok",
@@ -509,4 +509,4 @@ def get_produitData_per_nom(nom):
     }
     listeProduit = bddGen.selectData(cnx, sql, param, msg)
     cnx.close()
-    # return listeProduit
+    return listeProduit

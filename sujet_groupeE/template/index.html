@@ -8,15 +8,24 @@
     </head>
 
     <body>
-
+        <script src="static/js/scripts.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 
         <!-- Spinner Start -->
         <!-- {% include("layout/spinner.html") %} -->
         <!-- Spinner End -->
 
         <!-- Navbar start -->
-            {%include("layout/navbar.html")%}
+        {%include("layout/navbar.html")%}
         <!-- Navbar End -->
+
+        <!-- Modal Search Start -->
+        {%include("layout/search.html")%}
+        <!-- Modal Search End -->
 
         
         <!-- Success message-->
@@ -34,9 +43,7 @@
 
         <!-- End success message-->
 
-        <!-- Modal Search Start -->
-            {%include("layout/search.html")%}
-        <!-- Modal Search End -->
+
 
         <!-- Hero Start -->
         <div class="container-fluid py-5 mb-5 hero-header">
@@ -62,8 +69,10 @@
                         <h4 class="mb-4 text-secondary">Site de recensement des produits et de leur teneur en sucre</h4>
                         <h1 class="mb-5 display-3 text-primary">Sugar Tracker</h1>
                         <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Rechercher un produit">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Rechercher</button>
+                            <form id="searchForm" action="recherche" method="post">
+                                <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text" name="keyword" placeholder="Rechercher un produit">
+                                <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Rechercher</button>
+                            </form>
                         </div>
                     </div>
                     
@@ -270,7 +279,7 @@
                 });
             });
         </script>
-            <script>
+            <!-- <script>
         $(document).ready(function(){
             $(document).on('submit', 'form', function(e) {
                 console.log("Form submitted");
@@ -303,7 +312,7 @@
             });
         });
 
-    </script>
+    </script> -->
         <!-- Fruits Shop End-->
 
 

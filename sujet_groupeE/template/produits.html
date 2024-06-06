@@ -40,8 +40,16 @@
                     <div class="row g-4">
                         <div class="col-xl-3">
                             <div class="input-group w-100 mx-auto d-flex">
-                                <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                                <form id="searchForm" action="recherche" method="post">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control p-3" name="keyword" placeholder="Rechercher un produit" aria-describedby="search-icon-1">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 rounded-pill text-white h-100">
+                                                <i class="fa fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="col-6"></div>
@@ -50,7 +58,7 @@
                         <div class="col-lg-3">
                             <div class="row g-4">
                                 <div class="col-lg-12">
-                                    <div class="mb-3">
+                                    <div class="mb-3 mt-3">
                                         <h4>Categories</h4>
                                             {% if session["statut"] == "admin" %}
                                                 <div class="d-flex justify-content-start mb-3">
@@ -203,10 +211,10 @@
                                                     </div>
                                                 </li>
                                             {% endfor %}
-                                            <form id="triForm" class="mb-3">
-                                                    <label for="maxSucre" class="form-label mr-2">Quantité maximale de sucre:</label>
+                                            <form id="triForm" class="mb-3 mt-3">
+                                                <h4>Quantité maximale de sucre (en g)</h4>
                                                     <div class="d-flex align-items-center">
-                                                    <input type="number" id="maxSucre" name="maxSucre" class="form-control mr-2">
+                                                    <input type="text" id="maxSucre" name="maxSucre" class="form-control mr-2" pattern="^\d*(\.\d{0,2})?$">
                                                     <input type="submit" value="Trier" class="btn btn-primary">
                                                 </div>
                                             </form>
@@ -323,7 +331,7 @@
                                                                                 <div class="mb-3">
                                                                                     <label for="idCategorie" class="form-label">Catégorie</label>
                                                                                     <select class="form-select" name="update_categorie" id="monSelect">
-                                                                                        <option selected disabled>{{ categories[produit.idCategorie] }}</option>
+                                                                                        <option selected disabled>{{categories_dict[produit.idCategorie].nom.replace('_', '/') }}</option>
                                                                                         <option value="1">goûter/dessert</option>
                                                                                         <option value="2">produits laitiers</option>
                                                                                         <option value="3">sauce</option>
