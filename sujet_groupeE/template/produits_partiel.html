@@ -25,6 +25,7 @@
                         <input type="hidden" name="produit.qtsucre" value="{{ produit.qtsucre }}">
                         <input type="hidden" name="produit.idCategorie" value="{{ produit.idCategorie }}">
                         <input type="hidden" name="produit.image" value="{{ produit.image }}">
+                        {% if session["idUtilisateur"] %}
                         <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-add">
                             <i class="fas fa-utensils me-2 text-primary"></i> Ajouter au menu
                         </button>
@@ -38,6 +39,7 @@
                             </button>
                             </div>
                     </form>
+                    {% endif %}
                     {% endif %} 
                             <!-- Modal -->
                             

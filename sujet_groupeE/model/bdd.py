@@ -487,7 +487,7 @@ def delete_product_meal(id_produit):
 def get_produitData_per_sucre(qtsucre):
     cnx = bddGen.connexion()
     if cnx is None: return None
-    sql = "SELECT * FROM produit WHERE qtsucre = %s"
+    sql = "SELECT * FROM produit WHERE qtsucre <= %s"
     param = (qtsucre,)
     msg = {
         "success":"ok",
@@ -495,4 +495,18 @@ def get_produitData_per_sucre(qtsucre):
     }
     listeProduit = bddGen.selectData(cnx, sql, param, msg)
     cnx.close()
+    print("listeProduit : ", listeProduit)
     return listeProduit
+
+def get_produitData_per_nom(nom):
+    cnx = bddGen.connexion()
+    if cnx is None: return None
+    sql = "SELECT * FROM produit WHERE nom_produit LIKE %s"
+    param = ("%" + nom + "%",)  # Ajoute des caractères de remplacement avant et après le nom
+    msg = {
+        "success":"ok",
+        "error" : "Ce produit n'existe pas"
+    }
+    listeProduit = bddGen.selectData(cnx, sql, param, msg)
+    cnx.close()
+    # return listeProduit

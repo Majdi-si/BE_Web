@@ -334,7 +334,7 @@ def votre_page_de_resultats():
         if mot[:3] == produit[i]['nom'].lower()[:3]: 
             print("Produit trouvé: ", produit[i]['nom'])
             n=n+1
-            ecrire_code_html("BE_Web\sujet_groupeE\\template\\recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
+            ecrire_code_html("recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
     if n==0 :
         return redirect(url_for('rien'))
     return redirect(url_for('recherche'))
@@ -361,11 +361,16 @@ def ajout_produit():
 @app.route('/produits/<int:page>')
 @app.route('/produits/categorie/<int:category_id>')
 @app.route('/produits/categorie/<int:category_id>/<int:page>')
-def produits(page=1, category_id=None):
+@app.route('/produits/sucre/<int:max_sucre>', methods=['GET'])
+@app.route('/produits/sucre/<int:max_sucre>/<int:page>', methods=['GET'])
+def produits(page=1, category_id=None, max_sucre=None):
     categories = bdd.get_categorieData()
     per_page = 15
     if category_id:
         produits = bdd.get_produitData_per_categorie(category_id)
+        print("produits", produits)
+    elif max_sucre:
+        produits = bdd.get_produitData_per_sucre(max_sucre)
     else:
         produits = bdd.get_produitData_per_15(page, per_page)
     total = bdd.get_total_produit()  # Cette fonction doit retourner le nombre total de produits
@@ -380,7 +385,8 @@ def produits(page=1, category_id=None):
         return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
     else:
         return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
-    
+
+
 @app.route('/add_to_meal', methods=['POST'])
 def add_to_meal():
     data = request.get_json()
