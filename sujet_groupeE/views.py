@@ -95,20 +95,17 @@ def ajout():
         # Gérer le cas où 'avatar' n'est pas présent
         print("Le fichier 'avatar' n'est pas présent dans la requête.")
 
-    if int(age_connexion) >= 18:
-        qtmax = 25 #quantité de sucre max par jour pour un adulte
+    if int(age_connexion) <= 7:
+        qtmax = 60
+    elif int(age_connexion) <= 12 and int(age_connexion) >= 8:
+        qtmax = 75 
     else:
-        qtmax = 15 #quantité de sucre max par jour
+        qtmax = 100
 
     lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, avatar_connexion, age_connexion, qtmax) #ajouter avatar_extension
     if lastId == 0:  # Si l'insertion a échoué
         data = bdd.get_membresData()
         lastId = data[-1]['idUtilisateur']
-    # print(lastId) # dernier id créé par le serveur de BDD
-    # if "errorDB" not in session: 
-    #     session["infoVert"]="Nouveau membre inséré"
-    # else:
-    #     session["infoRouge"]="Problème ajout utilisateur"
 
     # Stocke les informations de l'utilisateur dans la session
     session['idUtilisateur'] = lastId
@@ -233,6 +230,12 @@ def update_info():
             flash('Une erreur est survenue lors de la vérification du mot de passe.', 'error')
 
     try:
+        if int(age) <= 7:
+            qtmax = 60
+        elif int(age) <= 12 and int(age) >= 8:
+            qtmax = 75 
+        else:
+            qtmax = 100
         # Mettre à jour les autres informations de l'utilisateur dans la base de données
         bdd.update_userData('prenom', prenom, session['idUtilisateur'])
         bdd.update_userData('nom', nom, session['idUtilisateur'])
@@ -240,6 +243,7 @@ def update_info():
         bdd.update_userData('mail', mail, session['idUtilisateur'])
         bdd.update_userData('statut', statut, session['idUtilisateur'])
         bdd.update_userData('age', age, session['idUtilisateur'])
+        bdd.update_produitData('qtmax', qtmax, session['idUtilisateur'])
 
         # Mettre à jour les informations de la session
         session['prenom'] = prenom
@@ -248,6 +252,7 @@ def update_info():
         session['mail'] = mail
         session['statut'] = statut
         session['age'] = age
+        session['qtmax'] = qtmax
     except Exception as e:
         flash('Une erreur est survenue lors de la mise à jour de vos informations.', 'error')
 
@@ -292,63 +297,6 @@ def update_status():
     return redirect(url_for('admin'))
 
 
-
-# def ecrire_code_html(nom_fichier, nom_produit, image, qtsucre):
-#     # Générer le HTML à partir du template
-#     code_html = f'''div class="col-md-6 col-lg-6 col-xl-4">
-#                     <div class="rounded shadow-sm position-relative fruite-item border border-primary">
-#                         <div class="fruite-img">
-#                             <img src="static/img/{image}" class="img-fluid w-100 rounded-top" alt="">
-#                         </div>
-#                         <div class="p-4 border border-primary border-top-0 rounded-bottom">
-#                             <h4 class="text-primary">{nom_produit}</h4>
-#                             <div class="d-flex justify-content-between align-items-center">
-#                                 <p class="text-dark fs-5 fw-bold mb-0"> {qtsucre} g / portion</p>
-#                                 <button type="button" class="btn btn-primary rounded-pill px-3">Ajouter au panier</button>
-#                             </div>
-#                         </div>
-#                     </div>
-#                 </div>
-#                 </div>'''
-#     # Ouvrir le fichier en mode écriture
-#     with open(nom_fichier, 'a', encoding='utf-8') as fichier:
-#         new_text = fichier[263:]
-#         new_text.write(code_html)
-#         new_text.close()
-
-
-# # def ecrire_rien(fichier):
-# #     with open(fichier, "a", encoding='utf-8') as fichier:
-# #         fichier.write(f'Aucun produit ne correspond à votre recherche')
-# #         fichier.close()
-
-
-# def suppression_code_html(nom_fichier,n):
-#     # Ouvrir le fichier en mode écriture
-#     with open(nom_fichier[263:n*15+263], "w",encoding='utf-8') as fichier:
-#         # Écrire le code HTML dans le fichier
-#         fichier.write("")
-#         fichier.close()
-
-
-# @app.route("/votre_page_de_resultats", methods=['post'])
-# def votre_page_de_resultats():
-#     n=0
-#     #suppression_code_html("sujet_groupeE\\template\\recherche.html",n)
-#     mot = request.form.get('keyword').lower()  # Convertir le mot de recherche en minuscules
-#     print("Mot de recherche: ", mot)
-#     produit = bdd.get_produitData()
-#     images = bdd.get_imageData()
-#     qtsucre = bdd.get_qtsurcreData()
-#     for i in range(len(produit)):
-#         if mot[:3] == produit[i]['nom'].lower()[:3]: 
-#             print("Produit trouvé: ", produit[i]['nom'])
-#             n=n+1
-#             ecrire_code_html("recherche.html", produit[i]['nom'],images[i]['image'],qtsucre[i]['qtsucre'])
-#     if n==0 :
-#         return redirect(url_for('rien'))
-#     return redirect(url_for('recherche')
-
 @app.route("/ajout_produit", methods=['POST'])
 def ajout_produit():
     photo_produit = request.files['photo_produit']
@@ -371,6 +319,8 @@ def ajout_produit():
 @app.route('/produits/categorie/<int:category_id>/<int:page>')
 @app.route('/produits/sucre/<int:max_sucre>', methods=['GET'])
 @app.route('/produits/sucre/<int:max_sucre>/<int:page>', methods=['GET'])
+@app.route('/produits/sucre/<float:max_sucre>', methods=['GET'])
+@app.route('/produits/sucre/<float:max_sucre>/<int:page>', methods=['GET'])
 def produits(page=1, category_id=None, max_sucre=None):
     if max_sucre is not None and max_sucre < 0:
         return "Erreur : max_sucre ne peut pas être négatif", 400
@@ -380,6 +330,7 @@ def produits(page=1, category_id=None, max_sucre=None):
         produits = bdd.get_produitData_per_categorie(category_id)
         print("produits", produits)
     elif max_sucre:
+        print("max_sucre", max_sucre)
         produits = bdd.get_produitData_per_sucre(max_sucre)
     else:
         produits = bdd.get_produitData_per_15(page, per_page)
