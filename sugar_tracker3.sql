@@ -29,7 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categorie` (
   `idCategorie` int(11) NOT NULL,
-  `nom` varchar(30) DEFAULT NULL
+  `nom` varchar(30) DEFAULT NULL,
+  ON DELETE CASCADE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --

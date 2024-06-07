@@ -20,10 +20,10 @@ body.night-mode {
     color: #1da1f2;
 }
 .fruite-img img {
-    width: auto;  /* pour une largeur fixe */
-    height: auto; /* hauteur ajustée automatiquement */
-    object-fit: fill; /* ou cover ou contain */
-}
+    width: 100%;  /* pour une largeur fixe */
+    height: 100%; /* hauteur ajustée automatiquement */
+    object-fit: contain; /* ou cover ou contain */
+}   
 .shadow {
     box-shadow: 0 4px 2px -2px gray;
 }

@@ -91,6 +91,13 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {% if session["statut"]%}
+                                                    <form action="update-info" method="POST" enctype="multipart/form-data">
+                                                        <div class="d-flex justify-content-start mb-3">
+                                                            <button class="btn btn-primary mb-3" onclick="showSection('ajoutProduit')">Ajouter un produit</button>
+                                                        </div>
+                                                    </form>
+                                            {% endif %}
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
@@ -110,7 +117,8 @@
                                                                         {% endfor %}
                                                                     </select>
                                                                 </div>
-                                                            </div>
+                                                            </div> 
+                                                            
                                                             <div class="modal-footer">
                                                                 <button type="submit" class="btn btn-danger">Supprimer</button>
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -214,7 +222,7 @@
                                             <form id="triForm" class="mb-3 mt-3">
                                                 <h4>Quantité maximale de sucre (en g)</h4>
                                                     <div class="d-flex align-items-center">
-                                                    <input type="text" id="maxSucre" name="maxSucre" class="form-control mr-2" pattern="^\d*(\.\d{0,2})?$">
+                                                    <input type="text" id="maxSucre" name="maxSucre" class="form-control mr-2" >
                                                     <input type="submit" value="Trier" class="btn btn-primary">
                                                 </div>
                                             </form>
@@ -274,8 +282,8 @@
                                 {% for produit in produits %}
                                     <div class="col-md-6 col-lg-6 col-xl-4">
                                         <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img">
-                                                <img src="static/img/{{produit.image}}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}" width=10px height=10px object-fit:fill>
+                                            <div class="fruite-img" style="height: 200px; overflow: hidden;">
+                                                <img src="static/img/{{produit.image}}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}" style="object-fit: scale-down;">
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ categories_dict[produit.idCategorie].nom.replace('_', '/') | capitalize }}</div>
                                             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
@@ -344,7 +352,7 @@
                                                                                 </div>
                                                                                 <div class="mb-3">
                                                                                     <label class="form-label my-3">Image : </label>
-                                                                                    <img src="static/img/{{ produit.image}}" alt="avatar" class="img-fluid mt-3" style="max-width: 150px;"width=10px height=10px object-fit:fill>
+                                                                                        <img src="static/img/{{ produit.image}}" alt="avatar" class="img-fluid mt-3" style="max-width: 150px; object-fit: fill;">
                                                                                 </div>
                                                                                 <div class="modal-footer">
                                                                                     <button type="submit" class="btn btn-primary" >Sauvegarder les changements</button>
@@ -397,7 +405,7 @@
                                 });
                                 
                                 </script>
-                                <script>
+                               <script>
                                 $(document).ready(function(){
                                     $(document).on('submit', '#updateProductForm', function(e) {
                                         e.preventDefault();

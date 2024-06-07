@@ -11,8 +11,8 @@
     {% for produit in produits %}
         <div class="col-md-6 col-lg-6 col-xl-4">
             <div class="rounded position-relative fruite-item">
-                <div class="fruite-img">
-                    <img src="static/img/{{produit.image}}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}"width=10px height=10px object-fit:fill>
+                <div class="fruite-img" style="height: 200px; overflow: hidden;">
+                    <img src="static/img/{{produit.image}}" class="img-fluid w-100 rounded-top" alt="{{ produit.nom_produit }}" style="object-fit: scale-down;">
                 </div>
                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ categories_dict[produit.idCategorie].nom.replace('_', '/') | capitalize }}</div>
             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
