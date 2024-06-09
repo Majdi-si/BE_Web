@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 02 juin 2024 à 18:44
+-- Généré le : dim. 09 juin 2024 à 19:09
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -117,7 +117,23 @@ INSERT INTO `produit` (`idProduit`, `nom`, `marque`, `qtsucre`, `idCategorie`, `
 (44, 'schoko_bons', 'kinder', 52.2, 1, 1, 'schoko_bons.jpg'),
 (45, 'glace_vanille', 'carte_dor', 9, 1, 1, 'glace_vanille.jpg'),
 (47, 'Pain au lait', 'Pasquier', 11, 1, 5, 'prod_pal_x10_2022.jpg'),
-(48, 'Sauce algérienne', 'Samia', 8.9, 3, 5, 'sauce-alger.webp');
+(48, 'Sauce algérienne', 'Samia', 8.9, 3, 5, 'sauce-alger.webp'),
+(49, 'banane', 'Carrefour', 12, 4, 3, 'banane.jpg'),
+(50, 'fraise', 'Carrefour', 4.9, 4, 3, 'fraise.webp'),
+(51, 'courgette', 'carrefour', 1.67, 4, 3, 'courgette.jpg'),
+(52, 'pomme', 'carrefour', 10, 4, 3, 'pomme.png'),
+(53, 'Yaourt nature', 'Danone', 5.7, 2, 3, 'veloute.jpg'),
+(54, 'Emmental rapé', 'Président', 1, 2, 3, 'rape.jpg'),
+(55, 'tomates', 'carrefour', 1.7, 4, 3, 'tomate.jpg'),
+(56, 'concombre', 'carrefour', 1.67, 4, 3, 'concombre.jpg'),
+(57, 'avocat', 'carrefour', 0.9, 4, 3, 'avocat.webp'),
+(58, 'asperge', 'carrefour', 1.88, 4, 3, 'asperge.webp'),
+(59, 'poivron', 'carrefour', 4.2, 4, 3, 'poivron.jpg'),
+(60, 'Tortillas', 'Old el paso', 2.1, 7, 3, 'tortilla.webp'),
+(61, 'crème fraiche', 'bridélice', 3.9, 2, 3, 'creme.avif'),
+(62, 'poulet', 'Le Gaulois', 0.5, 5, 3, 'poulet.jpg'),
+(63, 'lardons', 'Herta', 7, 5, 3, 'lardon.jpg'),
+(64, 'Kinder Délice', 'Kinder', 58.8, 1, 4, 'telechargement.jpeg');
 
 -- --------------------------------------------------------
 
@@ -137,12 +153,20 @@ CREATE TABLE `repas` (
 --
 
 INSERT INTO `repas` (`idProduit`, `idUtilisateur`, `nom_produit`, `quantité`) VALUES
-(1, 1, '', 0),
-(2, 1, '', 0),
-(1, 1, 'nutella', 1),
-(2, 1, 'prince', 1),
-(48, 1, 'Sauce algérienne', 10),
-(8, 1, 'ketchup', 12);
+(1, 1, 'nutella', 102),
+(2, 1, 'prince', 10),
+(5, 3, 'pain_de_mie_complet', 1),
+(1, 3, 'nutella', 11),
+(9, 4, 'vache_qui_rit', 50),
+(12, 4, 'sauce_tomate_basilic', 40),
+(30, 4, 'chocolat_lait', 40),
+(29, 4, 'belvita', 45),
+(44, 5, 'schoko_bons', 100),
+(48, 5, 'Sauce algérienne', 100),
+(56, 5, 'concombre', 100),
+(32, 5, 'lait', 50),
+(28, 5, 'chocapic', 50),
+(42, 5, 'jus_multifruit', 30);
 
 -- --------------------------------------------------------
 
@@ -159,7 +183,7 @@ CREATE TABLE `utilisateur` (
   `mail` varchar(50) DEFAULT NULL,
   `motPasse` char(64) DEFAULT NULL,
   `qtmax` float DEFAULT NULL,
-  `statut` varchar(10) DEFAULT NULL,
+  `statut` varchar(20) DEFAULT NULL,
   `avatar` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -169,7 +193,9 @@ CREATE TABLE `utilisateur` (
 
 INSERT INTO `utilisateur` (`idUtilisateur`, `login`, `nom`, `prenom`, `age`, `mail`, `motPasse`, `qtmax`, `statut`, `avatar`) VALUES
 (1, 'admin', 'admin', 'admin', 99, 'admin@admin.com', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 25, 'admin', 'avatar6'),
-(2, 'cacadu12', 'prout', 'caca', 2, 'jaimelepipi@gmail.com', 'eef0c396c1a2c19d3119217a759fad0d6ab57465cb9241e80277378bfd970236', 15, 'admin', 'avatar4');
+(3, 'margotte', 'Deveil', 'Margot', 20, 'margot@gmail.com', '4d8213eb7377dfefbdca96ab6f4f5e9f1837e1a233abf5680db2eb0865dfd2e6', 15, 'gestionnaire', 'avatar2'),
+(4, 'Lea-T', 'Terrin', 'Léa', 20, 'leaterrin@gmail.com', 'f2d81a260dea8a100dd517984e53c56a7523d96942a834b9cdc249bd4e8c7aa9', 100, 'admin', 'avatar4'),
+(5, 'lombarju', 'LOMBARDI', 'Julie', 21, 'julielombardi@outlook.fr', 'd948c51c0ddbb19828ee99d80ad3cae2301fefb37571ca8f8eb4e9619273db99', 100, 'gestionnaire', 'avatar2');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
