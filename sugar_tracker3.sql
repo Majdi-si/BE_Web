@@ -29,8 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categorie` (
   `idCategorie` int(11) NOT NULL,
-  `nom` varchar(30) DEFAULT NULL
+  `nom` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`idCategorie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 --
 -- Déchargement des données de la table `categorie`
@@ -58,8 +60,11 @@ CREATE TABLE `produit` (
   `qtsucre` double DEFAULT NULL,
   `idCategorie` int(11) DEFAULT NULL,
   `idUtilisateur` int(11) DEFAULT NULL,
-  `image` varchar(100) DEFAULT NULL
+  `image` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`idProduit`),
+  FOREIGN KEY (`idCategorie`) REFERENCES `categorie`(`idCategorie`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 --
 -- Déchargement des données de la table `produit`
