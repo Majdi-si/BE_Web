@@ -13,6 +13,9 @@
     {%include("layout/navbar.html")%}
     <!-- Navbar End -->
 
+    <!-- Modal Search Start -->
+    {% include("layout/search.html") %}
+    <!-- Modal Search End -->
 
     <!-- Single Page Header start -->
     {% set nom_page="Admin" %}
@@ -21,7 +24,12 @@
 
 
     <!-- Début affichage du tableau des membres -->
-    
+    {% if session["statut"] != "admin" %}
+        <div class="alert alert-danger" role="alert">
+            Vous n'avez pas les droits pour accéder à cette page.
+        </div>
+    {% endif %}
+    {% if session["statut"] == "admin" %}
     <div style="justify-content: center; display: flex; margin-top: 50px;">
         <table class="table table-striped sortable">
             <tr>
@@ -30,7 +38,7 @@
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Mail</th>
-                <th>Statut</th>
+                <th class="sorttable_nosort">Statut </th>
                 <th class="sorttable_nosort">Supprimer</th>
             </tr>
             {% for membre in membres %}
@@ -40,7 +48,22 @@
                 <td>{{ membre.nom }}</td>
                 <td>{{ membre.prenom }}</td>
                 <td>{{ membre.mail }}</td>
-                <td>{{ membre.statut }}</td>
+                <td>
+                    <form class="form-label my-3" action="update_status" method="post">
+                        <input type="hidden" name="id_membre" value="{{membre.idUtilisateur}}">
+                        <select name="nouveau_statut">
+                            {% if membre.statut=='gestionnaire' %}
+                                <option value="Gestionnaire" selected>Gestionnaire</option>
+                                <option value="Administrateur">Administrateur</option>   
+                            {% endif %}
+                            {% if membre.statut=='admin' %}
+                                <option value="Gestionnaire">Gestionnaire</option>
+                                <option value="Administrateur" selected>Administrateur</option>
+                            {% endif %}
+                        </select>
+                        <button type="submit" class = "btn btn-primary">Modifier</button>
+                    </form>
+                </td>
                 <td>
                     <form action="delete_member" method="post">
                         <input type="hidden" name="id_membre" value="{{ membre.idUtilisateur }}">
@@ -51,6 +74,7 @@
             {% endfor %}
         </table>
     </div>
+    {% endif %}
 
     <!-- Fin affichage du tableau des membres -->
 

@@ -2,6 +2,12 @@ from flask import Flask, render_template, request, session, redirect, flash, url
 import hashlib
 from sujet_groupeE.controller import function as f
 import sujet_groupeE.model.bdd as bdd
+from werkzeug.utils import secure_filename
+import pandas, os
+import json
+from math import ceil
+from werkzeug.utils import secure_filename
+from flask import jsonify
 
 app = Flask(__name__)
 app.template_folder = "template"
@@ -9,13 +15,32 @@ app.static_folder = "static"
 app.config.from_object('sujet_groupeE.config')
 @app.route("/")
 def index():
+    categories = bdd.get_categorieData()
+    last_products = bdd.get_latest_products()
     params = f.messageInfo() # récupération des messages d'info
-    return render_template("index.html", **params)
+    return render_template("index.html", **params, last_products=last_products, categories=categories)
 
 #page home
-@app.route("/cart")
-def cart():
-    return render_template("cart.html")
+@app.route("/menu")
+def menu():
+    produits_menu = session.get('meal', [])  # Récupère les produits du repas
+    return render_template("menu.html", produits_menu=produits_menu)
+
+@app.route("/CV_Majdi")
+def CV_Majdi():
+    return render_template("CV_Majdi.html")
+
+@app.route("/CV_Julie")
+def CV_Julie():
+    return render_template("CV_Julie.html")
+
+@app.route("/CV_Margot")
+def CV_Margot():
+    return render_template("CV_Margot.html")
+
+@app.route("/CV_Lea")
+def CV_Lea():
+    return render_template("CV_Lea.html")
 
 @app.route("/404")
 def error():
@@ -33,9 +58,6 @@ def contact():
 def shop_detail():
     return render_template("recettes.html")
 
-@app.route("/produits")
-def shop():
-    return render_template("produits.html")
 
 @app.route("/testimonial")
 def testimonial():
@@ -54,6 +76,7 @@ def ajout():
     login_connexion = request.form['login']
     mdp_connexion = request.form['mdp']
     statut_connexion = request.form['monSelect']
+    age_connexion = request.form['age']
 
     ## Gestion du fichier avatar
     # avatar_connexion = None
@@ -65,35 +88,36 @@ def ajout():
     #         avatar_connexion = secure_filename(avatar_file.filename)
     #         avatar_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatar_connexion))
 
-    if statut_connexion == "admin":
-        admin = 1
-    else:
-        admin = 0
     avatar_connexion = None
     if 'avatar' in request.form:
         avatar_connexion = request.form['avatar']
     else:
         # Gérer le cas où 'avatar' n'est pas présent
         print("Le fichier 'avatar' n'est pas présent dans la requête.")
-    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, admin, avatar_connexion) #ajouter avatar_extension
+
+    if int(age_connexion) <= 7:
+        qtmax = 60
+    elif int(age_connexion) <= 12 and int(age_connexion) >= 8:
+        qtmax = 75 
+    else:
+        qtmax = 100
+
+    lastId = bdd.add_userData(nom_connexion, prenom_connexion, mail_connexion, login_connexion, mdp_connexion, statut_connexion, avatar_connexion, age_connexion, qtmax) #ajouter avatar_extension
     if lastId == 0:  # Si l'insertion a échoué
-        lastId = bdd.get_membresData()  # Récupère l'ID de l'utilisateur à partir du login
-    # print(lastId) # dernier id créé par le serveur de BDD
-    # if "errorDB" not in session: 
-    #     session["infoVert"]="Nouveau membre inséré"
-    # else:
-    #     session["infoRouge"]="Problème ajout utilisateur"
+        data = bdd.get_membresData()
+        lastId = data[-1]['idUtilisateur']
 
     # Stocke les informations de l'utilisateur dans la session
     session['idUtilisateur'] = lastId
     session['login'] = login_connexion
-    session['admin'] = admin
     session['nom'] = nom_connexion
     session['prenom'] = prenom_connexion
     session['mail'] = mail_connexion
     session['avatar'] = avatar_connexion
     session['statut'] = statut_connexion
     session['mdp'] = mdp_connexion
+    session['age'] = age_connexion
+    session['qtmax'] = qtmax
     return redirect(url_for('compte'))  # Redirige vers la page de compte
     
 #mdp = hashlib.sha256(mdp.encode())
@@ -117,10 +141,11 @@ def connect():
         session["prenom"] = user["prenom"]
         session["mail"] = user["mail"]
         session["statut"] = user["statut"]
-        session["admin"] = user["admin"]
+        session["age"]=user["age"]
         session["avatar"] = user["avatar"]
         session["login"] = user["login"]
         session["mdp"] = mdp
+        session["qtmax"] = user["qtmax"]
         # session["avatar"] = user["avatar"]
         flash("Authentification réussie", "success")
         session["infoVert"]="Authentification réussie"
@@ -134,14 +159,32 @@ def connect():
 @app.route('/logout')
 def logout():
     # Supprime 'login' de la session
-    session.clear() 
+    session.clear()
     # Redirige l'utilisateur vers la page de connexion
     return redirect(url_for('login'))
 
 @app.route("/compte")
 def compte():
-    return render_template("compte.html")
+    categories = bdd.get_categorieData()
+    return render_template("compte.html", categories=categories)
 
+@app.route("/recherche", methods=['POST'])
+def recherche():
+    categories = bdd.get_categorieData()
+    mot = request.form.get('keyword')
+    if mot is not None:
+        mot = mot.lower()
+    else:
+        mot = ""
+    print("Mot de recherche: ", mot)
+    produits = bdd.get_produitData_per_nom(mot)
+    print("produits", produits)
+    return render_template("recherche.html", produits=produits, categories=categories)
+    
+
+@app.route("/rien")
+def rien():
+    return render_template("rien.html")
 
 @app.route("/admin")
 def admin():
@@ -151,7 +194,6 @@ def admin():
 @app.route("/delete_member", methods=['POST'])
 def delete_membre():
     id_membre = request.form.get('id_membre')
-    print("member id to delete: ", id_membre)
     bdd.delete_userData(id_membre)
     if "errorDB" not in session:
         session["infoVert"] = "Membre supprimé"
@@ -166,12 +208,13 @@ def update_info():
     prenom = request.form.get('prenom')
     nom = request.form.get('nom')
     login = request.form.get('login')
+    age = request.form.get('age')
     mail = request.form.get('mail')
     statut = request.form.get('statut')
     newPassword = request.form.get('newPassword')
     confirmPassword = request.form.get('confirmPassword')
     oldPassword = request.form.get('oldPassword')
-
+    
     # Vérifier si l'utilisateur a entré un nouveau mot de passe
     if newPassword:
         try:
@@ -187,12 +230,20 @@ def update_info():
             flash('Une erreur est survenue lors de la vérification du mot de passe.', 'error')
 
     try:
+        if int(age) <= 7:
+            qtmax = 60
+        elif int(age) <= 12 and int(age) >= 8:
+            qtmax = 75 
+        else:
+            qtmax = 100
         # Mettre à jour les autres informations de l'utilisateur dans la base de données
         bdd.update_userData('prenom', prenom, session['idUtilisateur'])
         bdd.update_userData('nom', nom, session['idUtilisateur'])
         bdd.update_userData('login', login, session['idUtilisateur'])
         bdd.update_userData('mail', mail, session['idUtilisateur'])
         bdd.update_userData('statut', statut, session['idUtilisateur'])
+        bdd.update_userData('age', age, session['idUtilisateur'])
+        bdd.update_produitData('qtmax', qtmax, session['idUtilisateur'])
 
         # Mettre à jour les informations de la session
         session['prenom'] = prenom
@@ -200,8 +251,223 @@ def update_info():
         session['login'] = login
         session['mail'] = mail
         session['statut'] = statut
+        session['age'] = age
+        session['qtmax'] = qtmax
     except Exception as e:
         flash('Une erreur est survenue lors de la mise à jour de vos informations.', 'error')
 
     # Rediriger l'utilisateur vers la page du compte
     return redirect(url_for('compte'))
+
+UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))+'/file/'
+
+@app.route("/fichierUpload", methods=['POST'])
+def fichiersUpload():
+    if "testFile" in request.files:
+        file=request.files['testFile']
+
+        #enregistrement du fichier dans le répertoire files
+        filename = secure_filename(file.filename)
+        print(os.path.join(UPLOAD_FOLDER, filename))
+        file.save(os.path.join(UPLOAD_FOLDER, filename))
+
+        #Conversion du fichier xls en dictionnaire
+        xls = pandas.read_excel(UPLOAD_FOLDER+file.name)
+        data = xls.to_dict('records')
+        print([file.filename, data])
+
+        #Enregistrement des données en BDD
+        bdd.saveDataFromFile(data)
+        if "errorDB" not in session:
+            session["infoVert"] = "Données sauvegardées en BDD"
+            return redirect("/sgbd")
+        else:
+            session["infoRouge"]="Problème enregistrement des données"
+            return redirect("/fichiers")
+
+@app.route("/update_status", methods=['post'])
+def update_status():
+    idUtilisateur = request.form.get('id_membre') 
+    statut = request.form.get('nouveau_statut')
+    if statut == "Administrateur":
+        statut = "admin"
+    else:
+        statut = "gestionnaire"
+    bdd.update_userData('statut', statut, idUtilisateur)
+    return redirect(url_for('admin'))
+
+
+@app.route("/ajout_produit", methods=['POST'])
+def ajout_produit():
+    photo_produit = request.files['photo_produit']
+    filename = secure_filename(photo_produit.filename) 
+    photo_produit.save(os.path.join('sujet_groupeE\static\img', filename))
+    nom_produit = request.form.get('nom_produit')
+    nom_produit = ''.join(nom_produit)
+    marque = request.form.get('marque')
+    quantite_sucre = request.form.get('quantite_sucre')
+    categorie = request.form.get('categorie')
+    idUtilisateur = session['idUtilisateur']
+    bdd.add_produit(nom_produit, marque, quantite_sucre, categorie, idUtilisateur, filename)  
+    return redirect(url_for('compte'))
+
+
+
+@app.route('/produits')
+@app.route('/produits/<int:page>')
+@app.route('/produits/categorie/<int:category_id>')
+@app.route('/produits/categorie/<int:category_id>/<int:page>')
+@app.route('/produits/sucre/<int:max_sucre>', methods=['GET'])
+@app.route('/produits/sucre/<int:max_sucre>/<int:page>', methods=['GET'])
+@app.route('/produits/sucre/<float:max_sucre>', methods=['GET'])
+@app.route('/produits/sucre/<float:max_sucre>/<int:page>', methods=['GET'])
+def produits(page=1, category_id=None, max_sucre=None):
+    if max_sucre is not None and max_sucre < 0:
+        return "Erreur : max_sucre ne peut pas être négatif", 400
+    categories = bdd.get_categorieData()
+    per_page = 15
+    if category_id:
+        produits = bdd.get_produitData_per_categorie(category_id)
+        print("produits", produits)
+    elif max_sucre:
+        print("max_sucre", max_sucre)
+        produits = bdd.get_produitData_per_sucre(max_sucre)
+    else:
+        produits = bdd.get_produitData_per_15(page, per_page)
+    total = bdd.get_total_produit()  # Cette fonction doit retourner le nombre total de produits
+    total_pages = ceil(total / per_page)  # Ajoutez cette ligne pour calculer le nombre total de pages
+    total_produits_par_categorie = bdd.get_total_produit_per_categorie()
+    print("total_produits_par_categorie", total_produits_par_categorie)
+
+    next_url = url_for('produits', page=page + 1) if total > page * per_page else None
+    prev_url = url_for('produits', page=page - 1) if page > 1 else None
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render_template('produits_partiel.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
+    else:
+        return render_template('produits.html', produits=produits, next_url=next_url, prev_url=prev_url, total_pages=total_pages, current_page=page, categories=categories, total_produits_par_categorie=total_produits_par_categorie)
+
+
+@app.route('/add_to_meal', methods=['POST'])
+def add_to_meal():
+    data = request.get_json()
+    produit_nom = data.get('nom_produit')
+    produit_cat = data.get('idCategorie')
+    produit_qtsucre = data.get('qtsucre')
+    produit_image = data.get('image')
+    produit_id = data.get('idProduit')
+
+    meal = session.get('meal', [])
+    meal.append({'nom_produit': produit_nom, 'idCategorie': produit_cat, 'qtsucre': produit_qtsucre, 'image': produit_image, 'idProduit': produit_id})
+    session['meal'] = meal
+    session.modified = True
+    return jsonify({'productCount': len(meal)})
+    
+
+@app.route('/delete_product', methods=['POST'])
+def delete_product():
+    data = request.get_json()
+    product_id = data.get('id')  # Utilisez la clé 'id' pour obtenir l'ID du produit
+    meal = session.get('meal', [])
+    meal = [product for product in meal if product['idProduit'] != product_id]
+    session['meal'] = meal
+    return jsonify({'productCount': len(meal)})
+
+@app.route('/update_product', methods=['POST'])
+def update_product():
+    data = request.get_json()
+    if not data:  # Si l'objet est vide, retournez une réponse sans effectuer aucune action
+        return jsonify({'message': 'No data received'})
+
+    idProduit = data.get('update_idProduit')
+    nomProduit = data.get('update_nomProduit')
+    marque = data.get('update_marque')
+    qtsucre = data.get('update_qtsucre')
+    idCategorie = data.get('update_idCategorie')
+    bdd.update_produitData('nom', nomProduit, idProduit)
+    bdd.update_produitData('marque', marque, idProduit)
+    bdd.update_produitData('qtsucre', qtsucre, idProduit)
+    bdd.update_produitData('idCategorie', idCategorie, idProduit)
+
+    return jsonify({'message': 'Product updated successfully'})
+
+@app.route('/delete_produit/<int:idProduit>', methods=['DELETE'])
+def delete_produit(idProduit):
+    bdd.delete_produitData(idProduit)
+    return redirect(url_for('produits'))
+
+@app.route('/add_category', methods=['POST'])
+def add_categorie():
+    data = request.get_json()
+    print("data", data)
+    if data == {'category': ['']}:
+        return jsonify({'message': 'No data received'})
+    else:  
+        categories = data.get('category')
+
+        print("categories", categories)
+        for categorie in categories: 
+            if categorie == '':
+                continue   
+            print("catégorie :", categorie)
+            # def add_new_categorie(nomCategorie)
+            bdd.add_new_categorie(categorie)
+
+    return jsonify({'message': 'Category added successfully'})
+
+@app.route('/delete_category', methods=['POST'])
+def delete_categorie():
+    data = request.get_json()
+    print("data", data )
+    category_id = data['category_to_delete']
+    print("category_id", category_id)
+    bdd.delete_categorieData(category_id)
+    return jsonify({'message': 'Category deleted successfully'})
+
+@app.route('/save_products', methods=['POST'])
+def save_products():
+    # Récupérer les données du corps de la requête
+    data = request.get_json()
+    print("data", data)
+
+    for product_data in data['products']:
+        idProduit = product_data['id']
+        quantite = product_data['quantity']
+        idUtilisateur = session['idUtilisateur']
+        dico_nom_produit = bdd.get_nom_produit(idProduit)
+        nom_produit = dico_nom_produit['nom']
+        bdd.ajout_repas(idProduit, idUtilisateur, nom_produit, quantite)
+
+    # Retourner une réponse de succès
+    return jsonify({'message': 'Les produits ont été enregistrés avec succès.'})
+
+@app.route('/repas')
+def repas():
+    idUtilisateur = session['idUtilisateur']
+    repas = bdd.get_repasData(idUtilisateur)
+    total_sucre = 0
+    repas = [list(i) for i in repas]  # Convertir chaque tuple en liste
+    for i in repas:
+        i[4] = round(i[4] * i[3] / 100, 2)
+        total_sucre += round(i[4],2)
+    return render_template('repas.html', repas=repas, total_sucre=total_sucre)
+
+
+@app.route('/delete_product_meal', methods=['POST'])
+def delete_product_meal():
+    id_produit = request.form.get('id_produit')
+    bdd.delete_product_meal(id_produit)
+    if "errorDB" not in session:
+        session["infoVert"] = "Produit supprimé"
+    else:
+        session["infoRouge"] = "Problème suppression produit"
+
+    return redirect(url_for('repas'))
+
+@app.route('/clear_messages', methods=['POST'])
+def clear_messages():
+    if "infoVert" in session:
+        del session["infoVert"]
+    if "infoRouge" in session:
+        del session["infoRouge"]
+    return jsonify({'message': 'Messages cleared'})

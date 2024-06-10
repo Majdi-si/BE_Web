@@ -10,6 +10,23 @@
     content: "";
 }
 
+body.night-mode {
+    background-color: #242424;
+    color: #ddd;
+}
+
+/* Mettez à jour d'autres éléments au besoin */
+.night-mode a {
+    color: #1da1f2;
+}
+.fruite-img img {
+    width: 100%;  /* pour une largeur fixe */
+    height: 100%; /* hauteur ajustée automatiquement */
+    object-fit: contain; /* ou cover ou contain */
+}   
+.shadow {
+    box-shadow: 0 4px 2px -2px gray;
+}
 
 /*** Spinner Start ***/
 
@@ -191,11 +208,14 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../img/hero-img.jpg);
+    position: relative;
+    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1));
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+
 
 .carousel-item {
     position: relative;

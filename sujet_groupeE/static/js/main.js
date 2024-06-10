@@ -28,6 +28,23 @@
             }
         } 
     });
+
+    // Barre de recherche fixe
+    $(window).scroll(function () {
+        if ($(window).width() < 992) {
+            if ($(this).scrollTop() > 55) {
+                $('#searchBar').addClass('shadow');
+            } else {
+                $('#searchBar').removeClass('shadow');
+            }
+        } else {
+            if ($(this).scrollTop() > 55) {
+                $('#searchBar').addClass('shadow').css('top', -55);
+            } else {
+                $('#searchBar').removeClass('shadow').css('top', 0);
+            }
+        } 
+    });
     
     
    // Back to top button

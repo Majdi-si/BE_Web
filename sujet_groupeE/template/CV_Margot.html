@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CV DEVEIL VILLELGA Margot</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="static/css_cv/aos.css?ver=1.1.0" rel="stylesheet">
+    <link href="static/css_cv/bootstrap.min.css?ver=1.1.0" rel="stylesheet">
+    <link href="static/css_cv/main.css?ver=1.1.0" rel="stylesheet">
+    <link rel ="icon" type="image/png" href="static/img/logo.png">
+    <noscript>
+      <style type="text/css">
+        [data-aos] {
+            opacity: 1 !important;
+            transform: translate(0) scale(1) !important;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body id="top">
+    <header>
+      <div class="profile-page sidebar-collapse">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-transparent bg-primary" color-on-scroll="400">
+          <div class="container">
+            <div class="navbar-translate">
+              <a class="navbar-brand" href="#" rel="tooltip" onclick="event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'});">CV DEVEIL VILLELGA Margot</a>
+            </div>
+              <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-bar bar1"></span><span class="navbar-toggler-bar bar2"></span><span class="navbar-toggler-bar bar3"></span></button>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+              <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="#about">À propos</a></li>
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="#skill">Compétences  </a></li>
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="#formation">Formation</a></li>
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="#experience">Expériences</a></li>
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="#contact">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <div class="page-content">
+      <div>
+<div class="profile-page">
+  <div class="wrapper">
+    <div class="page-header page-header-small" filter-color="green">
+      <div class="page-header-image" data-parallax="true" style="background-image: url('static/images_cv/avion.jpg')"></div>
+      <div class="container">
+        <div class="content-center">
+          <div class="cc-profile-image"><a href="#"><img src="static/img/photo_Margot.jpg" alt="Image"/></a></div>
+          <div class="h2 title">DEVEIL VILLELGA Margot</div>
+          <p class="category text-white">Étudiant en première année d'école d'ingénieurs en aéronautique à l'ENAC</p>
+          <a class="btn btn-primary" href="static\images_cv\CV_DEVEIL_VILLELGA_Margot.pdf" download data-aos="zoom-in" data-aos-anchor="data-aos-anchor">Téléchargez le CV</a>
+        </div>
+      </div>
+      <div class="section">
+        <div class="container">
+          <div class="button-container">
+            <a class="btn btn-default btn-round btn-lg btn-icon" href="https://www.linkedin.com/in/margot-deveil-villelga-4989722b4/" rel="tooltip" title="Suivez moi sur LinkedIn"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Début À propos -->
+<div class="section" id="about">
+  <div class="container">
+    <div class="card" data-aos="fade-up" data-aos-offset="10">
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
+          <div class="card-body">
+            <div class="h4 mt-0 title">À propos</div>
+            <p>Bonjour ! Je m'appelle DEVEIL VILLELGA Margot, étudiante en première année en école d'ingénieurs en aéronautique à l'ENAC</p>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+          <div class="card-body">
+            <div class="h4 mt-0 title">Informations </div>
+            <div class="row">
+              <div class="col-sm-4"><strong class="text-uppercase">Age:</strong></div>
+              <div class="col-sm-8">20 ans</div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-sm-4"><strong class="text-uppercase">Email:</strong></div>
+              <div class="col-sm-8" id="email" onclick="copyToClipboard(event)" title="Copier l'adresse mail">margot.deveil@gmail.com</div>
+              <div id="message" style="position: absolute; pointer-events: none; top: 0; left: 210px; padding: 5px; background-color: #378C3F; color: #FFFFFF; display: none; border-radius: 10px; width: 150px; height: 40px; font-size: 75%; justify-content: center; align-items: center;"></div>
+            </div>
+            <script>
+              function copyToClipboard(e) {
+                var email = document.getElementById('email');
+                var range = document.createRange();
+                range.selectNode(email);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+            
+                var message = document.getElementById('message');
+                message.textContent = 'Email copié dans le presse-papiers';
+                message.style.display = 'block';
+            
+                setTimeout(function() {
+                  message.style.display = 'none';
+                }, 2000); // Fait disparaître le message après 2 secondes
+              }
+            </script>
+            <div class="row mt-3">
+              <div class="col-sm-4"><strong class="text-uppercase">Téléphone:</strong></div>
+              <div class="col-sm-8">07 87 48 03 20</div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-sm-4"><strong class="text-uppercase">Adresse :</strong></div>
+              <div class="col-sm-8">7 avenue Edouard Belin, Toulouse, France</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin À propos -->
+
+<!-- Début Compétences -->
+<div class="section" id="skill">
+  <div class="container">
+    <div class="h4 text-center mb-4 title">Compétences</div>
+    <div class="card" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <strong style="color: #378c3f;">Savoir-faire :</strong>
+            <div style="margin-bottom: 20px;"></div>
+            <ul>
+              <li>Travail en équipe</li>
+              <li>Organisation</li>
+              <li>Créativité</li>
+              <li>Médiation</li>
+              <li>Gestion du stress</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <strong style="color: #378c3f;">Savoir-être :</strong>
+            <div style="margin-bottom: 20px;"></div>
+            <ul>
+              <li>Dynamique</li>
+              <li>Adaptative</li>
+              <li>Endurante</li>
+              <li>Pédagogue</li>
+              <li>Patiente</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin Compétences -->
+
+
+
+<!-- Début Compétences techniques -->
+<div class="section" id="skill">
+  <div class="container">
+    <div class="h4 text-center mb-4 title">Compétences techniques</div>
+    <div class="card" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <strong style="color: #378c3f;">Langages de programmation :</strong>
+            <div style="margin-bottom: 20px;"></div>
+            <ul>
+              <li>Python : <strong>Avancé</strong></li>
+              <li>Excel, Word : <strong>Avancé</strong></li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <strong style="color: #378c3f;">Connaissances scientifiques :</strong>
+            <div style="margin-bottom: 20px;"></div>
+            <ul>
+              <li>Connaissances en aéronautique : titulaire du BIA depuis 2021</li>
+              <li>Titulaire du Passeport SSI</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin Compétences techniques -->
+
+
+
+<!-- Début Langues -->
+<div class="section" id="skill">
+  <div class="container">
+      <div class="h4 text-center mb-4 title">Compétences linguistiques</div>
+      <div class="card" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <strong style="color: #378c3f;">Langues :</strong>
+              <div style="margin-bottom: 20px;"></div>
+              <ul>
+                <li>Anglais : <strong>Avancé</strong></li>
+                <li>Espagnol : <strong>Intermédiaire</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Fin Langues -->
+
+
+<!-- Début Formation -->
+<div class="section" id="formation">
+  <div class="container cc-education">
+    <div class="h4 text-center mb-4 title">Formation</div>
+    <div class="card">
+      <div class="row">
+        <div class="col-md-3 bg-primary" data-aos="fade-right" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body cc-education-header">
+            <p>2023</p>
+            <div class="h5">Cycle Ingénieur</div>
+          </div>
+        </div>
+        <div class="col-md-9" data-aos="fade-left" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body">
+            <div class="h5">ENAC</div>
+            <p class="category">Toulouse</p>
+            <p>Etudiant en première année du cycle ingénieur.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <div class="col-md-3 bg-primary" data-aos="fade-right" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body cc-education-header">
+            <p>2021 - 2023</p>
+            <div class="h5">CPGE</div>
+          </div>
+        </div>
+        <div class="col-md-9" data-aos="fade-left" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body">
+            <div class="h5">Gustave Eiffel</div>
+            <p class="category">Bordeaux</p>
+            <p>Etudiant en CPGE en filière PCSI-PSI.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <div class="col-md-3 bg-primary" data-aos="fade-right" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body cc-education-header">
+            <p>2018 - 2021</p>
+            <div class="h5">Baccalauréat</div>
+          </div>
+        </div>
+        <div class="col-md-9" data-aos="fade-left" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body">
+            <div class="h5">La Sauque</div>
+            <p class="category">La Brède</p>
+            <p>Spécialités : Mathématiques, Physique-Chimie et SVT.</p>
+            <p>Mention : Bien </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin Formation -->
+
+
+
+<!-- Début Expériences -->
+<div class="section" id="experience">
+  <div class="container cc-experience">
+    <div class="h4 text-center mb-4 title">Expériences</div>
+    <div class="card">
+      <div class="row">
+        <div class="col-md-3 bg-primary" data-aos="fade-right" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body cc-experience-header">
+            <p>2023/2024</p>
+            <div class="h5">Aide aux devoirs</div>
+          </div>
+        </div>
+        <div class="col-md-9" data-aos="fade-left" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body">
+            <div class="h5">Association Prépa-Brevet et Tutorat découverte</div>
+            <p class="category">Toulouse</p>
+            <p>Aide aux devoirs des élèves du collège Toulouse Lautec.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <div class="col-md-3 bg-primary" data-aos="fade-right" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body cc-experience-header">
+            <p>2024/2025</p>
+            <div class="h5">Association Fly Impulse</div>
+          </div>
+        </div>
+        <div class="col-md-9" data-aos="fade-left" data-aos-offset="50" data-aos-duration="500">
+          <div class="card-body">
+            <div class="h5">ENAC</div>
+            <p class="category">Toulouse</p>
+            <p>Responsable de la Commission Evenementielle de l'association entrepreneuriale de l'ENAC.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fin Expériences -->
+
+
+<!-- Début Contact -->
+<div class="section" id="contact">
+  <div class="cc-contact-information" style="position: relative;">
+  <!-- Début de la carte Google Maps -->
+  <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d371064.87594757025!2d1.4609801!3d43.3990927!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebdcc97f63627%3A0x4973c9f85bbbf5fd!2s%C3%89cole%20Nationale%20de%20l&#39;Aviation%20Civile!5e0!3m2!1sfr!2sfr!4v1716473675384!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0; position: absolute;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <!-- Fin de la carte Google Maps -->
+  <div class="container" style="position: relative;">
+    <div class="container">
+      <div class="cc-contact">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="card mb-0" data-aos="zoom-in">
+              <div class="h4 text-center title">Contactez moi</div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card-body">
+                    <form action="https://formspree.io/your@email.com" method="POST">
+                      <div class="p pb-3"><strong>Formulaire de contact</strong></div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div class="input-group"><span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                            <input class="form-control" type="text" name="name" placeholder="Nom, prénom" required="required"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div class="input-group"><span class="input-group-addon"><i class="fa fa-file-text"></i></span>
+                            <input class="form-control" type="text" name="Subject" placeholder="Sujet" required="required"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input class="form-control" type="email" name="_replyto" placeholder="E-mail" required="required"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div class="form-group">
+                            <textarea class="form-control" name="message" placeholder="Votre meessage" required="required"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <button class="btn btn-primary" type="submit">Envoyer</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card-body">
+                    <p class="mb-0"><strong>Adresse </strong></p>
+                    <p class="pb-2">7 avenue Edouard Belin, Toulouse, France</p>
+                    <p class="mb-0"><strong>Téléphone</strong></p>
+                    <p class="pb-2">07 87 48 03 20</p>
+                    <p class="mb-0"><strong>Email</strong></p>
+                    <p>margot.deveil@gmail.com</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script>
+  function initMap() {
+    var location = {lat: -25.363, lng: 131.044};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4,
+      center: location
+    });
+  }
+</script>
+<script async defer
+src="https://maps.app.goo.gl/7cM8Gr8uSZwstVrh8">
+</script>
+<!--Fin Contact-->
+
+</div>
+    </div>
+    <footer class="footer">
+      </div>
+    </footer>
+    <script src="static/js_cv/core/jquery.3.2.1.min.js?ver=1.1.0"></script>
+    <script src="static/js_cv/core/popper.min.js?ver=1.1.0"></script>
+    <script src="static/js_cv/core/bootstrap.min.js?ver=1.1.0"></script>
+    <script src="static/js_cv/now-ui-kit.js?ver=1.1.0"></script>
+    <script src="static/js_cv/aos.js?ver=1.1.0"></script>
+    <script src="static/scripts_cv/main.js?ver=1.1.0"></script>
+  </body>
+</html>

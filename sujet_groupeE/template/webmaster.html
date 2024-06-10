@@ -130,28 +130,35 @@
                             </div>
                         </div>
                             <script>
-                                // Fonction pour afficher les informations correspondantes
                                 function showInfo(name) {
                                     var display = document.getElementById('display');
-                                    // Vous pouvez personnaliser les informations à afficher ici en fonction du nom sélectionné
+                                    var info = '';
+                                    var url = ''; // URL de la page web à laquelle vous voulez rediriger
+                            
                                     switch (name) {
                                         case 'Majdi Si-Salah':
-                                            display.innerHTML = "<p>Formation :</p><p>Lycée Faidherbe (à Lille de 2021 à 2023) : classe préparatoire MP2I-MPI</p><p>Lycée Faidherbe (à Lille de 2018 à 2021) : Diplômé du BAC</p>";
+                                            info = "<p>Formation :</p><p>Lycée Faidherbe (à Lille de 2021 à 2023) : classe préparatoire MP2I-MPI</p><p>Lycée Faidherbe (à Lille de 2018 à 2021) : Diplômé du BAC</p>";
+                                            url = '/CV_Majdi'; // Remplacez par l'URL de la page web de Majdi Si-Salah
                                             break;
                                         case 'Julie Lombardi':
-                                            display.innerHTML = "<p>Formation :</p><p>Lycée Georges Clémenceau (à Reims de 2020 à 2023) : classe préparatoire MPSI-PSI</p><p>Lycée Pierre Mechain (à Laon de 2017 à 2020) : Diplômée du BAC</p>";
+                                            info = "<p>Formation :</p><p>Lycée Georges Clémenceau (à Reims de 2020 à 2023) : classe préparatoire MPSI-MP</p><p>Lycée Pierre Mechain (à Laon de 2017 à 2020) : Diplômée du BAC</p>";
+                                            url = '/CV_Julie'; // Remplacez par l'URL de la page web de Julie Lombardi
                                             break;
                                         case 'Margot Deveil-Villelga':
-                                            display.innerHTML = '<p>Formation :</p><p>Lycée Gustave Eiffel (à Bordeaux de 2021 à 2023) : classe préparatoire PCSI-PSI</p><p>Lycée La Sauque (à La Brède de 2018 à 2021) : Diplômée du BAC</p>';
+                                            info = '<p>Formation :</p><p>Lycée Gustave Eiffel (à Bordeaux de 2021 à 2023) : classe préparatoire PCSI-PSI</p><p>Lycée La Sauque (à La Brède de 2018 à 2021) : Diplômée du BAC</p>';
+                                            url = '/CV_Margot'; // Remplacez par l'URL de la page web de Margot Deveil-Villelga
                                             break;
                                         case 'Léa Terrin':
-                                            display.innerHTML = '<p>Formation :</p><p>Lycée aux Lazaristes (à Lyon de 2021 à 2023) : classe préparatoire PCSI-PC</p><p>Lycée Alphonse Daudet (à Tarascon de 2018 à 2021) : Diplômée du BAC</p>';
+                                            info = '<p>Formation :</p><p>Lycée aux Lazaristes (à Lyon de 2021 à 2023) : classe préparatoire PCSI-PC</p><p>Lycée Alphonse Daudet (à Tarascon de 2018 à 2021) : Diplômée du BAC</p>';
+                                            url = '/CV_Lea'; // Remplacez par l'URL de la page web de Léa Terrin
                                             break;
                                         default:
-                                            display.innerHTML = "Sélectionnez un nom pour afficher les informations.";
+                                            info = "Sélectionnez un nom pour afficher les informations.";
                                     }
+                            
+                                    display.innerHTML = info + '<a href="' + url + '" class="btn btn-primary" target="_blank">Visitez la page web</a>';
                                 }
-                                </script>
+                            </script>
                             </form>
                         </div>
                     </div>

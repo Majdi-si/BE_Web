@@ -4,139 +4,183 @@
 <head>
     {% set titre="Mon Compte" %}
     {% include("layout/head.html") %}
+    <style>
+        body {
+            padding-top: 60px; /* Ajustez cette valeur en fonction de la hauteur de votre navbar */
+        }
+    </style>
 </head>
 
 <body>
-
-
-
     <!-- Navbar start -->
-    {%include("layout/navbar.html")%}
+    {% include("layout/navbar.html") %}
     <!-- Navbar End -->
+         
+    <!-- Modal Search Start -->
+    {% include("layout/search.html") %}
+    <!-- Modal Search End -->
+
+    <div class="d-flex">
+        <!-- Sidebar Start -->
+        <div class="d-flex flex-column p-3 bg-light" style="width: 250px; margin-top: 100px;">
+            <h3 class="mb-3">Menu</h3>
+            <button class="btn btn-primary mb-3" onclick="showSection('infoCompte')">Informations du compte</button>
+            <button class="btn btn-primary mb-3" onclick="showSection('ajoutProduit')">Ajouter un produit</button>
+            <a class="btn btn-primary mt-auto" href="/logout">Se déconnecter</a>
+        </div>
+        <!-- Sidebar End -->
 
 
-    <!-- Single Page Header start -->
-    {% set nom_page="Compte" %}
-    {% include("layout/breadcrumb.html") %}
-    <!-- Single Page Header End -->
+        <!-- Content Start -->
+        <div class="p-3" style="flex-grow: 1;">
+            <!-- Compte Page Start -->
+            <div id="infoCompte">
+                <div class="container-fluid py-5 d-flex flex-column justify-content-center align-items-center">
+                    <div class="container py-5">
+                        <h1 class="mb-7">Informations du compte</h1>
+                        <form action="update-info" method="POST" enctype="multipart/form-data">
+                            <div class="row g-9">
+                                <div class="col-md-20 col-lg-6 col-xl-10">
+                                    <div class="row">
+                                        <div class="col-md-20 col-lg-6">
+                                            <div class="form-item w-100">
+                                                <label class="form-label my-3">Prénom</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="prenom" name="prenom" value="{{ session['prenom'] }}" readonly>
+                                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('prenom')"><i class="bi bi-pencil-fill"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-lg-6">
+                                            <div class="form-item w-100">
+                                                <label class="form-label my-3">Nom</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="nom" name="nom" value="{{ session['nom'] }}" readonly>
+                                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('nom')"><i class="bi bi-pencil-fill"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Login</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="login" name="login" value="{{ session['login'] }}" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('login')"><i class="bi bi-pencil-fill"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Age</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="age" name="age" value="{{ session['age'] }}" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('age')"><i class="bi bi-pencil-fill"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Adresse e-mail</label>
+                                        <div class="input-group">
+                                            <input type="email" class="form-control" id="mail" name="mail" value="{{ session['mail'] }}" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mail')"><i class="bi bi-pencil-fill"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Statut</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="statut" name="statut" value="{{ session['statut'] }}" readonly>
+                                            <!-- <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('statut')"><i class="bi bi-pencil-fill"></i></button> -->
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Mot de passe</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="mdp" name="mdp" value="{{ session['mdp'] }}" readonly>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mdp')"><i class="bi bi-pencil-fill"></i></button>
+                                        </div>
+                                        <div id="changePassword" style="display: none;">
+                                            <label class="form-label my-3">Nouveau mot de passe</label>
+                                            <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                            <label class="form-label my-3">Confirmer le nouveau mot de passe</label>
+                                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                            <label class="form-label my-3">Ancien mot de passe</label>
+                                            <input type="password" class="form-control" id="oldPassword" name="oldPassword">
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Avatar : </label>
+                                        <img src="static/img/{{ session['avatar'] }}.png" alt="avatar" class="img-fluid mt-3" style="max-width: 150px;">
+                                    </div>
+                                    <div class="form-item d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="btn btn-primary mt-5">Enregistrer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-         <!-- Affichage des messages flash -->
-         {% with messages = get_flashed_messages(with_categories=true) %}
-         {% if messages %}
-           {% for category, message in messages %}
-             {% if category == "error" %}
-               <div class="alert alert-danger">
-                 {{ message }}
-               </div>
-             {% elif category == "success" %}
-               <div class="alert alert-success">
-                 {{ message }}
-               </div>
-             {% endif %}
-           {% endfor %}
-         {% endif %}
-       {% endwith %}
+            <div id="ajoutProduit" style="display: none;">
+                <div class="container-fluid py-5 d-flex flex-column justify-content-center align-items-center">
+                    <div class="container py-5">
+                        <h1 class="mb-7">Ajouter un produit</h1>
+                        <form action="ajout_produit" method="post" enctype="multipart/form-data">
+                            <div class="row g-9">
+                                <div class="col-md-20 col-lg-6 col-xl-10">
+                                    <div class="row">
+                                        <label class="form-label my-3">Nom du produit</label>
+                                        <input type="text" name="nom_produit" id="nom" placeholder="Nom" class="form-control"/>
+                                        <label class="form-label my-3">Marque du produit</label>
+                                        <input type="text" name="marque" id="marque" placeholder="Marque" class="form-control"/>
+                                        <label class="form-label my-3">Quantité de sucre par portion (en grammes)</label>
+                                        <input type="text" name="quantite_sucre" id="quantité" placeholder="Quantité de sucre" class="form-control"/>
+                                        <label class="form-label my-3">Catégorie du produit</label>
+                                        <select class="form-select" name="categorie" id="monSelect">
+                                            <option selected disabled>Catégorie du produit</option>
+                                            {% for categorie in categories %}
+                                                <option value="{{ categorie.idCategorie }}">{{ categorie.nom.replace('_', '/') | capitalize }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <label class="form-label my-3">Importer une photo du produit</label>
+                                        <input type="file" name="photo_produit" id="photo_produit" class="form-control"/>
+                                        <div class="form-item d-flex justify-content-center align-items-center">
+                                            <button type="submit" class="btn btn-primary mt-5">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Compte Page End -->
+        </div>
+        <!-- Content End -->
+    </div>
 
+    <!-- Footer Start -->
+    {% include("layout/footer.html") %}
+    <!-- Footer End -->
 
-    <!-- Compte Page Start -->
+    <!-- JavaScript Libraries -->
+    {% include("layout/script.html") %}
+
     <script>
+        function showSection(id) {
+            var sections = ['infoCompte', 'ajoutProduit'];
+            for (var i = 0; i < sections.length; i++) {
+                document.getElementById(sections[i]).style.display = 'none';
+            }
+            document.getElementById(id).style.display = 'block';
+        }
+
         function enableEditing(id) {
             if (id === 'mdp') {
                 document.getElementById('changePassword').style.display = 'block';
-            } 
-            else {
+            } else {
                 var input = document.getElementById(id);
                 input.readOnly = !input.readOnly;
             }
         }
     </script>
- 
-    <form action="update-info" method="POST" enctype="multipart/form-data">
-        <div class="container-fluid py-5 d-flex flex-column justify-content-center align-items-center">
-            <div class="container py-5">
-                <h1 class="mb-7">Informations du compte</h1>
-                <form action="#">
-                    <div class="row g-9">
-                        <div class="col-md-20 col-lg-6 col-xl-10">
-                            <div class="row">
-                                <div class="col-md-20 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Prénom</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="prenom" name = "prenom" value="{{ session['prenom'] }}" readonly>
-                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('prenom')"><i class="bi bi-pencil-fill"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Nom</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="nom" name = "nom" value="{{ session['nom'] }}" readonly>
-                                            <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('nom')"><i class="bi bi-pencil-fill"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Login</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="login" name = "login" value="{{ session['login'] }}" readonly>
-                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('login')"><i class="bi bi-pencil-fill"></i></button>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Adresse e-mail</label>
-                                <div class="input-group">
-                                    <input type="email" class="form-control" id="mail" name = "mail" value="{{ session['mail'] }}" readonly>
-                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mail')"><i class="bi bi-pencil-fill"></i></button>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Statut</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="statut" name = "statut" value="{{ session['statut'] }}" readonly>
-                                    <!-- <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('statut')"><i class="bi bi-pencil-fill"></i></button> -->
-                                </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Mot de passe</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="mdp" name="mdp" value="{{ session['mdp'] }}" readonly>
-                                    <button class="btn btn-outline-secondary" type="button" onclick="enableEditing('mdp')"><i class="bi bi-pencil-fill"></i></button>
-                                </div>
-                                <div id="changePassword" style="display: none;">
-                                    <label class="form-label my-3">Nouveau mot de passe</label>
-                                    <input type="password" class="form-control" id="newPassword" name="newPassword">
-                                    <label class="form-label my-3">Confirmer le nouveau mot de passe</label>
-                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
-                                    <label class="form-label my-3">Ancien mot de passe</label>
-                                    <input type="password" class="form-control" id="oldPassword" name="oldPassword">
-                                </div>
-                            </div>
-                            </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Avatar : </label>
-                                <img src="static/img/{{ session['avatar'] }}.png" alt="avatar" class="img-fluid mt-3" style="max-width: 150px;">
-                            </div>
-                            <div class="form-item d-flex justify-content-center align-items-center">
-                                <button type="submit" class="btn btn-primary mt-5">Enrengistrer</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </form>
-    <!-- Compte Page End -->
-
-
-    <!-- Footer Start -->
-    {%include("layout/footer.html")%}
-    <!-- Footer End -->
-
-    <!-- JavaScript Libraries -->
-    {% include("layout/script.html") %}
 </body>
 
 </html>
